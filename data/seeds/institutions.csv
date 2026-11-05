@@ -1,0 +1,49 @@
+short_name,legal_name_vi,type,website,needs_check,note
+AGRIBANK,Ngân hàng Nông nghiệp và Phát triển Nông thôn Việt Nam,state_bank,https://www.agribank.com.vn/,false,SBV state-owned commercial bank list (30/06/2026)
+VIETCOMBANK,Ngân hàng TMCP Ngoại thương Việt Nam,state_bank,https://www.vietcombank.com.vn/,false,State holds majority; SBV lists it as joint-stock
+VIETINBANK,Ngân hàng TMCP Công Thương Việt Nam,state_bank,https://www.vietinbank.vn/,false,State holds majority; SBV lists it as joint-stock
+BIDV,Ngân hàng TMCP Đầu tư và Phát triển Việt Nam,state_bank,https://bidv.com.vn/,false,State holds majority; SBV lists it as joint-stock
+ACB,Ngân hàng TMCP Á Châu,joint_stock_bank,https://acb.com.vn/,false,
+ABBANK,Ngân hàng TMCP An Bình,joint_stock_bank,https://www.abbank.vn/,false,
+BACABANK,Ngân hàng TMCP Bắc Á,joint_stock_bank,https://www.baca-bank.vn/,false,
+BAOVIETBANK,Ngân hàng TMCP Bảo Việt,joint_stock_bank,https://www.baovietbank.vn/,false,
+BVBANK,Ngân hàng TMCP Bản Việt,joint_stock_bank,https://www.bvbank.net.vn/,false,SBV short name: Viet Capital Bank; brand BVBank
+EXIMBANK,Ngân hàng TMCP Xuất Nhập khẩu Việt Nam,joint_stock_bank,https://eximbank.com.vn/,false,
+HDBANK,Ngân hàng TMCP Phát triển Thành phố Hồ Chí Minh,joint_stock_bank,https://hdbank.com.vn/,false,
+KIENLONGBANK,Ngân hàng TMCP Kiên Long,joint_stock_bank,https://kienlongbank.com/,false,SBV short name: KLB
+LPBANK,Ngân hàng TMCP Lộc Phát Việt Nam,joint_stock_bank,https://lpbank.com.vn/,false,Renamed from Bưu điện Liên Việt (SBV 423/QĐ-TTGSNH2; 15/07/2024)
+MB,Ngân hàng TMCP Quân đội,joint_stock_bank,https://www.mbbank.com.vn/,false,
+MSB,Ngân hàng TMCP Hàng Hải Việt Nam,joint_stock_bank,https://www.msb.com.vn/,false,
+NAMABANK,Ngân hàng TMCP Nam Á,joint_stock_bank,https://www.namabank.com.vn/,false,
+NCB,Ngân hàng TMCP Quốc Dân,joint_stock_bank,https://www.ncb-bank.vn/,false,
+OCB,Ngân hàng TMCP Phương Đông,joint_stock_bank,https://ocb.com.vn/,false,
+PGBANK,Ngân hàng TMCP Thịnh vượng và Phát triển,joint_stock_bank,https://www.pgbank.com.vn/,false,
+PVCOMBANK,Ngân hàng TMCP Đại Chúng Việt Nam,joint_stock_bank,https://www.pvcombank.com.vn/,false,
+SACOMBANK,Ngân hàng TMCP Sài Gòn Tài Lộc,joint_stock_bank,https://www.sacombank.com.vn/,false,Renamed from Sài Gòn Thương Tín (SBV 36/QĐ-QLGS4; 01/06/2026)
+SAIGONBANK,Ngân hàng TMCP Sài Gòn Công Thương,joint_stock_bank,https://www.saigonbank.com.vn/,false,SBV short name: SGB
+SCB,Ngân hàng TMCP Sài Gòn,joint_stock_bank,https://www.scb.com.vn/,false,Under SBV special control
+SEABANK,Ngân hàng TMCP Đông Nam Á,joint_stock_bank,https://www.seabank.com.vn/,false,
+SHB,Ngân hàng TMCP Sài Gòn - Hà Nội,joint_stock_bank,https://www.shb.com.vn/,false,
+TECHCOMBANK,Ngân hàng TMCP Kỹ Thương Việt Nam,joint_stock_bank,https://techcombank.com/,false,
+TPBANK,Ngân hàng TMCP Tiên Phong,joint_stock_bank,https://tpb.vn/,false,
+VIB,Ngân hàng TMCP Quốc tế Việt Nam,joint_stock_bank,https://www.vib.com.vn/,false,
+VIETABANK,Ngân hàng TMCP Việt Á,joint_stock_bank,https://www.vietabank.com.vn/,false,
+VIETBANK,Ngân hàng TMCP Việt Nam Thương Tín,joint_stock_bank,https://www.vietbank.com.vn/,false,
+VPBANK,Ngân hàng TMCP Việt Nam Thịnh Vượng,joint_stock_bank,https://www.vpbank.com.vn/,false,
+GPBANK,Ngân hàng Thương mại TNHH MTV Kỷ Nguyên Thịnh Vượng,joint_stock_bank,https://www.gpbank.com.vn/,true,One-member LLC owned by VPBank (enum has no such type); sources disagree on the Vietnamese name
+MBV,Ngân hàng Thương mại TNHH MTV Việt Nam Hiện Đại,joint_stock_bank,https://www.mbv.com.vn/,true,One-member LLC owned by MB (ex-OceanBank); sources disagree on whether the name includes MTV
+VCBNEO,Ngân hàng Thương mại TNHH MTV Ngoại thương Công nghệ số,joint_stock_bank,https://www.vcbneo.com.vn/,false,One-member LLC owned by Vietcombank (ex-CBBank; SBV 30/QĐ-TTGSNH1); typed joint_stock_bank as SBV lists it there
+VIKKIBANK,Ngân hàng TNHH MTV Số Vikki,joint_stock_bank,https://vikkibank.vn/,false,One-member LLC owned by HDBank (ex-DongA Bank; SBV 42/QĐ-TTGSNH2); typed joint_stock_bank as SBV lists it there
+HSBC,Ngân hàng TNHH MTV HSBC (Việt Nam),foreign_bank,https://www.hsbc.com.vn/,false,
+STANDARDCHARTERED,Ngân hàng TNHH MTV Standard Chartered (Việt Nam),foreign_bank,https://www.sc.com/vn/,false,
+SHINHANBANK,Ngân hàng TNHH MTV Shinhan Việt Nam,foreign_bank,https://shinhan.com.vn/,false,
+HONGLEONG,Ngân hàng TNHH MTV Hong Leong Việt Nam,foreign_bank,https://www.hlbank.com.vn/,false,
+PUBLICBANK,Ngân hàng TNHH MTV Public Việt Nam,foreign_bank,https://publicbank.com.vn/,false,
+CIMB,Ngân hàng TNHH MTV CIMB Việt Nam,foreign_bank,https://www.cimbbank.com.vn/,false,
+WOORI,Ngân hàng TNHH MTV Woori Việt Nam,foreign_bank,https://www.woori.com.vn/,false,
+UOB,Ngân hàng TNHH Một Thành Viên United Overseas Bank (Vietnam),foreign_bank,https://www.uob.com.vn/,false,Name as printed on UOB's own deposit rate PDF
+FECREDIT,Công ty Tài chính TNHH Ngân hàng Việt Nam Thịnh Vượng SMBC,consumer_finance,https://fecredit.com.vn/,false,Brand FE Credit; joint venture VPBank/SMBC
+HOMECREDIT,Công ty Tài chính TNHH MTV Home Credit Việt Nam,consumer_finance,https://www.homecredit.vn/,false,
+HDSAISON,Công ty Tài chính TNHH HD SAISON,consumer_finance,https://www.hdsaison.com.vn/,false,Joint venture HDBank/Credit Saison
+LOTTEFINANCE,Công ty Tài chính TNHH MTV Lotte Việt Nam,consumer_finance,https://www.lottefinance.vn/,false,Issues Visa credit cards (lottefinance.vn card list)
+SHINHANFINANCE,Công ty Tài chính TNHH MTV Shinhan Việt Nam,consumer_finance,https://shinhanfinance.com.vn/,false,Issues credit cards (shinhanfinance.com.vn card page)

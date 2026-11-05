@@ -1,0 +1,38 @@
+[
+ {
+  "page": 1,
+  "cards": [
+   {
+    "card": "BIDV_VISA_CASHBACK_360",
+    "facts": [
+     {
+      "field": "travel_insurance",
+      "value": "true",
+      "page": 1,
+      "quote": "An tâm với bảo hiểm du lịch toàn cầu"
+     },
+     {
+      "field": "travel_insurance_cover_vnd",
+      "value": "13,2 tỷ đồng",
+      "page": 1,
+      "quote": "Bảo hiểm giá trị tới 13,2 tỷ đồng"
+     },
+     {
+      "field": "other_perks_text",
+      "value": "Tích 2% giá trị giao dịch chi tiêu tại y tế sức khỏe, giáo dục",
+      "page": 1,
+      "quote": "Tích 2% giá trị giao dịch chi tiêu tại y tế sức khỏe, giáo dục"
+     },
+     {
+      "field": "other_perks_text",
+      "value": "Tích điểm lên tới 10% giá trị giao dịch chi tiêu tại siêu thị",
+      "page": 1,
+      "quote": "Tích điểm lên tới 10% giá trị giao dịch chi tiêu tại siêu thị"
+     }
+    ]
+   }
+  ],
+  "unlisted_cards": [],
+  "rewards": []
+ }
+]

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Hàng chờ{% endblock %}
+{% block content %}
+<h1>Hàng chờ duyệt <small>{{ rows|length }} việc, cũ nhất trước</small></h1>
+{% if rows %}
+<table class="grid">
+  <thead><tr><th>#</th><th>Tạo lúc</th><th>Tổ chức</th><th>Nguồn</th><th>Mới</th><th>Đổi</th><th>Mất</th><th>Chờ duyệt</th><th>Cảnh báo</th></tr></thead>
+  <tbody>
+  {% for r in rows %}
+  <tr>
+    <td><a href="/tasks/{{ r.task_id }}">{{ r.task_id }}</a></td>
+    <td>{{ r.created_at.strftime("%d/%m %H:%M") }}</td>
+    <td><a href="/tasks/{{ r.task_id }}"><b>{{ r.institution }}</b></a></td>
+    <td>{{ r.source }}</td>
+    <td class="num">{{ r.new }}</td>
+    <td class="num">{{ r.changed }}</td>
+    <td class="num">{{ r.removed }}</td>
+    <td class="num">{{ r.pending }}</td>
+    <td class="num">{% if r.warnings %}<span class="warn">{{ r.warnings }}</span>{% else %}0{% endif %}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">Không còn việc nào. ✓</p>
+{% endif %}
+{% endblock %}

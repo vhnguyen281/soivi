@@ -1,0 +1,894 @@
+[
+ {
+  "page": 1,
+  "cards": [
+   {
+    "card": "BIDV_PRIVATE_BANKING",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "1.000.000",
+      "page": 1,
+      "quote": "Thẻ chính/Thẻ phụ Private Banking, Premier (hạng Signature) không có đặc quyền | 1.000.000"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "1.000.000",
+      "page": 1,
+      "quote": "Thẻ chính/Thẻ phụ Private Banking, Premier (hạng Signature) không có đặc quyền | 1.000.000"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_VISA_INFINITE_30",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "30.000.000",
+      "page": 1,
+      "quote": "Thẻ chính/phụ Visa Infinite (gói đặc quyền 30 triệu đồng) | 30.000.000"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "30.000.000",
+      "page": 1,
+      "quote": "Thẻ chính/phụ Visa Infinite (gói đặc quyền 30 triệu đồng) | 30.000.000"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_VISA_INFINITE_15",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "15.000.000",
+      "page": 1,
+      "quote": "Thẻ chính/phụ Visa Infinite (gói đặc quyền 15 triệu đồng) | 15.000.000"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "15.000.000",
+      "page": 1,
+      "quote": "Thẻ chính/phụ Visa Infinite (gói đặc quyền 15 triệu đồng) | 15.000.000"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_VISA_INFINITE_05",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "5.000.000",
+      "page": 1,
+      "quote": "Thẻ chính/phụ Visa Infinite (gói đặc quyền 05 triệu đồng) | 5.000.000"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "5.000.000",
+      "page": 1,
+      "quote": "Thẻ chính/phụ Visa Infinite (gói đặc quyền 05 triệu đồng) | 5.000.000"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_JCB_ULTIMATE",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "1.500.000",
+      "page": 1,
+      "quote": "Thẻ chính JCB Ultimate | 1.500.000"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "600.000",
+      "page": 1,
+      "quote": "Thẻ phụ JCB Ultimate | 600.000"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_MC_WORLD_TRAVEL",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "1.600.000",
+      "page": 1,
+      "quote": "Thẻ chính Mastercard World Travel | 1.600.000"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "1.000.000",
+      "page": 1,
+      "quote": "Thẻ phụ Mastercard World Travel | 1.000.000"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_JCB_WELLBEING",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "799.000",
+      "page": 1,
+      "quote": "Thẻ chính JCB Well-being | 799.000"
+     }
+    ]
+   }
+  ],
+  "unlisted_cards": []
+ },
+ {
+  "page": 2,
+  "cards": [
+   {
+    "card": "BIDV_PRIVATE_BANKING",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "3,64%",
+      "page": 2,
+      "quote": "Các trường hợp còn lại | 3,64% số tiền giao dịch, tối thiểu 50.000"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "50.000",
+      "page": 2,
+      "quote": "Các trường hợp còn lại | 3,64% số tiền giao dịch, tối thiểu 50.000"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "1%",
+      "page": 2,
+      "quote": "Phí chuyển đổi ngoại tệ (3) | 1% số tiền giao dịch"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_VISA_INFINITE_30",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "3,64%",
+      "page": 2,
+      "quote": "Các trường hợp còn lại | 3,64% số tiền giao dịch, tối thiểu 50.000"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "50.000",
+      "page": 2,
+      "quote": "Các trường hợp còn lại | 3,64% số tiền giao dịch, tối thiểu 50.000"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "1%",
+      "page": 2,
+      "quote": "Phí chuyển đổi ngoại tệ (3) | 1% số tiền giao dịch"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_VISA_INFINITE_15",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "3,64%",
+      "page": 2,
+      "quote": "Các trường hợp còn lại | 3,64% số tiền giao dịch, tối thiểu 50.000"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "50.000",
+      "page": 2,
+      "quote": "Các trường hợp còn lại | 3,64% số tiền giao dịch, tối thiểu 50.000"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "1%",
+      "page": 2,
+      "quote": "Phí chuyển đổi ngoại tệ (3) | 1% số tiền giao dịch"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_VISA_INFINITE_05",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "3,64%",
+      "page": 2,
+      "quote": "Các trường hợp còn lại | 3,64% số tiền giao dịch, tối thiểu 50.000"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "50.000",
+      "page": 2,
+      "quote": "Các trường hợp còn lại | 3,64% số tiền giao dịch, tối thiểu 50.000"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "1%",
+      "page": 2,
+      "quote": "Phí chuyển đổi ngoại tệ (3) | 1% số tiền giao dịch"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_JCB_ULTIMATE",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "3,64%",
+      "page": 2,
+      "quote": "Các trường hợp còn lại | 3,64% số tiền giao dịch, tối thiểu 50.000"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "50.000",
+      "page": 2,
+      "quote": "Các trường hợp còn lại | 3,64% số tiền giao dịch, tối thiểu 50.000"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "1%",
+      "page": 2,
+      "quote": "Phí chuyển đổi ngoại tệ (3) | 1% số tiền giao dịch"
+     },
+     {
+      "field": "late_fee_pct",
+      "value": "6%",
+      "page": 2,
+      "quote": "Thẻ JCB Ultimate | 6% số tiền chậm thanh toán, tối thiểu 100.000"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "100.000",
+      "page": 2,
+      "quote": "Thẻ JCB Ultimate | 6% số tiền chậm thanh toán, tối thiểu 100.000"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_MC_WORLD_TRAVEL",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "3,64%",
+      "page": 2,
+      "quote": "Các trường hợp còn lại | 3,64% số tiền giao dịch, tối thiểu 50.000"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "50.000",
+      "page": 2,
+      "quote": "Các trường hợp còn lại | 3,64% số tiền giao dịch, tối thiểu 50.000"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "1%",
+      "page": 2,
+      "quote": "Phí chuyển đổi ngoại tệ (3) | 1% số tiền giao dịch"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_JCB_WELLBEING",
+    "facts": [
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "799.000",
+      "page": 2,
+      "quote": "Thẻ phụ JCB Well-being | 799.000"
+     },
+     {
+      "field": "cash_advance_pct",
+      "value": "3,64%",
+      "page": 2,
+      "quote": "Các trường hợp còn lại | 3,64% số tiền giao dịch, tối thiểu 50.000"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "50.000",
+      "page": 2,
+      "quote": "Các trường hợp còn lại | 3,64% số tiền giao dịch, tối thiểu 50.000"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "1%",
+      "page": 2,
+      "quote": "Phí chuyển đổi ngoại tệ (3) | 1% số tiền giao dịch"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_VISA_CASHBACK_ONLINE",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "1.000.000",
+      "page": 2,
+      "quote": "Thẻ chính Visa Cashback Online/ Visa Cashback 360 | 1.000.000"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "600.000",
+      "page": 2,
+      "quote": "Thẻ phụ Visa Cashback Online/ Visa Cashback 360 | 600.000"
+     },
+     {
+      "field": "cash_advance_pct",
+      "value": "3,64%",
+      "page": 2,
+      "quote": "Các trường hợp còn lại | 3,64% số tiền giao dịch, tối thiểu 50.000"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "50.000",
+      "page": 2,
+      "quote": "Các trường hợp còn lại | 3,64% số tiền giao dịch, tối thiểu 50.000"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "1%",
+      "page": 2,
+      "quote": "Phí chuyển đổi ngoại tệ (3) | 1% số tiền giao dịch"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_VISA_CASHBACK_360",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "1.000.000",
+      "page": 2,
+      "quote": "Thẻ chính Visa Cashback Online/ Visa Cashback 360 | 1.000.000"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "600.000",
+      "page": 2,
+      "quote": "Thẻ phụ Visa Cashback Online/ Visa Cashback 360 | 600.000"
+     },
+     {
+      "field": "cash_advance_pct",
+      "value": "3,64%",
+      "page": 2,
+      "quote": "Các trường hợp còn lại | 3,64% số tiền giao dịch, tối thiểu 50.000"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "50.000",
+      "page": 2,
+      "quote": "Các trường hợp còn lại | 3,64% số tiền giao dịch, tối thiểu 50.000"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "1%",
+      "page": 2,
+      "quote": "Phí chuyển đổi ngoại tệ (3) | 1% số tiền giao dịch"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_MC_STANDARD_TPV",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "300.000",
+      "page": 2,
+      "quote": "Thẻ chính Mastercard standard TPV | 300.000"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "150.000",
+      "page": 2,
+      "quote": "Thẻ phụ Mastercard standard TPV | 150.000"
+     },
+     {
+      "field": "cash_advance_pct",
+      "value": "3,64%",
+      "page": 2,
+      "quote": "Các trường hợp còn lại | 3,64% số tiền giao dịch, tối thiểu 50.000"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "50.000",
+      "page": 2,
+      "quote": "Các trường hợp còn lại | 3,64% số tiền giao dịch, tối thiểu 50.000"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "1%",
+      "page": 2,
+      "quote": "Phí chuyển đổi ngoại tệ (3) | 1% số tiền giao dịch"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_VISA_FLEXI",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "300.000",
+      "page": 2,
+      "quote": "Thẻ chính Visa Flexi | 300.000"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "150.000",
+      "page": 2,
+      "quote": "Thẻ phụ Visa Flexi | 150.000"
+     },
+     {
+      "field": "cash_advance_pct",
+      "value": "3,64%",
+      "page": 2,
+      "quote": "Các trường hợp còn lại | 3,64% số tiền giao dịch, tối thiểu 50.000"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "50.000",
+      "page": 2,
+      "quote": "Các trường hợp còn lại | 3,64% số tiền giao dịch, tối thiểu 50.000"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "1%",
+      "page": 2,
+      "quote": "Phí chuyển đổi ngoại tệ (3) | 1% số tiền giao dịch"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_VISA_EASY",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "200.000",
+      "page": 2,
+      "quote": "Thẻ chính Visa Easy | 200.000"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "100.000",
+      "page": 2,
+      "quote": "Thẻ phụ Visa Easy | 100.000"
+     },
+     {
+      "field": "cash_advance_pct",
+      "value": "3,64%",
+      "page": 2,
+      "quote": "Các trường hợp còn lại | 3,64% số tiền giao dịch, tối thiểu 50.000"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "50.000",
+      "page": 2,
+      "quote": "Các trường hợp còn lại | 3,64% số tiền giao dịch, tối thiểu 50.000"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "1%",
+      "page": 2,
+      "quote": "Phí chuyển đổi ngoại tệ (3) | 1% số tiền giao dịch"
+     }
+    ]
+   }
+  ],
+  "unlisted_cards": []
+ },
+ {
+  "page": 3,
+  "cards": [
+   {
+    "card": "BIDV_MC_WORLD_TRAVEL",
+    "facts": [
+     {
+      "field": "late_fee_pct",
+      "value": "6%",
+      "page": 3,
+      "quote": "Thẻ Mastercard World Travel | 6% số tiền chậm thanh toán, tối thiểu 200.000"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "200.000",
+      "page": 3,
+      "quote": "Thẻ Mastercard World Travel | 6% số tiền chậm thanh toán, tối thiểu 200.000"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_VISA_EASY",
+    "facts": [
+     {
+      "field": "late_fee_pct",
+      "value": "4%",
+      "page": 3,
+      "quote": "Thẻ Visa Easy | 4% số tiền chậm thanh toán, tối thiểu 100.000 (tối đa trong 04 kỳ sao kê)"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "100.000",
+      "page": 3,
+      "quote": "Thẻ Visa Easy | 4% số tiền chậm thanh toán, tối thiểu 100.000 (tối đa trong 04 kỳ sao kê)"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_VISA_INFINITE_30",
+    "facts": [
+     {
+      "field": "late_fee_pct",
+      "value": "4%",
+      "page": 3,
+      "quote": "Thẻ khác | 4% số tiền chậm thanh toán, tối thiểu 100.000"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "100.000",
+      "page": 3,
+      "quote": "Thẻ khác | 4% số tiền chậm thanh toán, tối thiểu 100.000"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_VISA_INFINITE_15",
+    "facts": [
+     {
+      "field": "late_fee_pct",
+      "value": "4%",
+      "page": 3,
+      "quote": "Thẻ khác | 4% số tiền chậm thanh toán, tối thiểu 100.000"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "100.000",
+      "page": 3,
+      "quote": "Thẻ khác | 4% số tiền chậm thanh toán, tối thiểu 100.000"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_VISA_INFINITE_05",
+    "facts": [
+     {
+      "field": "late_fee_pct",
+      "value": "4%",
+      "page": 3,
+      "quote": "Thẻ khác | 4% số tiền chậm thanh toán, tối thiểu 100.000"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "100.000",
+      "page": 3,
+      "quote": "Thẻ khác | 4% số tiền chậm thanh toán, tối thiểu 100.000"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_JCB_WELLBEING",
+    "facts": [
+     {
+      "field": "late_fee_pct",
+      "value": "4%",
+      "page": 3,
+      "quote": "Thẻ khác | 4% số tiền chậm thanh toán, tối thiểu 100.000"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "100.000",
+      "page": 3,
+      "quote": "Thẻ khác | 4% số tiền chậm thanh toán, tối thiểu 100.000"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_VISA_CASHBACK_ONLINE",
+    "facts": [
+     {
+      "field": "late_fee_pct",
+      "value": "4%",
+      "page": 3,
+      "quote": "Thẻ khác | 4% số tiền chậm thanh toán, tối thiểu 100.000"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "100.000",
+      "page": 3,
+      "quote": "Thẻ khác | 4% số tiền chậm thanh toán, tối thiểu 100.000"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_VISA_CASHBACK_360",
+    "facts": [
+     {
+      "field": "late_fee_pct",
+      "value": "4%",
+      "page": 3,
+      "quote": "Thẻ khác | 4% số tiền chậm thanh toán, tối thiểu 100.000"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "100.000",
+      "page": 3,
+      "quote": "Thẻ khác | 4% số tiền chậm thanh toán, tối thiểu 100.000"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_MC_STANDARD_TPV",
+    "facts": [
+     {
+      "field": "late_fee_pct",
+      "value": "4%",
+      "page": 3,
+      "quote": "Thẻ khác | 4% số tiền chậm thanh toán, tối thiểu 100.000"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "100.000",
+      "page": 3,
+      "quote": "Thẻ khác | 4% số tiền chậm thanh toán, tối thiểu 100.000"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_VISA_FLEXI",
+    "facts": [
+     {
+      "field": "late_fee_pct",
+      "value": "4%",
+      "page": 3,
+      "quote": "Thẻ khác | 4% số tiền chậm thanh toán, tối thiểu 100.000"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "100.000",
+      "page": 3,
+      "quote": "Thẻ khác | 4% số tiền chậm thanh toán, tối thiểu 100.000"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_VISA_PREMIER",
+    "facts": [
+     {
+      "field": "late_fee_pct",
+      "value": "4%",
+      "page": 3,
+      "quote": "Thẻ khác | 4% số tiền chậm thanh toán, tối thiểu 100.000"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "100.000",
+      "page": 3,
+      "quote": "Thẻ khác | 4% số tiền chậm thanh toán, tối thiểu 100.000"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_MC_INSPIRE",
+    "facts": [
+     {
+      "field": "late_fee_pct",
+      "value": "4%",
+      "page": 3,
+      "quote": "Thẻ khác | 4% số tiền chậm thanh toán, tối thiểu 100.000"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "100.000",
+      "page": 3,
+      "quote": "Thẻ khác | 4% số tiền chậm thanh toán, tối thiểu 100.000"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_VISA_PRECIOUS",
+    "facts": [
+     {
+      "field": "late_fee_pct",
+      "value": "4%",
+      "page": 3,
+      "quote": "Thẻ khác | 4% số tiền chậm thanh toán, tối thiểu 100.000"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "100.000",
+      "page": 3,
+      "quote": "Thẻ khác | 4% số tiền chậm thanh toán, tối thiểu 100.000"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_MC_VIETRAVEL_PLATINUM",
+    "facts": [
+     {
+      "field": "late_fee_pct",
+      "value": "4%",
+      "page": 3,
+      "quote": "Thẻ khác | 4% số tiền chậm thanh toán, tối thiểu 100.000"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "100.000",
+      "page": 3,
+      "quote": "Thẻ khác | 4% số tiền chậm thanh toán, tối thiểu 100.000"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_MC_VIETRAVEL_STANDARD",
+    "facts": [
+     {
+      "field": "late_fee_pct",
+      "value": "4%",
+      "page": 3,
+      "quote": "Thẻ khác | 4% số tiền chậm thanh toán, tối thiểu 100.000"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "100.000",
+      "page": 3,
+      "quote": "Thẻ khác | 4% số tiền chậm thanh toán, tối thiểu 100.000"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_VISA_CREDIT_TPV",
+    "facts": [
+     {
+      "field": "late_fee_pct",
+      "value": "4%",
+      "page": 3,
+      "quote": "Thẻ khác | 4% số tiền chậm thanh toán, tối thiểu 100.000"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "100.000",
+      "page": 3,
+      "quote": "Thẻ khác | 4% số tiền chậm thanh toán, tối thiểu 100.000"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_VISA_PLATINUM",
+    "facts": [
+     {
+      "field": "late_fee_pct",
+      "value": "4%",
+      "page": 3,
+      "quote": "Thẻ khác | 4% số tiền chậm thanh toán, tối thiểu 100.000"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "100.000",
+      "page": 3,
+      "quote": "Thẻ khác | 4% số tiền chậm thanh toán, tối thiểu 100.000"
+     }
+    ]
+   }
+  ],
+  "unlisted_cards": []
+ },
+ {
+  "page": 4,
+  "cards": [],
+  "unlisted_cards": []
+ },
+ {
+  "page": 5,
+  "cards": [
+   {
+    "card": "BIDV_VISA_PREMIER",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "1.000.000",
+      "page": 5,
+      "quote": "Thẻ chính Visa Premier (Platinum)/MasterCard Insipre | 1.000.000"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "600.000",
+      "page": 5,
+      "quote": "Thẻ phụ Visa Premier (Platinum)/MasterCard Inspire | 600.000"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_MC_INSPIRE",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "1.000.000",
+      "page": 5,
+      "quote": "Thẻ chính Visa Premier (Platinum)/MasterCard Insipre | 1.000.000"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "600.000",
+      "page": 5,
+      "quote": "Thẻ phụ Visa Premier (Platinum)/MasterCard Inspire | 600.000"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_VISA_PRECIOUS",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "300.000",
+      "page": 5,
+      "quote": "Thẻ chính Visa Precious | 300.000"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "150.000",
+      "page": 5,
+      "quote": "Thẻ phụ Visa Precious | 150.000"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_MC_VIETRAVEL_PLATINUM",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "500.000",
+      "page": 5,
+      "quote": "Thẻ chính MasterCard Vietravel Platinum | 500.000"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "250.000",
+      "page": 5,
+      "quote": "Thẻ phụ MasterCard Vietravel Platinum | 250.000"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_MC_VIETRAVEL_STANDARD",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "300.000",
+      "page": 5,
+      "quote": "Thẻ chính Mastercard Vietravel Standard/Thẻ Visa Credit TPV | 300.000"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "150.000",
+      "page": 5,
+      "quote": "Thẻ phụ Mastercard Vietravel Standard/Thẻ Visa Credit TPV | 150.000"
+     }
+    ]
+   },
+   {
+    "card": "BIDV_VISA_CREDIT_TPV",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "300.000",
+      "page": 5,
+      "quote": "Thẻ chính Mastercard Vietravel Standard/Thẻ Visa Credit TPV | 300.000"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "150.000",
+      "page": 5,
+      "quote": "Thẻ phụ Mastercard Vietravel Standard/Thẻ Visa Credit TPV | 150.000"
+     }
+    ]
+   }
+  ],
+  "unlisted_cards": []
+ },
+ {
+  "page": 6,
+  "cards": [],
+  "unlisted_cards": []
+ }
+]

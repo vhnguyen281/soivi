@@ -1,0 +1,2361 @@
+[
+ {
+  "page": 1,
+  "cards": [],
+  "unlisted_cards": []
+ },
+ {
+  "page": 2,
+  "cards": [
+   {
+    "card": "VPB_NO1",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "359.000 VND",
+      "page": 2,
+      "quote": "2.1. Thẻ chính | [No.1] 359.000 VND"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "Không thu phí",
+      "page": 2,
+      "quote": "2.2. Thẻ phụ | [No.1] Không thu phí"
+     },
+     {
+      "field": "fee_waiver_spend_vnd",
+      "value": "120,000,000 VND",
+      "page": 2,
+      "quote": "[No.1] 120,000,000 VND"
+     },
+     {
+      "field": "late_fee_pct",
+      "value": "6%",
+      "page": 2,
+      "quote": "[No.1, MC2] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "200.000 VND",
+      "page": 2,
+      "quote": "[No.1, MC2] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "3.5%",
+      "page": 2,
+      "quote": "[No.1, MC2] 3.5% giá trị giao dịch (TT: 10.000 VND)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_MC2",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "359.000 VND",
+      "page": 2,
+      "quote": "[MC2] 359.000 VND"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "150.000 VND",
+      "page": 2,
+      "quote": "[MC2] 150.000 VND"
+     },
+     {
+      "field": "fee_waiver_spend_vnd",
+      "value": "120,000,000 VND",
+      "page": 2,
+      "quote": "[MC2] 120,000,000 VND"
+     },
+     {
+      "field": "late_fee_pct",
+      "value": "6%",
+      "page": 2,
+      "quote": "[No.1, MC2] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "200.000 VND",
+      "page": 2,
+      "quote": "[No.1, MC2] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "3.5%",
+      "page": 2,
+      "quote": "[No.1, MC2] 3.5% giá trị giao dịch (TT: 10.000 VND)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_LADY",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "599.000 VND",
+      "page": 2,
+      "quote": "[Lady] 599.000 VND"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "Không thu phí",
+      "page": 2,
+      "quote": "[Lady] Không thu phí | [StepUp] 200.000(*) VND"
+     },
+     {
+      "field": "fee_waiver_spend_vnd",
+      "value": "120,000,000 VND",
+      "page": 2,
+      "quote": "[Lady] 120,000,000 VND"
+     },
+     {
+      "field": "late_fee_pct",
+      "value": "6%",
+      "page": 2,
+      "quote": "[Lady, StepUp, Gold Travel Miles/ Titanium Cashback] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "200.000 VND",
+      "page": 2,
+      "quote": "[Lady, StepUp, Gold Travel Miles/ Titanium Cashback] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "3.5%",
+      "page": 2,
+      "quote": "[Lady, StepUp, Gold Travel Miles/ Titanium Cashback] 3.5% giá trị giao dịch (TT: 10.000 VND)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_STEPUP",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "599.000 VND",
+      "page": 2,
+      "quote": "[StepUp] 599.000 VND"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "200.000(*) VND",
+      "page": 2,
+      "quote": "[StepUp] 200.000(*) VND"
+     },
+     {
+      "field": "fee_waiver_spend_vnd",
+      "value": "120,000,000 VND",
+      "page": 2,
+      "quote": "[StepUp] 120,000,000 VND"
+     },
+     {
+      "field": "late_fee_pct",
+      "value": "6%",
+      "page": 2,
+      "quote": "[Lady, StepUp, Gold Travel Miles/ Titanium Cashback] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "200.000 VND",
+      "page": 2,
+      "quote": "[Lady, StepUp, Gold Travel Miles/ Titanium Cashback] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "3.5%",
+      "page": 2,
+      "quote": "[Lady, StepUp, Gold Travel Miles/ Titanium Cashback] 3.5% giá trị giao dịch (TT: 10.000 VND)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_GOLD_TRAVEL_MILES",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "499.000 VND",
+      "page": 2,
+      "quote": "[Gold Travel Miles/ Titanium Cashback] 499.000 VND"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "200.000(*) VND",
+      "page": 2,
+      "quote": "[Gold Travel Miles/ Titanium Cashback] 200.000(*) VND"
+     },
+     {
+      "field": "fee_waiver_spend_vnd",
+      "value": "120,000,000 VND",
+      "page": 2,
+      "quote": "[Gold Travel Miles/ Titanium Cashback] 120,000,000 VND"
+     },
+     {
+      "field": "late_fee_pct",
+      "value": "6%",
+      "page": 2,
+      "quote": "[Lady, StepUp, Gold Travel Miles/ Titanium Cashback] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "200.000 VND",
+      "page": 2,
+      "quote": "[Lady, StepUp, Gold Travel Miles/ Titanium Cashback] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "3.5%",
+      "page": 2,
+      "quote": "[Lady, StepUp, Gold Travel Miles/ Titanium Cashback] 3.5% giá trị giao dịch (TT: 10.000 VND)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_TITANIUM_CASHBACK",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "499.000 VND",
+      "page": 2,
+      "quote": "[Gold Travel Miles/ Titanium Cashback] 499.000 VND"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "200.000(*) VND",
+      "page": 2,
+      "quote": "[Gold Travel Miles/ Titanium Cashback] 200.000(*) VND"
+     },
+     {
+      "field": "fee_waiver_spend_vnd",
+      "value": "120,000,000 VND",
+      "page": 2,
+      "quote": "[Gold Travel Miles/ Titanium Cashback] 120,000,000 VND"
+     },
+     {
+      "field": "late_fee_pct",
+      "value": "6%",
+      "page": 2,
+      "quote": "[Lady, StepUp, Gold Travel Miles/ Titanium Cashback] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "200.000 VND",
+      "page": 2,
+      "quote": "[Lady, StepUp, Gold Travel Miles/ Titanium Cashback] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "3.5%",
+      "page": 2,
+      "quote": "[Lady, StepUp, Gold Travel Miles/ Titanium Cashback] 3.5% giá trị giao dịch (TT: 10.000 VND)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_SHOPEE_PLATINUM",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "359.000 VND",
+      "page": 2,
+      "quote": "[Shopee Platinum] 359.000 VND"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "149.000 VND",
+      "page": 2,
+      "quote": "[Shopee Platinum] 149.000 VND"
+     },
+     {
+      "field": "fee_waiver_spend_vnd",
+      "value": "120,000,000 VND",
+      "page": 2,
+      "quote": "[Shopee Platinum] 120,000,000 VND"
+     },
+     {
+      "field": "late_fee_pct",
+      "value": "6%",
+      "page": 2,
+      "quote": "[Shopee Platinum] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "200.000 VND",
+      "page": 2,
+      "quote": "[Shopee Platinum] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "3.5%",
+      "page": 2,
+      "quote": "[Shopee Platinum, Super Shopee, VPBank Z] 3.5% giá trị giao dịch (TT: 10.000 VND)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_SUPER_SHOPEE",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "599.000 VND",
+      "page": 2,
+      "quote": "[Super Shopee] 599.000 VND"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "249.000(*) VND",
+      "page": 2,
+      "quote": "[Super Shopee] 249.000(*) VND"
+     },
+     {
+      "field": "fee_waiver_spend_vnd",
+      "value": "120,000,000 VND",
+      "page": 2,
+      "quote": "[Super Shopee] 120,000,000 VND"
+     },
+     {
+      "field": "late_fee_pct",
+      "value": "6%",
+      "page": 2,
+      "quote": "[Super Shopee] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "200.000 VND",
+      "page": 2,
+      "quote": "[Super Shopee] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "3.5%",
+      "page": 2,
+      "quote": "[Shopee Platinum, Super Shopee, VPBank Z] 3.5% giá trị giao dịch (TT: 10.000 VND)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_Z",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "599.000 VND",
+      "page": 2,
+      "quote": "[VPBank Z] 599.000 VND"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "Không thu phí",
+      "page": 2,
+      "quote": "[VPBank Z] Không thu phí | [Platinum Loyalty] 250.000 VND"
+     },
+     {
+      "field": "fee_waiver_spend_vnd",
+      "value": "120,000,000 VND",
+      "page": 2,
+      "quote": "[VPBank Z] 120,000,000 VND"
+     },
+     {
+      "field": "late_fee_pct",
+      "value": "6%",
+      "page": 2,
+      "quote": "[VPBank Z] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "200.000 VND",
+      "page": 2,
+      "quote": "[VPBank Z] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "3.5%",
+      "page": 2,
+      "quote": "[Shopee Platinum, Super Shopee, VPBank Z] 3.5% giá trị giao dịch (TT: 10.000 VND)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_PLATINUM_LOYALTY",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "699.000 VND",
+      "page": 2,
+      "quote": "[Platinum Loyalty] 699.000 VND"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "250.000 VND",
+      "page": 2,
+      "quote": "[Platinum Loyalty] 250.000 VND"
+     },
+     {
+      "field": "fee_waiver_spend_vnd",
+      "value": "150,000,000 VND",
+      "page": 2,
+      "quote": "[Platinum Loyalty] 150,000,000 VND"
+     },
+     {
+      "field": "late_fee_pct",
+      "value": "6%",
+      "page": 2,
+      "quote": "[Platinum Loyalty, VNA VPBank, Platinum Cashback, Platinum Travel Miles] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "200.000 VND",
+      "page": 2,
+      "quote": "[Platinum Loyalty, VNA VPBank, Platinum Cashback, Platinum Travel Miles] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "3.5%",
+      "page": 2,
+      "quote": "[Platinum Loyalty, VNA VPBank, Platinum Cashback, Platinum Travel Miles] 3.5% giá trị giao dịch (TT: 10.000 VND)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_VNA",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "899.000 VND",
+      "page": 2,
+      "quote": "[VNA VPBank] 899.000 VND"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "Không thu phí",
+      "page": 2,
+      "quote": "[VNA VPBank] Không thu phí | [Platinum Cashback] 250.000 VND"
+     },
+     {
+      "field": "fee_waiver_spend_vnd",
+      "value": "120,000,000 VND",
+      "page": 2,
+      "quote": "[VNA VPBank] 120,000,000 VND"
+     },
+     {
+      "field": "late_fee_pct",
+      "value": "6%",
+      "page": 2,
+      "quote": "[Platinum Loyalty, VNA VPBank, Platinum Cashback, Platinum Travel Miles] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "200.000 VND",
+      "page": 2,
+      "quote": "[Platinum Loyalty, VNA VPBank, Platinum Cashback, Platinum Travel Miles] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "3.5%",
+      "page": 2,
+      "quote": "[Platinum Loyalty, VNA VPBank, Platinum Cashback, Platinum Travel Miles] 3.5% giá trị giao dịch (TT: 10.000 VND)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_PLATINUM_CASHBACK",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "899.000 VND",
+      "page": 2,
+      "quote": "[Platinum Cashback] 899.000 VND"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "250.000 VND",
+      "page": 2,
+      "quote": "[Platinum Cashback] 250.000 VND"
+     },
+     {
+      "field": "fee_waiver_spend_vnd",
+      "value": "200,000,000 VND",
+      "page": 2,
+      "quote": "[Platinum Cashback] 200,000,000 VND"
+     },
+     {
+      "field": "late_fee_pct",
+      "value": "6%",
+      "page": 2,
+      "quote": "[Platinum Loyalty, VNA VPBank, Platinum Cashback, Platinum Travel Miles] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "200.000 VND",
+      "page": 2,
+      "quote": "[Platinum Loyalty, VNA VPBank, Platinum Cashback, Platinum Travel Miles] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "3.5%",
+      "page": 2,
+      "quote": "[Platinum Loyalty, VNA VPBank, Platinum Cashback, Platinum Travel Miles] 3.5% giá trị giao dịch (TT: 10.000 VND)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_PLATINUM_TRAVEL_MILES",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "899.000 VND",
+      "page": 2,
+      "quote": "[Platinum Travel Miles] 899.000 VND"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "250.000 VND",
+      "page": 2,
+      "quote": "[Platinum Travel Miles] 250.000 VND"
+     },
+     {
+      "field": "fee_waiver_spend_vnd",
+      "value": "120,000,000 VND",
+      "page": 2,
+      "quote": "[Platinum Travel Miles] 120,000,000 VND"
+     },
+     {
+      "field": "late_fee_pct",
+      "value": "6%",
+      "page": 2,
+      "quote": "[Platinum Loyalty, VNA VPBank, Platinum Cashback, Platinum Travel Miles] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "200.000 VND",
+      "page": 2,
+      "quote": "[Platinum Loyalty, VNA VPBank, Platinum Cashback, Platinum Travel Miles] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "3.5%",
+      "page": 2,
+      "quote": "[Platinum Loyalty, VNA VPBank, Platinum Cashback, Platinum Travel Miles] 3.5% giá trị giao dịch (TT: 10.000 VND)"
+     }
+    ]
+   }
+  ],
+  "unlisted_cards": []
+ },
+ {
+  "page": 3,
+  "cards": [
+   {
+    "card": "VPB_MOBIFONE_CLASSIC",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "359.000 VND",
+      "page": 3,
+      "quote": "2.1. Thẻ chính | [Mobifone – VPBank Classic] 359.000 VND"
+     },
+     {
+      "field": "fee_waiver_spend_vnd",
+      "value": "120,000,000 VND",
+      "page": 3,
+      "quote": "[Mobifone – VPBank Classic] 120,000,000 VND"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "150.000 VND",
+      "page": 3,
+      "quote": "2.2. Thẻ phụ | [Mobifone – VPBank Classic] 150.000 VND"
+     },
+     {
+      "field": "late_fee_pct",
+      "value": "6%",
+      "page": 3,
+      "quote": "[Mobifone – VPBank Classic] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "200.000 VND",
+      "page": 3,
+      "quote": "[Mobifone – VPBank Classic] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "3.5%",
+      "page": 3,
+      "quote": "[Mobifone – VPBank Classic, Mobifone – VPBank Titanium, Mobifone – VPBank Platinum] 3.5% giá trị giao dịch (TT: 10.000 VND)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_MOBIFONE_TITANIUM",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "499.000 VND",
+      "page": 3,
+      "quote": "[Mobifone – VPBank Titanium] 499.000 VND"
+     },
+     {
+      "field": "fee_waiver_spend_vnd",
+      "value": "120,000,000 VND",
+      "page": 3,
+      "quote": "[Mobifone – VPBank Titanium] 120,000,000 VND"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "200.000 VND",
+      "page": 3,
+      "quote": "[Mobifone – VPBank Titanium] 200.000 VND"
+     },
+     {
+      "field": "late_fee_pct",
+      "value": "6%",
+      "page": 3,
+      "quote": "[Mobifone – VPBank Titanium] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "200.000 VND",
+      "page": 3,
+      "quote": "[Mobifone – VPBank Titanium] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "3.5%",
+      "page": 3,
+      "quote": "[Mobifone – VPBank Classic, Mobifone – VPBank Titanium, Mobifone – VPBank Platinum] 3.5% giá trị giao dịch (TT: 10.000 VND)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_MOBIFONE_PLATINUM",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "699.000 VND",
+      "page": 3,
+      "quote": "[Mobifone – VPBank Platinum] 699.000 VND"
+     },
+     {
+      "field": "fee_waiver_spend_vnd",
+      "value": "150,000,000 VND",
+      "page": 3,
+      "quote": "[Mobifone – VPBank Platinum] 150,000,000 VND"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "250.000 VND",
+      "page": 3,
+      "quote": "[Mobifone – VPBank Platinum] 250.000 VND"
+     },
+     {
+      "field": "late_fee_pct",
+      "value": "6%",
+      "page": 3,
+      "quote": "[Mobifone – VPBank Platinum] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "200.000 VND",
+      "page": 3,
+      "quote": "[Mobifone – VPBank Platinum] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "3.5%",
+      "page": 3,
+      "quote": "[Mobifone – VPBank Classic, Mobifone – VPBank Titanium, Mobifone – VPBank Platinum] 3.5% giá trị giao dịch (TT: 10.000 VND)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_CALIFORNIA_PLATINUM",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "1.000.000 VND",
+      "page": 3,
+      "quote": "[California Platinum] 1.000.000 VND"
+     },
+     {
+      "field": "fee_waiver_spend_vnd",
+      "value": "120,000,000 VND",
+      "page": 3,
+      "quote": "[California Platinum] 120,000,000 VND"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "250.000 VND",
+      "page": 3,
+      "quote": "[California Platinum] 250.000 VND"
+     },
+     {
+      "field": "late_fee_pct",
+      "value": "6%",
+      "page": 3,
+      "quote": "[California Platinum, California Signature, Signature Travel Miles] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "200.000 VND",
+      "page": 3,
+      "quote": "[California Platinum, California Signature, Signature Travel Miles] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "3.5%",
+      "page": 3,
+      "quote": "[California Platinum, California Signature, Signature Travel Miles] 3.5% giá trị giao dịch (TT: 10.000 VND)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_CALIFORNIA_SIGNATURE",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "1.500.000 VND",
+      "page": 3,
+      "quote": "[California Signature] 1.500.000 VND"
+     },
+     {
+      "field": "fee_waiver_spend_vnd",
+      "value": "120,000,000 VND",
+      "page": 3,
+      "quote": "[California Signature] 120,000,000 VND"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "Không thu phí",
+      "page": 3,
+      "quote": "2.2. Thẻ phụ | [Mobifone – VPBank Classic] 150.000 VND | [Mobifone – VPBank Titanium] 200.000 VND VND | [Mobifone – VPBank Platinum] 250.000 VND | [California Platinum] 250.000 VND | [California Signature] Không thu phí"
+     },
+     {
+      "field": "late_fee_pct",
+      "value": "6%",
+      "page": 3,
+      "quote": "[California Platinum, California Signature, Signature Travel Miles] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "200.000 VND",
+      "page": 3,
+      "quote": "[California Platinum, California Signature, Signature Travel Miles] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "3.5%",
+      "page": 3,
+      "quote": "[California Platinum, California Signature, Signature Travel Miles] 3.5% giá trị giao dịch (TT: 10.000 VND)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_SIGNATURE_TRAVEL_MILES",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "1.200.000 VND",
+      "page": 3,
+      "quote": "[Signature Travel Miles] 1.200.000 VND"
+     },
+     {
+      "field": "fee_waiver_spend_vnd",
+      "value": "180,000,000 VND",
+      "page": 3,
+      "quote": "[Signature Travel Miles] 180,000,000 VND"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "Không thu phí",
+      "page": 3,
+      "quote": "[Signature Travel Miles] Không thu phí | [Diamond World/Diamond World Lady] Không thu phí"
+     },
+     {
+      "field": "late_fee_pct",
+      "value": "6%",
+      "page": 3,
+      "quote": "[California Platinum, California Signature, Signature Travel Miles] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "200.000 VND",
+      "page": 3,
+      "quote": "[California Platinum, California Signature, Signature Travel Miles] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "3.5%",
+      "page": 3,
+      "quote": "[California Platinum, California Signature, Signature Travel Miles] 3.5% giá trị giao dịch (TT: 10.000 VND)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_DIAMOND_WORLD",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "1.199.000 VND",
+      "page": 3,
+      "quote": "[Diamond World/Diamond World Lady] 1.199.000 VND"
+     },
+     {
+      "field": "fee_waiver_rule_text",
+      "value": "Thẻ có phát sinh chi tiêu hợp lệ từ 150 triệu VND trở lên trong 12 tháng liền trước",
+      "page": 3,
+      "quote": "[Diamond World/Diamond World Lady] Thẻ có phát sinh chi tiêu hợp lệ từ 150 triệu VND trở lên trong 12 tháng liền trước"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "Không thu phí",
+      "page": 3,
+      "quote": "[Diamond World/Diamond World Lady] Không thu phí"
+     },
+     {
+      "field": "late_fee_pct",
+      "value": "5%",
+      "page": 3,
+      "quote": "[Diamond World/Diamond World Lady] thu phí 5% dư nợ tối thiểu (TT: 249.000 VND TĐ: 999.000 VND)"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "249.000 VND",
+      "page": 3,
+      "quote": "[Diamond World/Diamond World Lady] thu phí 5% dư nợ tối thiểu (TT: 249.000 VND TĐ: 999.000 VND)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_DIAMOND_WORLD_LADY",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "1.199.000 VND",
+      "page": 3,
+      "quote": "[Diamond World/Diamond World Lady] 1.199.000 VND"
+     },
+     {
+      "field": "fee_waiver_rule_text",
+      "value": "Thẻ có phát sinh chi tiêu hợp lệ từ 150 triệu VND trở lên trong 12 tháng liền trước",
+      "page": 3,
+      "quote": "[Diamond World/Diamond World Lady] Thẻ có phát sinh chi tiêu hợp lệ từ 150 triệu VND trở lên trong 12 tháng liền trước"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "Không thu phí",
+      "page": 3,
+      "quote": "[Diamond World/Diamond World Lady] Không thu phí"
+     },
+     {
+      "field": "late_fee_pct",
+      "value": "5%",
+      "page": 3,
+      "quote": "[Diamond World/Diamond World Lady] thu phí 5% dư nợ tối thiểu (TT: 249.000 VND TĐ: 999.000 VND)"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "249.000 VND",
+      "page": 3,
+      "quote": "[Diamond World/Diamond World Lady] thu phí 5% dư nợ tối thiểu (TT: 249.000 VND TĐ: 999.000 VND)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_PRIORITY_PLATINUM",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "900.000 VND",
+      "page": 3,
+      "quote": "Thu phí 900.000 VND đối với thẻ Prio Pla và 1.000.000 VND đối với thẻ VNA Prio"
+     },
+     {
+      "field": "fee_waiver_spend_vnd",
+      "value": "150,000,000 VND",
+      "page": 3,
+      "quote": "[Priority Platinum/ VNA – VPBank Priority Platinum] 150,000,000 VND"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "Không thu phí",
+      "page": 3,
+      "quote": "[Priority Platinum/ VNA – VPBank Priority Platinum] Không thu phí (trường hợp KH tụt hạng AF sẽ bị thu phí 300.000 VND)"
+     },
+     {
+      "field": "late_fee_pct",
+      "value": "6%",
+      "page": 3,
+      "quote": "[Priority Platinum/ VNA – VPBank Priority Platinum] thu phí 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "200.000 VND",
+      "page": 3,
+      "quote": "[Priority Platinum/ VNA – VPBank Priority Platinum] thu phí 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_VNA_PRIORITY_PLATINUM",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "1.000.000 VND",
+      "page": 3,
+      "quote": "Thu phí 900.000 VND đối với thẻ Prio Pla và 1.000.000 VND đối với thẻ VNA Prio"
+     },
+     {
+      "field": "fee_waiver_spend_vnd",
+      "value": "150,000,000 VND",
+      "page": 3,
+      "quote": "[Priority Platinum/ VNA – VPBank Priority Platinum] 150,000,000 VND"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "Không thu phí",
+      "page": 3,
+      "quote": "[Priority Platinum/ VNA – VPBank Priority Platinum] Không thu phí (trường hợp KH tụt hạng AF sẽ bị thu phí 300.000 VND)"
+     },
+     {
+      "field": "late_fee_pct",
+      "value": "6%",
+      "page": 3,
+      "quote": "[Priority Platinum/ VNA – VPBank Priority Platinum] thu phí 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "200.000 VND",
+      "page": 3,
+      "quote": "[Priority Platinum/ VNA – VPBank Priority Platinum] thu phí 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_PRIVATE_INFINITE",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "25.000.000 VND",
+      "page": 3,
+      "quote": "[Private Visa Infinite Privilege] 25.000.000 VND"
+     },
+     {
+      "field": "fee_waiver_spend_vnd",
+      "value": "250.000.000 VND",
+      "page": 3,
+      "quote": "[Private Visa Infinite Privilege] 250.000.000 VND"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "8.000.000 VND",
+      "page": 3,
+      "quote": "[Private Visa Infinite Privilege] 8.000.000 VND"
+     },
+     {
+      "field": "late_fee_pct",
+      "value": "6%",
+      "page": 3,
+      "quote": "[Private Visa Infinite Privilege] thu phí 6% dư nợ tối thiểu (TT: 200.000 VND, TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "200.000 VND",
+      "page": 3,
+      "quote": "[Private Visa Infinite Privilege] thu phí 6% dư nợ tối thiểu (TT: 200.000 VND, TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "3.5%",
+      "page": 3,
+      "quote": "[Private Visa Infinite Privilege] 3.5% giá trị giao dịch (TT: 10.000 VND)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_FLEX",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "359.000 VND",
+      "page": 3,
+      "quote": "[VPBank Flex Tính năng thẻ tín dụng] 359.000 VND"
+     },
+     {
+      "field": "fee_waiver_spend_vnd",
+      "value": "120,000,000 VND",
+      "page": 3,
+      "quote": "[VPBank Flex Tính năng thẻ tín dụng] 120,000,000 VND"
+     },
+     {
+      "field": "late_fee_pct",
+      "value": "6%",
+      "page": 3,
+      "quote": "[VPBank Flex Tính năng thẻ tín dụng] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "200.000 VND",
+      "page": 3,
+      "quote": "[VPBank Flex Tính năng thẻ tín dụng] 6% dư nợ tối thiểu (TT: 200.000 VND TĐ: 1.200.000 VND)"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "3.5%",
+      "page": 3,
+      "quote": "[VPBank Flex Tính năng thẻ tín dụng] 3.5% giá trị giao dịch (TT: 10.000 VND)"
+     }
+    ]
+   }
+  ],
+  "unlisted_cards": []
+ },
+ {
+  "page": 4,
+  "cards": [
+   {
+    "card": "VPB_YOJO",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "699.000 VND",
+      "page": 4,
+      "quote": "2.1. Thẻ chính | [VPBank YOJO] 699.000 VND"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "250.000 VND",
+      "page": 4,
+      "quote": "2.2. Thẻ phụ | [VPBank YOJO] 250.000 VND"
+     },
+     {
+      "field": "fee_waiver_spend_vnd",
+      "value": "120,000,000 VND",
+      "page": 4,
+      "quote": "2.1.2. Điều kiện miễn phí thường niên các năm tiếp theo: Tổng giá trị chi tiêu của cả Thẻ chính, Thẻ phụ và Thẻ ảo (không bao gồm giao dịch trả góp, phí và lãi) trong năm liền kế trước đó đạt từ Lưu ý: Giá trị giao dịch trên thẻ phụ và thẻ ảo chỉ được tính từ thời điểm phát sinh giao dịch đầu tiên trên thẻ chính. | [VPBank YOJO] 120,000,000 VND"
+     },
+     {
+      "field": "late_fee_pct",
+      "value": "6%",
+      "page": 4,
+      "quote": "12. Phí phạt trả chậm | [VPBank YOJO] 6% (TT: 200.000 VND TĐ: 1,200.000 VND)"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "200.000 VND",
+      "page": 4,
+      "quote": "12. Phí phạt trả chậm | [VPBank YOJO] 6% (TT: 200.000 VND TĐ: 1,200.000 VND)"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "3.5%",
+      "page": 4,
+      "quote": "15. Phí giao dịch ngoại tệ | [VPBank YOJO] 3.5% giá trị giao dịch (TT: 10.000 VND)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_COMMCREDIT",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "499.000 VND",
+      "page": 4,
+      "quote": "2.1. Thẻ chính | [VPBank YOJO] 699.000 VND | [CommCredit] 499.000 VND"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "200.000 VND",
+      "page": 4,
+      "quote": "2.2. Thẻ phụ | [VPBank YOJO] 250.000 VND | [CommCredit] 200.000 VND"
+     },
+     {
+      "field": "fee_waiver_spend_vnd",
+      "value": "120,000,000 VND",
+      "page": 4,
+      "quote": "2.1.2. Điều kiện miễn phí thường niên các năm tiếp theo: Tổng giá trị chi tiêu của cả Thẻ chính, Thẻ phụ và Thẻ ảo (không bao gồm giao dịch trả góp, phí và lãi) trong năm liền kế trước đó đạt từ Lưu ý: Giá trị giao dịch trên thẻ phụ và thẻ ảo chỉ được tính từ thời điểm phát sinh giao dịch đầu tiên trên thẻ chính. | [VPBank YOJO] 120,000,000 VND | [CommCredit] 120,000,000 VND"
+     },
+     {
+      "field": "late_fee_pct",
+      "value": "6%",
+      "page": 4,
+      "quote": "12. Phí phạt trả chậm | [VPBank YOJO] 6% (TT: 200.000 VND TĐ: 1,200.000 VND) | [CommCredit] 6% (TT: 200.000 VND TĐ: 1,200.000 VND)"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "200.000 VND",
+      "page": 4,
+      "quote": "12. Phí phạt trả chậm | [VPBank YOJO] 6% (TT: 200.000 VND TĐ: 1,200.000 VND) | [CommCredit] 6% (TT: 200.000 VND TĐ: 1,200.000 VND)"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "3.5%",
+      "page": 4,
+      "quote": "15. Phí giao dịch ngoại tệ | [VPBank YOJO] 3.5% giá trị giao dịch (TT: 10.000 VND) | [CommCredit] 3.5% giá trị giao dịch (TT: 10.000 VND)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_UNIONPAY_FREEWAYS",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "599.000 VND",
+      "page": 4,
+      "quote": "2.1. Thẻ chính | [VPBank YOJO] 699.000 VND | [CommCredit] 499.000 VND | [UnionPay FreeWays] 599.000 VND"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "250.000 VND",
+      "page": 4,
+      "quote": "2.2. Thẻ phụ | [VPBank YOJO] 250.000 VND | [CommCredit] 200.000 VND | [UnionPay FreeWays] 250.000 VND"
+     },
+     {
+      "field": "fee_waiver_spend_vnd",
+      "value": "120,000,000 VND",
+      "page": 4,
+      "quote": "2.1.2. Điều kiện miễn phí thường niên các năm tiếp theo: Tổng giá trị chi tiêu của cả Thẻ chính, Thẻ phụ và Thẻ ảo (không bao gồm giao dịch trả góp, phí và lãi) trong năm liền kế trước đó đạt từ Lưu ý: Giá trị giao dịch trên thẻ phụ và thẻ ảo chỉ được tính từ thời điểm phát sinh giao dịch đầu tiên trên thẻ chính. | [VPBank YOJO] 120,000,000 VND | [CommCredit] 120,000,000 VND | [UnionPay FreeWays] 120,000,000 VND"
+     },
+     {
+      "field": "late_fee_pct",
+      "value": "6%",
+      "page": 4,
+      "quote": "12. Phí phạt trả chậm | [VPBank YOJO] 6% (TT: 200.000 VND TĐ: 1,200.000 VND) | [CommCredit] 6% (TT: 200.000 VND TĐ: 1,200.000 VND) | [UnionPay FreeWays] 6% (TT: 200.000 VND TĐ: 1,200.000 VND)"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "200.000 VND",
+      "page": 4,
+      "quote": "12. Phí phạt trả chậm | [VPBank YOJO] 6% (TT: 200.000 VND TĐ: 1,200.000 VND) | [CommCredit] 6% (TT: 200.000 VND TĐ: 1,200.000 VND) | [UnionPay FreeWays] 6% (TT: 200.000 VND TĐ: 1,200.000 VND)"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "3.5%",
+      "page": 4,
+      "quote": "15. Phí giao dịch ngoại tệ | [VPBank YOJO] 3.5% giá trị giao dịch (TT: 10.000 VND) | [CommCredit] 3.5% giá trị giao dịch (TT: 10.000 VND) | [UnionPay FreeWays] 3.5% giá trị giao dịch (TT: 10.000 VND)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_GAMEON",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "599.000 VND",
+      "page": 4,
+      "quote": "2.1. Thẻ chính | [VPBank YOJO] 699.000 VND | [CommCredit] 499.000 VND | [UnionPay FreeWays] 599.000 VND | [VPBank GameON] 599.000 VND"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "200.000 VND",
+      "page": 4,
+      "quote": "2.2. Thẻ phụ | [VPBank YOJO] 250.000 VND | [CommCredit] 200.000 VND | [UnionPay FreeWays] 250.000 VND | [VPBank GameON] 200.000 VND"
+     },
+     {
+      "field": "fee_waiver_spend_vnd",
+      "value": "120,000,000 VND",
+      "page": 4,
+      "quote": "2.1.2. Điều kiện miễn phí thường niên các năm tiếp theo: Tổng giá trị chi tiêu của cả Thẻ chính, Thẻ phụ và Thẻ ảo (không bao gồm giao dịch trả góp, phí và lãi) trong năm liền kế trước đó đạt từ Lưu ý: Giá trị giao dịch trên thẻ phụ và thẻ ảo chỉ được tính từ thời điểm phát sinh giao dịch đầu tiên trên thẻ chính. | [VPBank YOJO] 120,000,000 VND | [CommCredit] 120,000,000 VND | [UnionPay FreeWays] 120,000,000 VND | [VPBank GameON] 120,000,000 VND"
+     },
+     {
+      "field": "late_fee_pct",
+      "value": "6%",
+      "page": 4,
+      "quote": "12. Phí phạt trả chậm | [VPBank YOJO] 6% (TT: 200.000 VND TĐ: 1,200.000 VND) | [CommCredit] 6% (TT: 200.000 VND TĐ: 1,200.000 VND) | [UnionPay FreeWays] 6% (TT: 200.000 VND TĐ: 1,200.000 VND) | [VPBank GameON] 6% (TT: 200.000 VND TĐ: 1,200.000 VND)"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "200.000 VND",
+      "page": 4,
+      "quote": "12. Phí phạt trả chậm | [VPBank YOJO] 6% (TT: 200.000 VND TĐ: 1,200.000 VND) | [CommCredit] 6% (TT: 200.000 VND TĐ: 1,200.000 VND) | [UnionPay FreeWays] 6% (TT: 200.000 VND TĐ: 1,200.000 VND) | [VPBank GameON] 6% (TT: 200.000 VND TĐ: 1,200.000 VND)"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "3.5%",
+      "page": 4,
+      "quote": "15. Phí giao dịch ngoại tệ | [VPBank YOJO] 3.5% giá trị giao dịch (TT: 10.000 VND) | [CommCredit] 3.5% giá trị giao dịch (TT: 10.000 VND) | [UnionPay FreeWays] 3.5% giá trị giao dịch (TT: 10.000 VND) | [VPBank GameON] 3.5% giá trị giao dịch (TT: 10.000 VND)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_MWG",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "399.000 VND",
+      "page": 4,
+      "quote": "2.1. Thẻ chính | [VPBank YOJO] 699.000 VND | [CommCredit] 499.000 VND | [UnionPay FreeWays] 599.000 VND | [VPBank GameON] 599.000 VND | [VPBank MWG] 399.000 VND"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "250.000 VND",
+      "page": 4,
+      "quote": "2.2. Thẻ phụ | [VPBank YOJO] 250.000 VND | [CommCredit] 200.000 VND | [UnionPay FreeWays] 250.000 VND | [VPBank GameON] 200.000 VND | [VPBank MWG] 250.000 VND"
+     },
+     {
+      "field": "fee_waiver_spend_vnd",
+      "value": "120,000,000 VND",
+      "page": 4,
+      "quote": "2.1.2. Điều kiện miễn phí thường niên các năm tiếp theo: Tổng giá trị chi tiêu của cả Thẻ chính, Thẻ phụ và Thẻ ảo (không bao gồm giao dịch trả góp, phí và lãi) trong năm liền kế trước đó đạt từ Lưu ý: Giá trị giao dịch trên thẻ phụ và thẻ ảo chỉ được tính từ thời điểm phát sinh giao dịch đầu tiên trên thẻ chính. | [VPBank YOJO] 120,000,000 VND | [CommCredit] 120,000,000 VND | [UnionPay FreeWays] 120,000,000 VND | [VPBank GameON] 120,000,000 VND | [VPBank MWG] 120,000,000 VND"
+     },
+     {
+      "field": "late_fee_pct",
+      "value": "6%",
+      "page": 4,
+      "quote": "12. Phí phạt trả chậm | [VPBank YOJO] 6% (TT: 200.000 VND TĐ: 1,200.000 VND) | [CommCredit] 6% (TT: 200.000 VND TĐ: 1,200.000 VND) | [UnionPay FreeWays] 6% (TT: 200.000 VND TĐ: 1,200.000 VND) | [VPBank GameON] 6% (TT: 200.000 VND TĐ: 1,200.000 VND) | [VPBank MWG] 6% (TT: 200.000 VND TĐ: 1,200.000 VND)"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "200.000 VND",
+      "page": 4,
+      "quote": "12. Phí phạt trả chậm | [VPBank YOJO] 6% (TT: 200.000 VND TĐ: 1,200.000 VND) | [CommCredit] 6% (TT: 200.000 VND TĐ: 1,200.000 VND) | [UnionPay FreeWays] 6% (TT: 200.000 VND TĐ: 1,200.000 VND) | [VPBank GameON] 6% (TT: 200.000 VND TĐ: 1,200.000 VND) | [VPBank MWG] 6% (TT: 200.000 VND TĐ: 1,200.000 VND)"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "3.5%",
+      "page": 4,
+      "quote": "15. Phí giao dịch ngoại tệ | [VPBank YOJO] 3.5% giá trị giao dịch (TT: 10.000 VND) | [CommCredit] 3.5% giá trị giao dịch (TT: 10.000 VND) | [UnionPay FreeWays] 3.5% giá trị giao dịch (TT: 10.000 VND) | [VPBank GameON] 3.5% giá trị giao dịch (TT: 10.000 VND) | [VPBank MWG] 3.5% giá trị giao dịch (TT: 10.000 VND)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_S_REWARDS",
+    "facts": [
+     {
+      "field": "annual_fee_primary_vnd",
+      "value": "599.000 VND",
+      "page": 4,
+      "quote": "2.1. Thẻ chính | [VPBank YOJO] 699.000 VND | [CommCredit] 499.000 VND | [UnionPay FreeWays] 599.000 VND | [VPBank GameON] 599.000 VND | [VPBank MWG] 399.000 VND | [VPBank S Rewards] 599.000 VND"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "249.000 VND",
+      "page": 4,
+      "quote": "2.2. Thẻ phụ | [VPBank YOJO] 250.000 VND | [CommCredit] 200.000 VND | [UnionPay FreeWays] 250.000 VND | [VPBank GameON] 200.000 VND | [VPBank MWG] 250.000 VND | [VPBank S Rewards] 249.000 VND"
+     },
+     {
+      "field": "fee_waiver_spend_vnd",
+      "value": "120,000,000 VND",
+      "page": 4,
+      "quote": "2.1.2. Điều kiện miễn phí thường niên các năm tiếp theo: Tổng giá trị chi tiêu của cả Thẻ chính, Thẻ phụ và Thẻ ảo (không bao gồm giao dịch trả góp, phí và lãi) trong năm liền kế trước đó đạt từ Lưu ý: Giá trị giao dịch trên thẻ phụ và thẻ ảo chỉ được tính từ thời điểm phát sinh giao dịch đầu tiên trên thẻ chính. | [VPBank YOJO] 120,000,000 VND | [CommCredit] 120,000,000 VND | [UnionPay FreeWays] 120,000,000 VND | [VPBank GameON] 120,000,000 VND | [VPBank MWG] 120,000,000 VND | [VPBank S Rewards] 120,000,000 VND"
+     },
+     {
+      "field": "late_fee_pct",
+      "value": "6%",
+      "page": 4,
+      "quote": "12. Phí phạt trả chậm | [VPBank YOJO] 6% (TT: 200.000 VND TĐ: 1,200.000 VND) | [CommCredit] 6% (TT: 200.000 VND TĐ: 1,200.000 VND) | [UnionPay FreeWays] 6% (TT: 200.000 VND TĐ: 1,200.000 VND) | [VPBank GameON] 6% (TT: 200.000 VND TĐ: 1,200.000 VND) | [VPBank MWG] 6% (TT: 200.000 VND TĐ: 1,200.000 VND) | [VPBank S Rewards] 6% (TT: 200.000 VND TĐ: 1,200.000 VND)"
+     },
+     {
+      "field": "late_fee_min_vnd",
+      "value": "200.000 VND",
+      "page": 4,
+      "quote": "12. Phí phạt trả chậm | [VPBank YOJO] 6% (TT: 200.000 VND TĐ: 1,200.000 VND) | [CommCredit] 6% (TT: 200.000 VND TĐ: 1,200.000 VND) | [UnionPay FreeWays] 6% (TT: 200.000 VND TĐ: 1,200.000 VND) | [VPBank GameON] 6% (TT: 200.000 VND TĐ: 1,200.000 VND) | [VPBank MWG] 6% (TT: 200.000 VND TĐ: 1,200.000 VND) | [VPBank S Rewards] 6% (TT: 200.000 VND TĐ: 1,200.000 VND)"
+     },
+     {
+      "field": "fx_fee_pct",
+      "value": "3.5%",
+      "page": 4,
+      "quote": "15. Phí giao dịch ngoại tệ | [VPBank YOJO] 3.5% giá trị giao dịch (TT: 10.000 VND) | [CommCredit] 3.5% giá trị giao dịch (TT: 10.000 VND) | [UnionPay FreeWays] 3.5% giá trị giao dịch (TT: 10.000 VND) | [VPBank GameON] 3.5% giá trị giao dịch (TT: 10.000 VND) | [VPBank MWG] 3.5% giá trị giao dịch (TT: 10.000 VND) | [VPBank S Rewards] 3.5% giá trị giao dịch (TT: 10.000 VND)"
+     }
+    ]
+   }
+  ],
+  "unlisted_cards": []
+ },
+ {
+  "page": 5,
+  "cards": [
+   {
+    "card": "VPB_DIAMOND_WORLD",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4%",
+      "page": 5,
+      "quote": "Thẻ World/World Lady: 4% / giá trị giao dịch (TT: 100.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "100.000 VNĐ",
+      "page": 5,
+      "quote": "Thẻ World/World Lady: 4% / giá trị giao dịch (TT: 100.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_DIAMOND_WORLD_LADY",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4%",
+      "page": 5,
+      "quote": "Thẻ World/World Lady: 4% / giá trị giao dịch (TT: 100.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "100.000 VNĐ",
+      "page": 5,
+      "quote": "Thẻ World/World Lady: 4% / giá trị giao dịch (TT: 100.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_LADY",
+    "facts": [
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "Không thu phí",
+      "page": 5,
+      "quote": "Không thu phí thường niên thẻ phụ thẻ Lady"
+     },
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5%",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_PLATINUM_TRAVEL_MILES",
+    "facts": [
+     {
+      "field": "fee_waiver_rule_text",
+      "value": "Không thu phí thường niên năm đầu thẻ tín dụng Private (đối với KH Official-Private), Visa Platinum Travel Miles",
+      "page": 5,
+      "quote": "Không thu phí thường niên năm đầu thẻ tín dụng Private (đối với KH Official-Private), Visa Platinum Travel Miles"
+     },
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5%",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_PRIVATE_INFINITE",
+    "facts": [
+     {
+      "field": "fee_waiver_rule_text",
+      "value": "Không thu phí thường niên năm đầu thẻ tín dụng Private (đối với KH Official-Private), Visa Platinum Travel Miles",
+      "page": 5,
+      "quote": "Không thu phí thường niên năm đầu thẻ tín dụng Private (đối với KH Official-Private), Visa Platinum Travel Miles"
+     }
+    ]
+   },
+   {
+    "card": "VPB_MC2",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5%",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_Z",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5%",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_SIGNATURE_TRAVEL_MILES",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5%",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_YOJO",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5%",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_COMMCREDIT",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5%",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_UNIONPAY_FREEWAYS",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5%",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_GAMEON",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5%",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_MWG",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5%",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_S_REWARDS",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5%",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_FLEX",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5%",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_NO1",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5%",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_STEPUP",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5%",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_GOLD_TRAVEL_MILES",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5%",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_TITANIUM_CASHBACK",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5%",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_SHOPEE_PLATINUM",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5%",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_SUPER_SHOPEE",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5%",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_PLATINUM_LOYALTY",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5%",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_VNA",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5%",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_PLATINUM_CASHBACK",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5%",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_PRESTIGE",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5%",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_MOBIFONE_CLASSIC",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5%",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_MOBIFONE_TITANIUM",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5%",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_MOBIFONE_PLATINUM",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5%",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_CALIFORNIA_PLATINUM",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5%",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_CALIFORNIA_SIGNATURE",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5%",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_PRIORITY_PLATINUM",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5%",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_VNA_PRIORITY_PLATINUM",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5%",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_TIMO",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5%",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 5,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   }
+  ],
+  "unlisted_cards": []
+ },
+ {
+  "page": 6,
+  "cards": [
+   {
+    "card": "VPB_MC2",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5% / giá trị giao dịch",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_Z",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5% / giá trị giao dịch",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_PLATINUM_TRAVEL_MILES",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5% / giá trị giao dịch",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_SIGNATURE_TRAVEL_MILES",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5% / giá trị giao dịch",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_YOJO",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5% / giá trị giao dịch",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_COMMCREDIT",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5% / giá trị giao dịch",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_UNIONPAY_FREEWAYS",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5% / giá trị giao dịch",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_GAMEON",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5% / giá trị giao dịch",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_MWG",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5% / giá trị giao dịch",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_S_REWARDS",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5% / giá trị giao dịch",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_FLEX",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5% / giá trị giao dịch",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_NO1",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5% / giá trị giao dịch",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_LADY",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5% / giá trị giao dịch",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "annual_fee_supp_vnd",
+      "value": "Không thu phí",
+      "page": 6,
+      "quote": "Không thu phí thường niên thẻ phụ thẻ Lady"
+     }
+    ]
+   },
+   {
+    "card": "VPB_STEPUP",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5% / giá trị giao dịch",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_GOLD_TRAVEL_MILES",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5% / giá trị giao dịch",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_TITANIUM_CASHBACK",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5% / giá trị giao dịch",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_SHOPEE_PLATINUM",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5% / giá trị giao dịch",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_SUPER_SHOPEE",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5% / giá trị giao dịch",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_PLATINUM_LOYALTY",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5% / giá trị giao dịch",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_VNA",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5% / giá trị giao dịch",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_PLATINUM_CASHBACK",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5% / giá trị giao dịch",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_PRESTIGE",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5% / giá trị giao dịch",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_MOBIFONE_CLASSIC",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5% / giá trị giao dịch",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_MOBIFONE_TITANIUM",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5% / giá trị giao dịch",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_MOBIFONE_PLATINUM",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5% / giá trị giao dịch",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_CALIFORNIA_PLATINUM",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5% / giá trị giao dịch",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_CALIFORNIA_SIGNATURE",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5% / giá trị giao dịch",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_PRIORITY_PLATINUM",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5% / giá trị giao dịch",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_VNA_PRIORITY_PLATINUM",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5% / giá trị giao dịch",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   },
+   {
+    "card": "VPB_TIMO",
+    "facts": [
+     {
+      "field": "cash_advance_pct",
+      "value": "4.5% / giá trị giao dịch",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     },
+     {
+      "field": "cash_advance_min_vnd",
+      "value": "120.000 VNĐ",
+      "page": 6,
+      "quote": "Thẻ Khác: 4.5% / giá trị giao dịch (TT: 120.000 VNĐ)"
+     }
+    ]
+   }
+  ],
+  "unlisted_cards": []
+ }
+]

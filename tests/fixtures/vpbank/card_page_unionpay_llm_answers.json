@@ -1,0 +1,141 @@
+[
+ {
+  "page": 1,
+  "cards": [
+   {
+    "card": "VPB_UNIONPAY_FREEWAYS",
+    "facts": [
+     {
+      "field": "other_perks_text",
+      "value": "Giảm giá đến 30% tại hơn 5.000 cửa hàng, đối tác ẩm thực, du lịch, mua sắm…",
+      "page": 1,
+      "quote": "Giảm giá đến 30% tại hơn 5.000 cửa hàng, đối tác ẩm thực, du lịch, mua sắm…"
+     },
+     {
+      "field": "other_perks_text",
+      "value": "Ưu đãi trả góp với tất cả các giao dịch chi tiêu từ 3 triệu đồng.",
+      "page": 1,
+      "quote": "Ưu đãi trả góp với tất cả các giao dịch chi tiêu từ 3 triệu đồng."
+     },
+     {
+      "field": "other_perks_text",
+      "value": "Hưởng ưu đãi miễn lãi tối đa 45 ngày",
+      "page": 1,
+      "quote": "Hưởng ưu đãi miễn lãi tối đa 45 ngày"
+     }
+    ]
+   }
+  ],
+  "unlisted_cards": [],
+  "rewards": [
+   {
+    "card": "VPB_UNIONPAY_FREEWAYS",
+    "category": "overseas",
+    "reward_type": "cashback",
+    "page": 1,
+    "quote": "Đối với giao dịch quốc tế: Hoàn tiền 4% cho mọi chi tiêu. Tối đa 500,000 VNĐ/kỳ sao kê",
+    "facts": [
+     {
+      "field": "rate_pct",
+      "value": "4%",
+      "page": 1,
+      "quote": "Đối với giao dịch quốc tế: Hoàn tiền 4% cho mọi chi tiêu"
+     },
+     {
+      "field": "monthly_cap_vnd",
+      "value": "500,000 VNĐ/kỳ sao kê",
+      "page": 1,
+      "quote": "Đối với giao dịch quốc tế: Hoàn tiền 4% cho mọi chi tiêu. Tối đa 500,000 VNĐ/kỳ sao kê"
+     },
+     {
+      "field": "conditions_text",
+      "value": "Chi tiêu tối thiểu từ 5 triệu đồng trở lên/kỳ sao kê để nhận tiền hoàn",
+      "page": 1,
+      "quote": "Chi tiêu tối thiểu từ 5 triệu đồng trở lên/kỳ sao kê để nhận tiền hoàn"
+     }
+    ]
+   },
+   {
+    "card": "VPB_UNIONPAY_FREEWAYS",
+    "category": "dining",
+    "reward_type": "cashback",
+    "page": 1,
+    "quote": "Đối với giao dịch nội địa: Hoàn tiền 3% cho chi tiêu tại ngành hàng Du lịch và Ăn uống",
+    "facts": [
+     {
+      "field": "rate_pct",
+      "value": "3%",
+      "page": 1,
+      "quote": "Hoàn tiền 3% cho chi tiêu tại ngành hàng Du lịch và Ăn uống"
+     },
+     {
+      "field": "monthly_cap_vnd",
+      "value": "500,000 VNĐ/kỳ sao kê",
+      "page": 1,
+      "quote": "Hoàn tiền 3% cho chi tiêu tại ngành hàng Du lịch và Ăn uống. Hoàn 0.1% cho các giao dịch chi tiêu còn lại. Tối đa 500,000 VNĐ/kỳ sao kê"
+     },
+     {
+      "field": "conditions_text",
+      "value": "Chi tiêu tối thiểu từ 5 triệu đồng trở lên/kỳ sao kê để nhận tiền hoàn",
+      "page": 1,
+      "quote": "Chi tiêu tối thiểu từ 5 triệu đồng trở lên/kỳ sao kê để nhận tiền hoàn"
+     }
+    ]
+   },
+   {
+    "card": "VPB_UNIONPAY_FREEWAYS",
+    "category": "travel",
+    "reward_type": "cashback",
+    "page": 1,
+    "quote": "Đối với giao dịch nội địa: Hoàn tiền 3% cho chi tiêu tại ngành hàng Du lịch và Ăn uống",
+    "facts": [
+     {
+      "field": "rate_pct",
+      "value": "3%",
+      "page": 1,
+      "quote": "Hoàn tiền 3% cho chi tiêu tại ngành hàng Du lịch và Ăn uống"
+     },
+     {
+      "field": "monthly_cap_vnd",
+      "value": "500,000 VNĐ/kỳ sao kê",
+      "page": 1,
+      "quote": "Hoàn tiền 3% cho chi tiêu tại ngành hàng Du lịch và Ăn uống. Hoàn 0.1% cho các giao dịch chi tiêu còn lại. Tối đa 500,000 VNĐ/kỳ sao kê"
+     },
+     {
+      "field": "conditions_text",
+      "value": "Chi tiêu tối thiểu từ 5 triệu đồng trở lên/kỳ sao kê để nhận tiền hoàn",
+      "page": 1,
+      "quote": "Chi tiêu tối thiểu từ 5 triệu đồng trở lên/kỳ sao kê để nhận tiền hoàn"
+     }
+    ]
+   },
+   {
+    "card": "VPB_UNIONPAY_FREEWAYS",
+    "category": "other",
+    "reward_type": "cashback",
+    "page": 1,
+    "quote": "Hoàn 0.1% cho các giao dịch chi tiêu còn lại. Tối đa 500,000 VNĐ/kỳ sao kê",
+    "facts": [
+     {
+      "field": "rate_pct",
+      "value": "0.1%",
+      "page": 1,
+      "quote": "Hoàn 0.1% cho các giao dịch chi tiêu còn lại"
+     },
+     {
+      "field": "monthly_cap_vnd",
+      "value": "500,000 VNĐ/kỳ sao kê",
+      "page": 1,
+      "quote": "Hoàn 0.1% cho các giao dịch chi tiêu còn lại. Tối đa 500,000 VNĐ/kỳ sao kê"
+     },
+     {
+      "field": "conditions_text",
+      "value": "Chi tiêu tối thiểu từ 5 triệu đồng trở lên/kỳ sao kê để nhận tiền hoàn",
+      "page": 1,
+      "quote": "Chi tiêu tối thiểu từ 5 triệu đồng trở lên/kỳ sao kê để nhận tiền hoàn"
+     }
+    ]
+   }
+  ]
+ }
+]

@@ -1,0 +1,42 @@
+# News feeds. News never publishes a value (CLAUDE.md principle 1): an item that says a
+# bank changed its rates or card fees only makes us re-run that bank's own sources now.
+#
+# Every feed below was checked on 2026-10-28 through PoliteHttp (robots.txt allows it,
+# HTTP 200, items parse). Saved copies: tests/fixtures/news/.
+#
+#   kind: rss   RSS 2.0
+#   kind: html  poll a section page when a site has no feed; links whose URL matches
+#               link_pattern become items (title = link text, no date)
+#
+# Dropped on 2026-10-28:
+#   Thị trường Tài chính Tiền tệ (thitruongtaichinhtiente.vn): robots.txt allows crawling,
+#   but every page, /rss included, answers 403 "Access Denied" from the site's firewall.
+#   We don't work around blocks. Check again by hand later and add it back if it opens.
+
+options:
+  dedupe_title_days: 7          # same folded title within this many days = same story
+  recheck_window_hours: 48      # older items are stored but never trigger a re-check
+  recheck_cooldown_minutes: 30  # a source tried this recently is not fetched again
+  llm_max_per_run: 30           # cap on Anthropic API calls per news run
+
+feeds:
+  - name: cafef-tai-chinh-ngan-hang
+    publisher: CafeF
+    kind: rss
+    url: https://cafef.vn/tai-chinh-ngan-hang.rss
+
+  - name: vnexpress-kinh-doanh
+    publisher: VnExpress
+    kind: rss
+    url: https://vnexpress.net/rss/kinh-doanh.rss
+
+  - name: vietstock-ngan-hang
+    publisher: Vietstock
+    kind: rss
+    url: https://vietstock.vn/757/tai-chinh/ngan-hang.rss
+
+  - name: thoibaonganhang
+    publisher: Thời báo Ngân hàng
+    kind: rss
+    url: https://thoibaonganhang.vn/rss_feed/
+    pubdate_is_local: true  # writes Vietnam time but labels it "GMT"

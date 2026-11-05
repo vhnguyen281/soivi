@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Nhật ký{% endblock %}
+{% block content %}
+<h1>Nhật ký duyệt <small>200 thao tác gần nhất</small></h1>
+<table class="grid">
+  <thead><tr><th>Lúc</th><th>Người duyệt</th><th>Thao tác</th><th>Tổ chức</th><th>Việc</th><th>Số dòng</th><th>Ghi chú</th></tr></thead>
+  <tbody>
+  {% for a, institution in rows %}
+  <tr>
+    <td>{{ a.created_at.strftime("%d/%m/%Y %H:%M:%S") }}</td>
+    <td>{{ a.reviewer }}</td>
+    <td><code>{{ a.action.value }}</code></td>
+    <td>{{ institution }}</td>
+    <td><a href="/tasks/{{ a.review_task_id }}">#{{ a.review_task_id }}</a></td>
+    <td class="num" title="{{ a.version_table or '' }} {{ a.version_ids|join(', ') }}">{{ a.version_ids|length }}</td>
+    <td>{{ a.note or "" }}</td>
+  </tr>
+  {% else %}
+  <tr><td colspan="7" class="empty">Chưa có thao tác nào.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

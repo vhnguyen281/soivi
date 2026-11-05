@@ -1,0 +1,40 @@
+<tr id="item-{{ item.table }}-{{ item.version_id }}" class="c-{{ item.change }}">
+  <td><span class="tag t-{{ item.change }}">{{ {"new": "mới", "changed": "đổi", "removed": "mất"}[item.change] }}</span></td>
+  <td>
+    {{ item.label }}
+    {% if item.effective_from %}<div class="muted">hiệu lực {{ item.effective_from }}</div>{% endif %}
+    {% if item.source_page and view is defined and view.snapshot %}
+      <div><a href="/snapshots/{{ view.snapshot.id }}?page={{ item.source_page }}" target="_blank">trang {{ item.source_page }}</a></div>
+    {% endif %}
+    {% if item.row_evidence %}{% set e = item.row_evidence %}{% include "_quote.html" %}{% endif %}
+    {% for w in item.warnings %}<div class="warn">⚠ {{ w }}</div>{% endfor %}
+  </td>
+  <td>
+    <dl>
+    {% for f in item.fields if f.changed or item.change != "changed" %}
+      <dt>{{ f.name }}</dt>
+      <dd>{% if item.change != "new" %}<s>{{ f.old|show }}</s> → {% endif %}<mark>{{ f.new|show }}</mark>
+        {% if f.evidence %}{% set e = f.evidence %}{% include "_quote.html" %}{% endif %}</dd>
+    {% else %}
+      <dd class="muted">không đổi</dd>
+    {% endfor %}
+    </dl>
+  </td>
+  <td><span class="status s-{{ item.status }}">{{ item.status }}</span></td>
+  <td class="row-actions">
+    {% if item.actionable %}
+    {% set base = "/tasks/" ~ (task_id if task_id is defined else view.task.id) ~ "/versions/" ~ item.table ~ "/" ~ item.version_id %}
+    <button class="ok" hx-post="{{ base }}/approve" hx-target="closest tr" hx-swap="outerHTML">✓</button>
+    <button class="bad" hx-post="{{ base }}/reject" hx-target="closest tr" hx-swap="outerHTML">✗</button>
+    {% elif item.retirable %}
+    {% set base = "/tasks/" ~ (task_id if task_id is defined else view.task.id) ~ "/versions/" ~ item.table ~ "/" ~ item.version_id %}
+    <form hx-post="{{ base }}/retire" hx-target="closest tr" hx-swap="outerHTML" class="retire">
+      <input name="note" required placeholder="Lý do gỡ" aria-label="Lý do gỡ giá trị này">
+      <button class="bad" title="Gỡ giá trị đang hiển thị (không có giá trị thay thế)">Gỡ</button>
+    </form>
+    {% endif %}
+  </td>
+</tr>
+{% if oob is defined and oob %}
+<span id="task-status" hx-swap-oob="true" class="status s-{{ task_status }}">{{ task_status }}</span>
+{% endif %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Bản lưu #{{ snap.id }}{% endblock %}
+{% block content %}
+<h1>Bản lưu #{{ snap.id }} <small>{{ snap.fetched_at.strftime("%d/%m/%Y %H:%M") }} UTC · {{ snap.content_type }} · {{ snap.size_bytes }} byte</small></h1>
+<p class="meta"><a href="{{ snap.url }}" rel="noopener noreferrer" target="_blank">{{ snap.url }}</a><br>
+<span class="muted">sha256 {{ snap.sha256 }}</span></p>
+{% if kind == "html" %}
+  <!-- Sandboxed: no scripts, no forms, no same-origin access. The raw response also sends CSP: sandbox. -->
+  <p class="muted">Hiển thị kèm CSS/ảnh từ trang ngân hàng (không chạy script).
+    <a href="/snapshots/{{ snap.id }}/raw" target="_blank">Bản lưu gốc, không chỉnh</a></p>
+  <iframe class="snap" sandbox src="/snapshots/{{ snap.id }}/raw?display=1" referrerpolicy="no-referrer"></iframe>
+{% elif kind == "pdf" %}
+  <p><a href="/snapshots/{{ snap.id }}/raw{% if page %}#page={{ page }}{% endif %}" target="_blank">Mở PDF{% if page %} ở trang {{ page }}{% endif %}</a></p>
+  <iframe class="snap" src="/snapshots/{{ snap.id }}/raw{% if page %}#page={{ page }}{% endif %}"></iframe>
+{% elif kind == "json" %}
+  <pre class="snap">{{ body }}</pre>
+{% else %}
+  <p><a href="/snapshots/{{ snap.id }}/raw">Tải bản lưu</a></p>
+{% endif %}
+{% endblock %}

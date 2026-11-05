@@ -1,0 +1,31 @@
+# Validation rules for proposed values. Loaded by pipeline/validate/rules.py.
+#
+# Every rule produces a WARNING attached to the snapshot's review task. Nothing is
+# rejected automatically: a human decides. Edit values here; a typo or unknown key
+# fails loudly when the pipeline starts.
+
+version: 1
+
+# Plausible ranges, per table.field. Bounds are inclusive.
+ranges:
+  savings_rate.rate_pct: {min: 0, max: 12}           # deposit rate, %/năm
+  card_terms.interest_rate_pct: {min: 10, max: 50}   # card APR, %/năm
+  card_terms.fx_fee_pct: {min: 0, max: 5}            # foreign-currency fee, %
+  card_terms.annual_fee_primary_vnd: {min: 0, max: 20000000}
+  card_terms.annual_fee_supp_vnd: {min: 0, max: 20000000}
+
+# Flag a change of any percentage field (name ends in _pct) larger than this many
+# percentage points compared with the current approved value.
+max_change_pct_points: 0.5
+
+# Flag a series that has an approved value from this source but is missing from
+# the new snapshot (e.g. a term the bank stopped listing).
+flag_removed_series: true
+
+# Flag an effective_from date further in the future than this.
+max_effective_from_days_ahead: 60
+
+# When an institution's data counts as unverified (shown by the API and site).
+staleness:
+  max_consecutive_failures: 2        # >= this many failed fetches in a row
+  max_age_cadence_multiple: 2        # or last success older than N x the source's cadence

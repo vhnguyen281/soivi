@@ -1,0 +1,66 @@
+[
+ {
+  "page": 1,
+  "cards": [
+   {
+    "card": "VPB_Z",
+    "facts": [
+     {
+      "field": "other_perks_text",
+      "value": "Hoàn 15% cho giao dịch Giải trí, Fitness (*), tối đa 500,000",
+      "page": 1,
+      "quote": "Hoàn 15% cho giao dịch Giải trí, Fitness (*), tối đa 500,000"
+     },
+     {
+      "field": "other_perks_text",
+      "value": "Hoàn 15% cho các giao dịch Gọi xe, Đặt đồ ăn (*), tối đa 500,000",
+      "page": 1,
+      "quote": "Hoàn 15% cho các giao dịch Gọi xe, Đặt đồ ăn (*), tối đa 500,000"
+     },
+     {
+      "field": "other_perks_text",
+      "value": "Giảm giá đến 40% tại hơn 100 nhà hàng và thương hiệu lớn",
+      "page": 1,
+      "quote": "Giảm giá đến 40% tại hơn 100 nhà hàng và thương hiệu lớn"
+     },
+     {
+      "field": "other_perks_text",
+      "value": "Giảm giá đến 30% tại hơn 5.000 cửa hàng, đối tác ăn uống, du lịch, mua sắm…",
+      "page": 1,
+      "quote": "Giảm giá đến 30% tại hơn 5.000 cửa hàng, đối tác ăn uống, du lịch, mua sắm…"
+     }
+    ]
+   }
+  ],
+  "unlisted_cards": [],
+  "rewards": [
+   {
+    "card": "VPB_Z",
+    "category": "dining",
+    "reward_type": "cashback",
+    "page": 1,
+    "quote": "Hoàn 15% cho giao dịch Ăn uống (*), tối đa 500,000",
+    "facts": [
+     {
+      "field": "rate_pct",
+      "value": "15%",
+      "page": 1,
+      "quote": "Hoàn 15% cho giao dịch Ăn uống (*), tối đa 500,000"
+     },
+     {
+      "field": "monthly_cap_vnd",
+      "value": "500,000",
+      "page": 1,
+      "quote": "Hoàn 15% cho giao dịch Ăn uống (*), tối đa 500,000"
+     },
+     {
+      "field": "conditions_text",
+      "value": "Giá trị hoàn tối đa 1,000,000đ/kỳ sao kê.",
+      "page": 1,
+      "quote": "Giá trị hoàn tối đa 1,000,000đ/kỳ sao kê."
+     }
+    ]
+   }
+  ]
+ }
+]

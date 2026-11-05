@@ -1,0 +1,11 @@
+<blockquote class="quote">
+  “{{ e.quote }}”
+  <span class="muted">
+    {% if view is defined and view.snapshot %}<a href="/snapshots/{{ view.snapshot.id }}?page={{ e.page }}" target="_blank">trang {{ e.page }}</a>{% else %}trang {{ e.page }}{% endif %}
+    {% if e.value %} · ghi là “{{ e.value }}”{% endif %}
+    {% if e.ocr %} · <span class="warn">đọc bằng OCR</span>{% endif %}
+  </span>
+</blockquote>
+{% for extra in e.also or [] %}
+<blockquote class="quote">“{{ extra.quote }}” <span class="muted">trang {{ extra.page }}</span></blockquote>
+{% endfor %}

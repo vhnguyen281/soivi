@@ -1,0 +1,161 @@
+[
+ {
+  "page": 1,
+  "cards": [
+   {
+    "card": "TCB_PRIORITY_VISA_SIGNATURE",
+    "facts": [
+     {
+      "field": "other_perks_text",
+      "value": "",
+      "page": 1,
+      "quote": "Đặc quyền sử dụng phòng chờ sân bay miễn phí"
+     }
+    ]
+   },
+   {
+    "card": "TCB_VISA_INFINITE",
+    "facts": [
+     {
+      "field": "other_perks_text",
+      "value": "",
+      "page": 1,
+      "quote": "Đặc quyền phòng chờ sân bay hạng thương gia"
+     },
+     {
+      "field": "other_perks_text",
+      "value": "",
+      "page": 1,
+      "quote": "Đặc quyền đón tiễn\ncao cấp tại sân bay"
+     }
+    ]
+   }
+  ],
+  "rewards": [
+   {
+    "card": "TCB_VISA_SIGNATURE",
+    "category": "dining",
+    "reward_type": "cashback",
+    "page": 1,
+    "quote": "Hoàn tiền lên tới 5 triệu/tháng, tới 10% tại các lĩnh vực nhà hàng, du lịch, khách sạn",
+    "facts": [
+     {
+      "field": "rate_pct",
+      "value": "10%",
+      "page": 1,
+      "quote": "Hoàn tiền lên tới 5 triệu/tháng, tới 10% tại các lĩnh vực nhà hàng, du lịch, khách sạn"
+     },
+     {
+      "field": "monthly_cap_vnd",
+      "value": "5 triệu/tháng",
+      "page": 1,
+      "quote": "Hoàn tiền lên tới 5 triệu/tháng, tới 10% tại các lĩnh vực nhà hàng, du lịch, khách sạn"
+     },
+     {
+      "field": "conditions_text",
+      "value": "",
+      "page": 1,
+      "quote": "Hoàn tiền lên tới 5 triệu/tháng, tới 10% tại các lĩnh vực nhà hàng, du lịch, khách sạn"
+     }
+    ]
+   },
+   {
+    "card": "TCB_VISA_SIGNATURE",
+    "category": "travel",
+    "reward_type": "cashback",
+    "page": 1,
+    "quote": "Hoàn tiền lên tới 5 triệu/tháng, tới 10% tại các lĩnh vực nhà hàng, du lịch, khách sạn",
+    "facts": [
+     {
+      "field": "rate_pct",
+      "value": "10%",
+      "page": 1,
+      "quote": "Hoàn tiền lên tới 5 triệu/tháng, tới 10% tại các lĩnh vực nhà hàng, du lịch, khách sạn"
+     },
+     {
+      "field": "monthly_cap_vnd",
+      "value": "5 triệu/tháng",
+      "page": 1,
+      "quote": "Hoàn tiền lên tới 5 triệu/tháng, tới 10% tại các lĩnh vực nhà hàng, du lịch, khách sạn"
+     },
+     {
+      "field": "conditions_text",
+      "value": "",
+      "page": 1,
+      "quote": "Hoàn tiền lên tới 5 triệu/tháng, tới 10% tại các lĩnh vực nhà hàng, du lịch, khách sạn"
+     }
+    ]
+   },
+   {
+    "card": "TCB_PRIORITY_VISA_SIGNATURE",
+    "category": "dining",
+    "reward_type": "cashback",
+    "page": 1,
+    "quote": "Hoàn tiền lên tới 7 triệu/ tháng, tới 10% tại các lĩnh vực nhà hàng, khách sạn, du lịch",
+    "facts": [
+     {
+      "field": "rate_pct",
+      "value": "10%",
+      "page": 1,
+      "quote": "Hoàn tiền lên tới 7 triệu/ tháng, tới 10% tại các lĩnh vực nhà hàng, khách sạn, du lịch"
+     },
+     {
+      "field": "monthly_cap_vnd",
+      "value": "7 triệu/ tháng",
+      "page": 1,
+      "quote": "Hoàn tiền lên tới 7 triệu/ tháng, tới 10% tại các lĩnh vực nhà hàng, khách sạn, du lịch"
+     },
+     {
+      "field": "conditions_text",
+      "value": "",
+      "page": 1,
+      "quote": "Hoàn tiền lên tới 7 triệu/ tháng, tới 10% tại các lĩnh vực nhà hàng, khách sạn, du lịch"
+     }
+    ]
+   },
+   {
+    "card": "TCB_PRIORITY_VISA_SIGNATURE",
+    "category": "travel",
+    "reward_type": "cashback",
+    "page": 1,
+    "quote": "Hoàn tiền lên tới 7 triệu/ tháng, tới 10% tại các lĩnh vực nhà hàng, khách sạn, du lịch",
+    "facts": [
+     {
+      "field": "rate_pct",
+      "value": "10%",
+      "page": 1,
+      "quote": "Hoàn tiền lên tới 7 triệu/ tháng, tới 10% tại các lĩnh vực nhà hàng, khách sạn, du lịch"
+     },
+     {
+      "field": "monthly_cap_vnd",
+      "value": "7 triệu/ tháng",
+      "page": 1,
+      "quote": "Hoàn tiền lên tới 7 triệu/ tháng, tới 10% tại các lĩnh vực nhà hàng, khách sạn, du lịch"
+     },
+     {
+      "field": "conditions_text",
+      "value": "",
+      "page": 1,
+      "quote": "Hoàn tiền lên tới 7 triệu/ tháng, tới 10% tại các lĩnh vực nhà hàng, khách sạn, du lịch"
+     }
+    ]
+   },
+   {
+    "card": "TCB_EVERYDAY",
+    "category": "online",
+    "reward_type": "points",
+    "page": 1,
+    "quote": "Tích điểm tới 8% giá trị giao dịch mua sắm trực tuyến",
+    "facts": [
+     {
+      "field": "rate_pct",
+      "value": "8%",
+      "page": 1,
+      "quote": "Tích điểm tới 8% giá trị giao dịch mua sắm trực tuyến"
+     }
+    ]
+   }
+  ],
+  "unlisted_cards": []
+ }
+]

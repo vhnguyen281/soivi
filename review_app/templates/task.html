@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}{{ view.institution }} #{{ view.task.id }}{% endblock %}
+{% block content %}
+{% set t = view.task %}
+<h1>{{ view.institution }} <small>{{ view.source }} · việc #{{ t.id }} · {{ t.created_at.strftime("%d/%m/%Y %H:%M") }}</small></h1>
+
+<p class="meta">
+  Trạng thái: <span id="task-status" class="status s-{{ t.status.value }}">{{ t.status.value }}</span>
+  · {{ view.pending }} dòng chờ duyệt
+  {% if view.snapshot %}
+  · <a href="/snapshots/{{ view.snapshot.id }}" target="_blank">Mở bản lưu ({{ view.snapshot.fetched_at.strftime("%d/%m %H:%M") }})</a>
+  <span class="muted">{{ view.snapshot.url }}</span>
+  {% endif %}
+  {% if t.note %}<br>Ghi chú: <b>{{ t.note }}</b>{% endif %}
+</p>
+
+{% if view.news %}
+<section class="news">
+  <h2>Tin tức liên quan ({{ view.news|length }})</h2>
+  <p class="muted">Chỉ để tham khảo. Giá trị luôn lấy từ trang của ngân hàng, không lấy từ báo.</p>
+  <ul>{% for n in view.news %}
+    <li><a href="{{ n.url }}" target="_blank" rel="noopener noreferrer">{{ n.title }}</a>
+      <span class="muted">{{ n.feed }}{% if n.published_at %} · {{ n.published_at|vntime }}{% endif %}{% if n.direction and n.direction != "unknown" %} · {{ "tăng" if n.direction == "up" else "giảm" }}{% endif %}</span></li>
+  {% endfor %}</ul>
+</section>
+{% endif %}
+
+{% if view.warnings %}
+<section class="warnings">
+  <h2>Cảnh báo ({{ view.warnings|length }})</h2>
+  <ul>{% for w in view.warnings %}<li><code>{{ w.rule }}</code> {{ w.message }}</li>{% endfor %}</ul>
+</section>
+{% endif %}
+
+{% if t.status.value == "open" %}
+<div class="actions">
+  <button class="ok" hx-post="/tasks/{{ t.id }}/approve-all"
+          hx-confirm="Duyệt tất cả {{ view.pending }} dòng đang chờ?">Duyệt tất cả</button>
+  <button class="bad" hx-post="/tasks/{{ t.id }}/reject-all"
+          hx-confirm="Từ chối tất cả dòng đang chờ?">Từ chối</button>
+  <form hx-post="/tasks/{{ t.id }}/needs-fix" class="fix">
+    <input name="note" placeholder="Cần sửa vì… (bắt buộc)" required>
+    <button>Cần sửa</button>
+  </form>
+</div>
+{% endif %}
+
+<table class="grid items">
+  <thead><tr><th></th><th>Dòng</th><th>Giá trị (cũ → mới)</th><th>Trạng thái</th><th></th></tr></thead>
+  <tbody>
+  {% for item in view.items %}{% include "_row.html" %}{% endfor %}
+  </tbody>
+</table>
+{% endblock %}

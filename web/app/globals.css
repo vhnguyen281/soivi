@@ -1,0 +1,819 @@
+@import "tailwindcss";
+
+/*
+ * SoiVí design system (https://claude.ai/artifact/8HDJ378MFAbBLaTZgLWvtG): tokens.json
+ * as CSS variables, light first, dark when the visitor's system asks for it.
+ * Component classes (sv-*) follow the system's bundle.css.
+ */
+:root {
+  color-scheme: light;
+  --surface: #ffffff;
+  --surface-alt: #f2f6f4;
+  --surface-raised: #ffffff;
+  --line: #d5dfda;
+  --line-strong: #7a8c85;
+  --ink: #10231c;
+  --ink-muted: #4b5d56;
+  --jade: #0b6e4f;
+  --jade-strong: #08563d;
+  --jade-soft: #e2f3eb;
+  --on-jade: #ffffff;
+  --gold: #b8860b;
+  --gold-ink: #855d00;
+  --gold-soft: #fbf1d9;
+  --danger: #b42318;
+  --danger-soft: #fdecea;
+  --focus: var(--jade);
+  --link: var(--jade);
+  --shadow-card: 0 1px 2px rgba(16, 35, 28, 0.06), 0 6px 20px rgba(16, 35, 28, 0.07);
+  --shadow-pop: 0 10px 32px rgba(16, 35, 28, 0.16);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --surface: #0e1613;
+    --surface-alt: #15201c;
+    --surface-raised: #1a2622;
+    --line: #2a3934;
+    --line-strong: #5f736b;
+    --ink: #e6efeb;
+    --ink-muted: #a1b3ab;
+    --jade: #4fd1a1;
+    --jade-strong: #7fe0bc;
+    --jade-soft: #11352a;
+    --on-jade: #062a1d;
+    --gold: #f0b84a;
+    --gold-ink: #f0b84a;
+    --gold-soft: #3a2c0c;
+    --danger: #ff8b7b;
+    --danger-soft: #3d1612;
+    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.5);
+    --shadow-pop: 0 10px 32px rgba(0, 0, 0, 0.6);
+  }
+}
+
+@theme inline {
+  --font-sans: var(--font-be-vietnam), "Segoe UI", system-ui, -apple-system, sans-serif;
+  --color-surface: var(--surface);
+  --color-surface-alt: var(--surface-alt);
+  --color-surface-raised: var(--surface-raised);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--ink);
+  --color-muted: var(--ink-muted);
+  --color-jade: var(--jade);
+  --color-jade-strong: var(--jade-strong);
+  --color-jade-soft: var(--jade-soft);
+  --color-on-jade: var(--on-jade);
+  --color-gold: var(--gold);
+  --color-gold-ink: var(--gold-ink);
+  --color-gold-soft: var(--gold-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  /* rate moves: up is good for savers (jade), down is a warning (danger) */
+  --color-up: var(--jade);
+  --color-down: var(--danger);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --shadow-card: var(--shadow-card);
+  --shadow-pop: var(--shadow-pop);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 26px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Focus: 2px solid ring at 2px offset on every control. */
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* Links are underlined, not told apart by colour alone (WCAG 1.4.1). */
+@layer base {
+  a {
+    color: var(--link);
+    text-decoration-line: underline;
+    text-underline-offset: 2px;
+  }
+  a:hover {
+    color: var(--jade-strong);
+  }
+  h1,
+  h2,
+  h3 {
+    color: var(--ink);
+  }
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Design-system classes sit in the components layer, so Tailwind utilities
+   (py-12, mt-4 …) can still adjust them where a page needs it. */
+@layer components {
+/* ------------------------------------------------------------------ type */
+
+.t-display-xl {
+  font-size: 34px;
+  line-height: 42px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.t-display {
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+@media (min-width: 640px) {
+  .t-display-xl {
+    font-size: 48px;
+    line-height: 56px;
+  }
+  .t-display {
+    font-size: 36px;
+    line-height: 44px;
+  }
+}
+.t-h2 {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 700;
+}
+.t-h3 {
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: 600;
+}
+.t-body-lg {
+  font-size: 18px;
+  line-height: 30px;
+}
+.t-small {
+  font-size: 14px;
+  line-height: 20px;
+}
+.t-caption {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+.t-label {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.t-figure {
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------------------------------------------ layout */
+
+.sv-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+@media (min-width: 640px) {
+  .sv-container {
+    padding: 0 24px;
+  }
+}
+/* A full-width band of surface-alt between page sections. */
+.sv-band {
+  background: var(--surface-alt);
+}
+.sv-section {
+  padding: 48px 0;
+}
+@media (min-width: 640px) {
+  .sv-section {
+    padding: 64px 0;
+  }
+}
+
+/* ------------------------------------------------------------------ Button */
+
+.sv-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font: inherit;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+  min-height: 44px;
+  padding: 0 24px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.sv-btn--sm {
+  min-height: 36px;
+  font-size: 14px;
+  padding: 0 16px;
+}
+.sv-btn--block {
+  width: 100%;
+}
+.sv-btn--primary,
+a.sv-btn--primary {
+  background: var(--jade);
+  color: var(--on-jade);
+}
+.sv-btn--primary:hover,
+a.sv-btn--primary:hover {
+  background: var(--jade-strong);
+  color: var(--on-jade);
+}
+.sv-btn--secondary,
+a.sv-btn--secondary {
+  background: transparent;
+  color: var(--jade);
+  border-color: var(--jade);
+}
+.sv-btn--secondary:hover,
+a.sv-btn--secondary:hover {
+  background: var(--jade-soft);
+  color: var(--jade-strong);
+}
+.sv-btn--ghost {
+  background: transparent;
+  color: var(--jade);
+  padding: 0 8px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.sv-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* A pill toggle (personas, filters). */
+.sv-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1.5px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+}
+.sv-pill:hover {
+  border-color: var(--jade);
+  color: var(--ink);
+}
+.sv-pill[aria-pressed="true"] {
+  background: var(--jade);
+  border-color: var(--jade);
+  color: var(--on-jade);
+}
+
+/* ------------------------------------------------------------------ Badge */
+
+.sv-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-alt);
+  color: var(--ink);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.sv-badge--jade,
+.sv-badge--verified {
+  background: var(--jade-soft);
+  color: var(--jade);
+}
+.sv-badge--gold,
+.sv-badge--warn {
+  background: var(--gold-soft);
+  color: var(--gold-ink);
+}
+.sv-badge--danger {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+/* ------------------------------------------------------------------ SourceStamp */
+
+.sv-stamp {
+  margin: 0;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  color: var(--ink-muted);
+}
+.sv-stamp__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 700;
+  vertical-align: -2px;
+}
+.sv-stamp--ok .sv-stamp__status {
+  color: var(--jade);
+}
+.sv-stamp--warn .sv-stamp__status {
+  color: var(--gold-ink);
+  background: var(--gold-soft);
+  padding: 0 4px;
+  border-radius: var(--radius-sm);
+}
+.sv-stamp--cell {
+  max-width: 240px;
+}
+
+/* ------------------------------------------------------------------ TipBox / notes */
+
+.sv-tip {
+  display: grid;
+  gap: 8px;
+  padding: 16px 24px;
+  border-radius: var(--radius-md);
+  background: var(--jade-soft);
+  color: var(--ink);
+}
+.sv-tip__label {
+  justify-self: start;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--on-jade);
+  background: var(--jade);
+  padding: 4px 8px;
+  border-radius: 999px;
+}
+.sv-tip p {
+  margin: 0;
+}
+/* The "for information only" note: gold, like other cautions. */
+.sv-note {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  background: var(--gold-soft);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 20px;
+}
+.sv-note .sv-icon {
+  color: var(--gold-ink);
+  margin-top: 2px;
+}
+
+/* ------------------------------------------------------------------ CategoryTile */
+
+.sv-tile {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--ink);
+  text-decoration: none;
+}
+.sv-tile:hover {
+  border-color: var(--jade);
+  color: var(--ink);
+}
+.sv-tile__icon {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--jade-soft);
+  color: var(--jade);
+}
+.sv-tile__title {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 26px;
+}
+.sv-tile__desc {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ink-muted);
+}
+
+/* ------------------------------------------------------------------ ProductCard */
+
+.sv-pcard {
+  display: grid;
+  gap: 24px;
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--line);
+}
+@media (min-width: 640px) {
+  .sv-pcard {
+    padding: 24px;
+  }
+}
+.sv-pcard__head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-start;
+}
+.sv-pcard__art {
+  flex: none;
+  width: 96px;
+  height: 60px;
+  border-radius: var(--radius-sm);
+  background: var(--jade-soft);
+  border: 1px solid var(--line);
+  display: grid;
+  place-items: end start;
+  padding: 8px;
+  box-sizing: border-box;
+}
+.sv-pcard__art span {
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--jade);
+  letter-spacing: 0.04em;
+}
+.sv-pcard__title {
+  flex: 1 1 200px;
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+.sv-pcard__title h2,
+.sv-pcard__title h3 {
+  margin: 0;
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: 600;
+}
+.sv-pcard__title a {
+  color: var(--ink);
+}
+.sv-pcard__issuer {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ink-muted);
+}
+.sv-pcard__bestfor {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--jade);
+}
+.sv-pcard__value {
+  text-align: right;
+  display: grid;
+}
+.sv-pcard__facts {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+.sv-fact {
+  display: grid;
+  gap: 2px;
+  align-content: start;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-alt);
+}
+.sv-fact dt {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ink-muted);
+}
+.sv-fact dd {
+  margin: 0;
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.sv-fact--danger dd {
+  color: var(--danger);
+}
+.sv-fact--jade dd {
+  color: var(--jade);
+}
+.sv-fact__note {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--ink-muted);
+}
+.sv-pcard__foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+.sv-pcard__foot .sv-stamp {
+  flex: 1 1 260px;
+  min-width: 0;
+}
+
+/* ------------------------------------------------------------------ Tables */
+
+.sv-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+.sv-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  line-height: 20px;
+  font-variant-numeric: tabular-nums;
+}
+.sv-table caption {
+  text-align: left;
+  padding: 12px;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--ink-muted);
+  caption-side: bottom;
+  border-top: 1px solid var(--line);
+}
+.sv-table th,
+.sv-table td {
+  padding: 12px;
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--line);
+}
+.sv-table thead th {
+  background: var(--surface-alt);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 700;
+  color: var(--ink-muted);
+  white-space: nowrap;
+}
+.sv-table tbody tr:last-child > * {
+  border-bottom: 0;
+}
+.sv-table .sv-num {
+  text-align: right;
+  white-space: nowrap;
+}
+.sv-table tbody th {
+  font-weight: 600;
+}
+.sv-sub {
+  display: block;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--ink-muted);
+}
+.sv-rate {
+  font-size: 18px;
+  font-weight: 700;
+}
+.sv-row--best {
+  background: var(--jade-soft);
+}
+.sv-row--best .sv-rate {
+  color: var(--jade);
+}
+.sv-sort {
+  font: inherit;
+  font-weight: 700;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ------------------------------------------------------------------ Forms & calculator */
+
+.sv-field {
+  display: grid;
+  gap: 4px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+}
+.sv-field input,
+.sv-field select,
+.sv-input {
+  font: inherit;
+  font-weight: 500;
+  font-size: 16px;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1.5px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  box-sizing: border-box;
+  width: 100%;
+}
+.sv-field__hint {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  color: var(--ink-muted);
+}
+.sv-panel {
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  background: var(--surface-raised);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-card);
+}
+@media (min-width: 640px) {
+  .sv-panel {
+    padding: 24px;
+  }
+}
+.sv-calc {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+.sv-calc__result {
+  display: grid;
+  gap: 4px;
+  align-content: center;
+  padding: 24px;
+  border-radius: var(--radius-md);
+  background: var(--surface-alt);
+}
+.sv-calc__label {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ink-muted);
+  font-weight: 600;
+}
+.sv-calc__figure {
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--jade);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+@media (min-width: 640px) {
+  .sv-calc__figure {
+    font-size: 40px;
+    line-height: 44px;
+  }
+}
+.sv-calc__total {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------------------------------------------ Long-form (methodology) */
+
+.prose-soivi {
+  font-size: 16px;
+  line-height: 26px;
+}
+.prose-soivi h1 {
+  margin: 0 0 16px;
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+@media (min-width: 640px) {
+  .prose-soivi h1 {
+    font-size: 36px;
+    line-height: 44px;
+  }
+}
+.prose-soivi h2 {
+  margin: 48px 0 12px;
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 700;
+}
+.prose-soivi h3,
+.prose-soivi h4 {
+  margin: 32px 0 8px;
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: 600;
+}
+.prose-soivi p,
+.prose-soivi ul,
+.prose-soivi ol {
+  margin: 12px 0;
+}
+.prose-soivi ul {
+  list-style: disc;
+  padding-left: 24px;
+}
+.prose-soivi blockquote {
+  margin: 16px 0;
+  padding: 16px 24px;
+  border-radius: var(--radius-md);
+  background: var(--jade-soft);
+  font-weight: 600;
+}
+.prose-soivi table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  margin: 16px 0;
+  border-collapse: collapse;
+  font-size: 14px;
+  line-height: 20px;
+  font-variant-numeric: tabular-nums;
+}
+.prose-soivi th,
+.prose-soivi td {
+  border: 1px solid var(--line);
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+.prose-soivi th {
+  background: var(--surface-alt);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 700;
+  color: var(--ink-muted);
+}
+.prose-soivi code {
+  border-radius: 4px;
+  background: var(--surface-alt);
+  padding: 0 4px;
+  font-size: 0.9em;
+}
+.prose-soivi hr {
+  margin: 48px 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+}
