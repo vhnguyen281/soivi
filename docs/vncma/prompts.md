@@ -72,6 +72,8 @@ data with known answers (constant yield → y/12, etc.).
 ```
 Done when: the coverage table looks right to me.
 
+Built 2026-11-06 (`python -m pipeline market returns`); waiting for the owner's review. See DECISIONS 2026-11-06 (Prompt 5).
+
 ## Prompt 6 — Statistics
 ```
 Implement core/cma/stats.py: annualised vol, full-sample + EWMA blend, Geltner de-smoothing, Ledoit–Wolf shrinkage

@@ -796,3 +796,28 @@ No separate `collect` command: each collector is a series in `data/seeds/market_
    hand from data.imf.org, or wait for the IMF.
 8. **Result (2026-11-06):** SJC month-end prices 2010-01 → 2026-10 (200 months, 2 without an update in the last
    10 days). After all collectors: 9,527 observations, 132 snapshots; a full re-run is 40/40 groups unchanged.
+9. **Owner's choice (2026-11-06): USD/VND from 2020 only for now.** `usd`, `gold` and `eq_global` (in VND) start
+   in 2020; the methodology states it. Retry IMF IFS when `api.imf.org/robots.txt` can be read.
+
+---
+
+## 2026-11-06 — Monthly total-return series (VNCMA Prompt 5)
+
+`core/cma/series.py`; `python -m pipeline market returns [--csv FILE]` prints the coverage table. Monthly **log**
+returns in VND, one column per class; a month needs the value of that month and the one before (gaps stay gaps).
+
+| class | built from | note |
+|---|---|---|
+| eq_large | VN30 price + D/P/12 | D/P not set yet: price only (no effect on volatility or correlation) |
+| eq_midsmall | mean of VNMID and VNSML price returns + D/P/12 | same |
+| gov_bond | HNX 10Y par yield: `y/12 − D·Δy + ½·C·Δy²`, 10-year annual-coupon par bond | |
+| corp_bond | equal-weight NAV returns of 12 bond funds, at least 2 a month | smoothed: Geltner in Prompt 6 |
+| cash_vnd | 12M savings (mean of big banks' medians) once we have it; before: interbank 3M | **splice spread only with ≥ 12 overlapping months** (one month gave −1.68 pp); until then no spread |
+| usd | USD/VND central rate + Fed rate | from 2021 (Fed rate) |
+| gold | World Bank gold × USD/VND | monthly averages (smoothed); from 2020 |
+| eq_global | Shiller S&P price + D/P/12, × USD/VND | monthly averages; from 2020 |
+| gold_sjc | SJC mid price (reference) | from 2010 |
+| real_estate | none | range from config |
+
+Known-answer tests: a constant yield earns y/12; duration and convexity of a 10-year 5% par bond (7.7217, 74.998,
+checked by finite differences); FX compounding; equal weights; the splice.

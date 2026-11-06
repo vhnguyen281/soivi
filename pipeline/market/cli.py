@@ -25,6 +25,8 @@ def add_parser(sub: "argparse._SubParsersAction[argparse.ArgumentParser]") -> No
     probe.add_argument("--fixtures", type=Path, default=Path("tests/fixtures/vnstock"))
     ingest = msub.add_parser("ingest", help="fetch every active series; store monthly values")
     ingest.add_argument("--series", help="comma-separated series codes (default: all active)")
+    returns = msub.add_parser("returns", help="monthly total returns by asset class + coverage")
+    returns.add_argument("--csv", type=Path, help="also write the monthly log returns here")
     manual = msub.add_parser("manual", help="enter one value by hand (with its source)")
     manual.add_argument("--series", required=True)
     manual.add_argument("--period", required=True, help="YYYY-MM (daily: YYYY-MM-DD, yearly: YYYY)")
@@ -44,6 +46,8 @@ def run(args: argparse.Namespace, client_factory: Callable[[], MarketClient] | N
         return _ingest(args, client_factory or VnstockClient)
     if args.market_command == "manual":
         return _manual(args)
+    if args.market_command == "returns":
+        return _returns(args)
     raise AssertionError(args.market_command)
 
 
@@ -188,4 +192,36 @@ def _manual(args: argparse.Namespace) -> int:
     except MarketDataError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
+    return 0
+
+
+def _returns(args: argparse.Namespace) -> int:
+    from core.cma.series import (
+        Inputs,
+        SeriesConfig,
+        build_returns,
+        coverage_table,
+        load_observations,
+        load_savings_12m,
+        month_index,
+        needed_codes,
+    )
+    from core.db import SessionLocal
+
+    config = SeriesConfig()
+    with SessionLocal() as session:
+        observations = load_observations(session, needed_codes(config))
+        ends = [s.index.max() for s in observations.values() if not s.empty]
+        starts = [s.index.min() for s in observations.values() if not s.empty]
+        months = month_index(min(starts), max(ends)) if ends else []
+        savings = load_savings_12m(session, config.big_banks, months)
+    frame, coverage = build_returns(Inputs(observations, savings), config)
+    rows = coverage_table(coverage)
+    widths = {k: max(len(k), *(len(str(r[k])) for r in rows)) for k in rows[0] if k != "notes"}
+    print("  ".join(k.ljust(w) for k, w in widths.items()) + "  notes")
+    for r in rows:
+        print("  ".join(str(r[k]).ljust(w) for k, w in widths.items()) + "  " + r["notes"])
+    if args.csv:
+        frame.to_csv(args.csv, index_label="month_end", float_format="%.8f")
+        print(f"monthly log returns: {args.csv}")
     return 0
