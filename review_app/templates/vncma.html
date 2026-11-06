@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}VNCMA{% endblock %}
+{% block content %}
+<h1>VNCMA <small>giả định thị trường vốn 10 năm · các lần chạy</small></h1>
+<p class="meta muted">Tạo một lần chạy mới bằng <code>uv run python -m pipeline market compute --by "Tên bạn"</code>.
+Mở một lần chạy để xem, tải bản nháp và duyệt phát hành.</p>
+<table class="grid">
+  <thead><tr><th>Run</th><th>Lúc chạy</th><th>Người chạy</th><th>Dữ liệu đến</th><th>Phương pháp</th><th class="num">VN30</th><th class="num">Tiền gửi</th><th class="num">Điều chỉnh</th><th>Phát hành</th></tr></thead>
+  <tbody>
+  {% for r in rows %}
+  <tr>
+    <td><a href="/vncma/runs/{{ r.run.id }}">#{{ r.run.id }}</a></td>
+    <td>{{ r.run.created_at.strftime("%d/%m/%Y %H:%M") }}</td>
+    <td>{{ r.run.created_by }}</td>
+    <td>{{ r.run.as_of.strftime("%m/%Y") }}</td>
+    <td>{{ r.run.methodology_version }} <span class="muted">{{ r.run.code_version }}</span></td>
+    <td class="num">{{ "%.2f"|format(r.eq_large) if r.eq_large is not none else "—" }}</td>
+    <td class="num">{{ "%.2f"|format(r.cash) if r.cash is not none else "—" }}</td>
+    <td class="num">{{ r.adjusted }}</td>
+    <td>{% if r.release %}<span class="status s-approved">{{ r.release.version }}</span> {{ r.release.approved_by }}{% else %}<span class="muted">nháp</span>{% endif %}</td>
+  </tr>
+  {% else %}
+  <tr><td colspan="9" class="empty">Chưa có lần chạy nào.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

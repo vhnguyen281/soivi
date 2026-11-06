@@ -15,9 +15,28 @@ from dataclasses import dataclass
 from decimal import Decimal
 from typing import Any, Protocol
 
+# Exception classes (by name) that vnstock raises for temporary problems.
+TRANSIENT = frozenset(
+    {
+        "RateLimitedError",
+        "ProviderError",
+        "CircuitOpenError",
+        "ConnectionError",
+        "ConnectTimeout",
+        "ReadTimeout",
+        "Timeout",
+        "TimeoutError",
+        "RemoteDisconnected",
+    }
+)
+
 
 class MarketDataError(Exception):
     """A vnstock call failed or returned nothing usable. The message names the call."""
+
+    @property
+    def transient(self) -> bool:
+        return type(self.__cause__).__name__ in TRANSIENT if self.__cause__ else False
 
 
 @dataclass(frozen=True)

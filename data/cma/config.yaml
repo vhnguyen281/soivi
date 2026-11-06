@@ -1,0 +1,84 @@
+# VNCMA model configuration (docs/vncma/spec.md §2-3). Read by `python -m pipeline market compute`.
+#
+# Every parameter has a value, a source and a note; the report shows them all. Units: percent per
+# year unless the name says otherwise. The run stores this file's SHA-256 and full content.
+#
+# overrides:   replace a macro value derived from data. Each needs value, reason and author;
+#              the run refuses to start without a reason. Shown in the report.
+# adjustments: house view on a class's expected return, at most +-1.0 pp, with reason and author.
+#              Stored in cma_adjustment, separately from the model value.
+# Owner's decisions: docs/DECISIONS.md 2026-11-06 "Building blocks (VNCMA Prompt 7)".
+
+methodology_version: "1.0.0"
+horizon_years: 10
+window_months: 120  # trailing window for macro averages (10 years)
+
+params:
+  pi_target:
+    value: 4.5
+    source: https://lsvn.vn/nghi-quyet-cua-quoc-hoi-ve-ke-hoach-phat-trien-kinh-te-xa-hoi-nam-2026-a166590.html
+    note: Nghị quyết 244/2025/QH15 (kế hoạch KT-XH 2026), CPI bình quân tăng khoảng 4,5%.
+  pi_target_weight:
+    value: 0.5
+    source: docs/vncma/spec.md §2
+    note: pi = weight x official target + (1 - weight) x trailing 10-year CPI average.
+  pi_us:
+    value: 2.3
+    source: owner's decision 2026-11-06
+    note: Fed target 2% plus a small margin for the recent overshoot.
+  g_eps_haircut:
+    value: 0.6
+    source: owner's decision 2026-11-06
+    note: Real EPS growth of listed firms = 60% of real GDP growth (new listings and capital raises dilute).
+  dilution:
+    value: 1.0
+    source: docs/vncma/spec.md §3 (dS default)
+    note: Net share dilution per year in Grinold-Kroner.
+  pe_current_weight:
+    value: 0.5
+    source: owner's decision 2026-11-06
+    note: PE_target = weight x PE_0 + (1 - weight) x median of the P/E history (9 years from 2017-12).
+  gold_theta:
+    value: 0.5
+    source: owner's decision 2026-11-06
+    note: Real return of gold in USD. No SJC premium term - the class is world gold in VND; the SJC premium is reported separately.
+  i_usd:
+    value: 0.0
+    source: https://tapchicongthuong.vn/quy-dinh-moi-ve-lai-suat-tien-gui-bang-dong-usd-127728.htm
+    note: SBV caps USD deposit rates at 0% (Quyết định 2589/QĐ-NHNN from 18/12/2015 under Thông tư 06/2014/TT-NHNN; Thông tư 46/2024/TT-NHNN now). Check the current decision before a release.
+  corp_spread:
+    value: 2.0
+    source: owner's decision 2026-11-06
+    note: Corporate bond yield spread over government bonds.
+  corp_loss:
+    value: 1.0
+    source: owner's decision 2026-11-06
+    note: Expected default loss PD x LGD per year (high after the 2022-23 defaults).
+  re_rent_yield_low: {value: 3.0, source: owner's decision 2026-11-06, note: Gross rental yield, residential, low end.}
+  re_rent_yield_high: {value: 4.0, source: owner's decision 2026-11-06, note: Gross rental yield, high end.}
+  re_cost_low: {value: 1.0, source: owner's decision 2026-11-06, note: Upkeep, vacancy and fees, low end.}
+  re_cost_high: {value: 1.5, source: owner's decision 2026-11-06, note: Upkeep, vacancy and fees, high end.}
+  re_income_growth_real: {value: 3.0, source: owner's decision 2026-11-06, note: Real household income growth.}
+  re_k_low: {value: 0.5, source: owner's decision 2026-11-06, note: Share of nominal income growth passed to prices, low end.}
+  re_k_high: {value: 1.0, source: owner's decision 2026-11-06, note: Share passed to prices, high end.}
+
+# eq_global = mean of these (USD, geometric, 10+ years) + d. Check each against its page before a release.
+global_cmas:
+  - name: J.P. Morgan 2027 LTCMA, U.S. large cap
+    value: 7.5
+    as_of: "2026-09-30"
+    source: https://am.jpmorgan.com/it/institutional/library/ltcma
+  - name: Vanguard VCMM, U.S. equities (midpoint of 3.9-5.9%)
+    value: 4.9
+    as_of: "2025-12-31"
+    source: https://corporate.vanguard.com/content/corporatesite/us/en/corp/vemo/vemo-return-forecasts.html
+
+# Shocks applied to the macro block for the adverse and favourable scenarios (base = no shock).
+# g and d in pp; pe_target_percentile replaces the median of the P/E history.
+scenarios:
+  adverse: {g: -1.0, d: 1.0, pe_target_percentile: 25}
+  favourable: {g: 1.0, d: -1.0, pe_target_percentile: 75}
+
+overrides: {}
+
+adjustments: []

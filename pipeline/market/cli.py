@@ -28,6 +28,13 @@ def add_parser(sub: "argparse._SubParsersAction[argparse.ArgumentParser]") -> No
     returns = msub.add_parser("returns", help="monthly total returns by asset class + coverage")
     returns.add_argument("--csv", type=Path, help="also write the monthly log returns here")
     msub.add_parser("stats", help="volatilities and the correlation matrix (VNCMA Prompt 6)")
+    compute = msub.add_parser("compute", help="building blocks: store a VNCMA run (Prompt 7)")
+    compute.add_argument("--by", required=True, help="your name (stored with the run)")
+    compute.add_argument("--config", type=Path, default=Path("data/cma/config.yaml"))
+    compute.add_argument("--as-of", type=dt.date.fromisoformat, help="month end (default: latest)")
+    report = msub.add_parser("report", help="write the draft (xlsx, json, md) of a run (Prompt 8)")
+    report.add_argument("--run", type=int, help="cma_run id (default: the latest)")
+    report.add_argument("--out", type=Path, default=Path("reports/vncma"))
     manual = msub.add_parser("manual", help="enter one value by hand (with its source)")
     manual.add_argument("--series", required=True)
     manual.add_argument("--period", required=True, help="YYYY-MM (daily: YYYY-MM-DD, yearly: YYYY)")
@@ -51,6 +58,10 @@ def run(args: argparse.Namespace, client_factory: Callable[[], MarketClient] | N
         return _returns(args)
     if args.market_command == "stats":
         return _stats()
+    if args.market_command == "compute":
+        return _compute(args)
+    if args.market_command == "report":
+        return _report(args)
     raise AssertionError(args.market_command)
 
 
@@ -252,4 +263,71 @@ def _stats() -> int:
     print(stats.corr.round(2).to_string())
     for note in stats.notes:
         print(f"note: {note}")
+    return 0
+
+
+def _compute(args: argparse.Namespace) -> int:
+    import pandas as pd
+
+    from core.cma.blocks import BlockError
+    from core.cma.config import ConfigError, load_config
+    from core.cma.run import create_run
+    from core.db import SessionLocal
+
+    try:
+        cfg = load_config(args.config)
+    except ConfigError as exc:
+        for e in exc.errors:
+            print(f"error: {e}", file=sys.stderr)
+        return 1
+    as_of = pd.Timestamp(args.as_of) if args.as_of else None
+    try:
+        with SessionLocal() as session, session.begin():
+            run = create_run(session, cfg, args.by, as_of)
+            run_id, out = run.id, run.output
+    except BlockError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
+    print(f"cma_run {run_id}: as of {out['as_of']}, methodology {out['methodology_version']}")
+    print("\nmacro")
+    for name, m in out["macro"].items():
+        print(f"  {name:10} {m['value']:6.2f}  {m['derivation']}")
+    print(
+        f"\n{'class':12} {'model':>6} {'adj':>5} {'final':>6} {'arith':>6} {'vol':>6} "
+        f"{'adverse':>7} {'favour':>7}  {'band 80%':>13}"
+    )
+    for cls, c in out["classes"].items():
+        vol = "" if c["vol"] is None else f"{100 * c['vol']:.1f}"
+        arith = "" if c["arithmetic"] is None else f"{c['arithmetic']:.2f}"
+        band = "" if c["band_low"] is None else f"{c['band_low']:.1f}..{c['band_high']:.1f}"
+        s = c["scenarios"]
+        print(
+            f"{cls:12} {c['model']:6.2f} {c['adjustment']:5.2f} {c['final']:6.2f} {arith:>6} "
+            f"{vol:>6} {s['adverse']:7.2f} {s['favourable']:7.2f}  {band:>13}"
+        )
+    print()
+    for line in out["checks"]:
+        print(f"check {line}")
+    return 0
+
+
+def _report(args: argparse.Namespace) -> int:
+    from sqlalchemy import select
+
+    from core.cma.release import next_version, previous_payload, release_of
+    from core.cma.report import payload, write_all
+    from core.db import SessionLocal
+    from core.models import CmaRun
+
+    with SessionLocal() as session:
+        query = select(CmaRun).order_by(CmaRun.id.desc())
+        run = session.get(CmaRun, args.run) if args.run else session.scalar(query)
+        if run is None:
+            print("error: no such run: run `market compute` first", file=sys.stderr)
+            return 1
+        release = release_of(session, run.id)
+        doc = release.payload if release else payload(run, f"{next_version(session, run)}-draft")
+        previous = previous_payload(session, release) if release else previous_payload(session)
+        for path in write_all(run, doc, args.out, previous):
+            print(path)
     return 0

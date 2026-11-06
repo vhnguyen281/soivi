@@ -284,7 +284,7 @@ SERIES_KEYS = {
     "note",
 }
 REQUIRED_REQUEST_KEYS: dict[str, set[str]] = {
-    "vnstock": {"call"},  # plus date_field, unless "reduce" is set
+    "vnstock": set(),  # call (+ date_field unless "reduce"), or members + report
     "hnx": {"curve", "start"},
     "worldbank": {"page", "link_contains", "sheet"},
     "shiller": {"page", "link_contains", "sheet"},
@@ -342,6 +342,11 @@ def parse_market(path: Path) -> tuple[list[dict[str, Any]], list[dict[str, Any]]
         ):
             missing = sorted(REQUIRED_REQUEST_KEYS[provider] - set(request))
             errors.append(f"{where}: request needs {missing}")
+        elif provider == "vnstock" and "members" in request:
+            if request.get("report") not in {"summary", "ratio"}:
+                errors.append(f"{where}: a members request needs report: summary or ratio")
+        elif provider == "vnstock" and "call" not in request:
+            errors.append(f"{where}: a vnstock request needs call (or members)")
         elif provider == "vnstock" and "date_field" not in request and "reduce" not in request:
             errors.append(f"{where}: a vnstock request needs date_field (or reduce)")
         for key, enum in (

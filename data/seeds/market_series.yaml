@@ -1162,3 +1162,123 @@ series:
   active: true
   note: 'SJC gold bars 1L-1KG, Ho Chi Minh City (giá bán): the last price update on or before the month end. robots.txt: ai-input=no
     (never send to an LLM).'
+- code: dp_vn30
+  provider: vnstock
+  asset_class: eq_large
+  request:
+    members: VN30
+    report: summary
+  value_field: dividend_yield
+  unit: pct_pa
+  native_frequency: daily
+  period: daily
+  month_end_rule: period_value
+  max_gap_days: null
+  grade: B
+  active: true
+  note: Cap-weighted trailing dividend yield of today's VN30 members (Market().equity(s).summary()), on the day of the run.
+- code: pe_now_vn30
+  provider: vnstock
+  asset_class: eq_large
+  request:
+    members: VN30
+    report: summary
+  value_field: pe
+  unit: ratio
+  native_frequency: daily
+  period: daily
+  month_end_rule: period_value
+  max_gap_days: null
+  grade: B
+  active: true
+  note: Aggregate P/E (sum of caps / sum of earnings) of today's VN30 members, on the day of the run. Cross-check.
+- code: dp_vnmid
+  provider: vnstock
+  asset_class: eq_midsmall
+  request:
+    members: VNMIDCAP
+    report: summary
+  value_field: dividend_yield
+  unit: pct_pa
+  native_frequency: daily
+  period: daily
+  month_end_rule: period_value
+  max_gap_days: null
+  grade: B
+  active: true
+  note: Cap-weighted trailing dividend yield of today's VNMIDCAP members (Market().equity(s).summary()), on the day of the run.
+- code: pe_now_vnmid
+  provider: vnstock
+  asset_class: eq_midsmall
+  request:
+    members: VNMIDCAP
+    report: summary
+  value_field: pe
+  unit: ratio
+  native_frequency: daily
+  period: daily
+  month_end_rule: period_value
+  max_gap_days: null
+  grade: B
+  active: true
+  note: Aggregate P/E (sum of caps / sum of earnings) of today's VNMIDCAP members, on the day of the run. Cross-check.
+- code: dp_vnsml
+  provider: vnstock
+  asset_class: eq_midsmall
+  request:
+    members: VNSMALLCAP
+    report: summary
+  value_field: dividend_yield
+  unit: pct_pa
+  native_frequency: daily
+  period: daily
+  month_end_rule: period_value
+  max_gap_days: null
+  grade: B
+  active: true
+  note: Cap-weighted trailing dividend yield of today's VNSMALLCAP members (Market().equity(s).summary()), on the day of the run.
+- code: pe_now_vnsml
+  provider: vnstock
+  asset_class: eq_midsmall
+  request:
+    members: VNSMALLCAP
+    report: summary
+  value_field: pe
+  unit: ratio
+  native_frequency: daily
+  period: daily
+  month_end_rule: period_value
+  max_gap_days: null
+  grade: B
+  active: true
+  note: Aggregate P/E (sum of caps / sum of earnings) of today's VNSMALLCAP members, on the day of the run. Cross-check.
+- code: pe_bu_vnmid
+  provider: vnstock
+  asset_class: eq_midsmall
+  request:
+    members: VNMIDCAP
+    report: ratio
+  value_field: pe
+  unit: ratio
+  native_frequency: quarterly
+  period: quarterly
+  month_end_rule: period_value
+  max_gap_days: null
+  grade: B
+  active: true
+  note: Bottom-up P/E of today's VNMIDCAP members by quarter from 2018 (Fundamental().equity(s).ratio()); a quarter needs half the members. Owner's decision 2026-11-06.
+- code: pe_bu_vnsml
+  provider: vnstock
+  asset_class: eq_midsmall
+  request:
+    members: VNSMALLCAP
+    report: ratio
+  value_field: pe
+  unit: ratio
+  native_frequency: quarterly
+  period: quarterly
+  month_end_rule: period_value
+  max_gap_days: null
+  grade: B
+  active: true
+  note: Bottom-up P/E of today's VNSMALLCAP members by quarter from 2018 (Fundamental().equity(s).ratio()); a quarter needs half the members. Owner's decision 2026-11-06.

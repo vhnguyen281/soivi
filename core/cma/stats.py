@@ -47,7 +47,7 @@ DEFAULT_CLASSES = (
 )
 # Smoothed series: bond-fund NAVs, and monthly averages (World Bank gold, Shiller S&P).
 DEFAULT_DESMOOTH = ("corp_bond", "gold", "eq_global")
-# Proposed annual volatility floors (decimals); reviewed with the owner before a release.
+# Annual volatility floors (decimals); approved by the owner 2026-11-06.
 DEFAULT_VOL_FLOORS = {
     "cash_vnd": 0.005,
     "gov_bond": 0.03,

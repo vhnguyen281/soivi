@@ -31,25 +31,12 @@ from typing import Any, ClassVar, Protocol
 from urllib.parse import urljoin
 
 from pipeline.fetch.polite import FetchError
-from pipeline.market.client import MarketClient, MarketDataError, Step, describe
+from pipeline.market import members
+from pipeline.market.client import TRANSIENT, MarketClient, MarketDataError, Step, describe
 from pipeline.market.monthend import Point, month_ends
 
 XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 CERTS = Path(__file__).resolve().parent / "certs"
-# Exception classes (by name) that vnstock raises for temporary problems.
-TRANSIENT = frozenset(
-    {
-        "RateLimitedError",
-        "ProviderError",
-        "CircuitOpenError",
-        "ConnectionError",
-        "ConnectTimeout",
-        "ReadTimeout",
-        "Timeout",
-        "TimeoutError",
-        "RemoteDisconnected",
-    }
-)
 # Provenance attributes (df.attrs) kept in the payload. Only stable ones: others such as
 # latency_ms, end (today's date), length (includes today's row) and requested_at change
 # on every call and would make equal data hash differently.
@@ -171,6 +158,8 @@ class VnstockFetcher:
         have: set[dt.date],
         today: dt.date,
     ) -> Fetched:
+        if "members" in request:
+            return self._members(request, value_fields, have, today)
         chain = chain_from(request)
         call = describe(chain)
         df = self._call(chain)
@@ -208,6 +197,25 @@ class VnstockFetcher:
                 raise MarketDataError(f"{call}: column {column!r} has no numbers")
             points[column] = values
         return Fetched(f"vnstock:{call}", "application/json", payload, points)
+
+    def _members(
+        self,
+        request: dict[str, Any],
+        value_fields: Sequence[str],
+        have: set[dt.date],
+        today: dt.date,
+    ) -> Fetched:
+        """An aggregate over an index's current members (pipeline/market/members.py)."""
+        index, report = str(request["members"]), str(request["report"])
+        url = f"vnstock:members({index!r}).{report}"
+        if report == "ratio" and members.last_closed_quarter(today) in have:
+            return Fetched(url, "application/json", None)  # quarterly: nothing new yet
+        build = members.summary if report == "summary" else members.ratio
+        payload, points = build(self._call, index, today)
+        missing = [f for f in value_fields if f not in points]
+        if missing:
+            raise MarketDataError(f"{url} has no field(s) {missing}; got {sorted(points)}")
+        return Fetched(url, "application/json", canonical_json(payload), points)
 
     def _median_today(
         self, df: Any, call: str, value_fields: Sequence[str], today: dt.date

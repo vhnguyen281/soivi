@@ -690,6 +690,91 @@ class MarketObservation(Base):
     ingested_at: Mapped[dt.datetime] = mapped_column(TZDateTime, server_default=func.now())
 
 
+# ------------------------------------------------------------------ VNCMA runs and releases
+
+
+class CmaRun(Base):
+    """One VNCMA model run: the full output with what it was built from. Append-only.
+
+    `inputs` lists every series used (current revision, count, SHA-256 of the values,
+    snapshot ids); `config` is data/cma/config.yaml as parsed. Same inputs and config
+    give the same output, so a run can be re-checked later.
+    """
+
+    __tablename__ = "cma_run"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    created_at: Mapped[dt.datetime] = mapped_column(TZDateTime, server_default=func.now())
+    created_by: Mapped[str] = mapped_column(String(128))
+    as_of: Mapped[dt.date] = mapped_column(Date)  # the last month end of the data
+    methodology_version: Mapped[str] = mapped_column(String(32))
+    code_version: Mapped[str] = mapped_column(String(64))  # git commit (+ "-dirty")
+    config_sha256: Mapped[str] = mapped_column(String(64))
+    inputs_sha256: Mapped[str] = mapped_column(String(64))
+    config: Mapped[dict[str, Any]] = mapped_column(JSONB)
+    inputs: Mapped[dict[str, Any]] = mapped_column(JSONB)
+    output: Mapped[dict[str, Any]] = mapped_column(JSONB)
+
+
+class CmaAdjustment(Base):
+    """A house-view adjustment to one class in one run: at most +-1 pp, reason required.
+    Stored apart from the model value (spec §3). Append-only."""
+
+    __tablename__ = "cma_adjustment"
+    __table_args__ = (
+        CheckConstraint("abs(delta_pp) <= 1.0", name="delta_within_1pp"),
+        CheckConstraint("length(trim(reason)) > 0", name="reason_required"),
+        UniqueConstraint("run_id", "asset_class", name="uq_cma_adjustment_class"),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    run_id: Mapped[int] = mapped_column(ForeignKey("cma_run.id"), index=True)
+    asset_class: Mapped[str] = mapped_column(String(32))
+    delta_pp: Mapped[Decimal] = mapped_column(Numeric(5, 2))
+    reason: Mapped[str] = mapped_column(Text)
+    author: Mapped[str] = mapped_column(String(128))
+    created_at: Mapped[dt.datetime] = mapped_column(TZDateTime, server_default=func.now())
+
+
+class CmaRelease(Base):
+    """An approved VNCMA release (e.g. "2027.1"). Immutable: a named human reviewer
+    approved this exact run (principle 4). Append-only."""
+
+    __tablename__ = "cma_release"
+    __table_args__ = (CheckConstraint("length(trim(approved_by)) > 0", name="reviewer_required"),)
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    version: Mapped[str] = mapped_column(String(32), unique=True)
+    run_id: Mapped[int] = mapped_column(ForeignKey("cma_run.id"), unique=True)
+    methodology_version: Mapped[str] = mapped_column(String(32))
+    approved_by: Mapped[str] = mapped_column(String(128))
+    approved_at: Mapped[dt.datetime] = mapped_column(TZDateTime, server_default=func.now())
+    note: Mapped[str | None] = mapped_column(Text)
+    payload: Mapped[dict[str, Any]] = mapped_column(JSONB)  # the public JSON (API shape)
+    payload_sha256: Mapped[str] = mapped_column(String(64))
+
+
+class CmaReleaseValue(Base):
+    """One class of a release, as Decimal percent per year. Append-only."""
+
+    __tablename__ = "cma_release_value"
+    __table_args__ = (
+        UniqueConstraint("release_id", "asset_class", name="uq_cma_release_value_class"),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    release_id: Mapped[int] = mapped_column(ForeignKey("cma_release.id"), index=True)
+    asset_class: Mapped[str] = mapped_column(String(32))
+    expected_return: Mapped[Decimal] = mapped_column(Numeric(6, 2))  # geometric, final
+    model_return: Mapped[Decimal] = mapped_column(Numeric(6, 2))
+    adjustment_pp: Mapped[Decimal] = mapped_column(Numeric(5, 2))
+    arithmetic_return: Mapped[Decimal | None] = mapped_column(Numeric(6, 2))
+    volatility: Mapped[Decimal | None] = mapped_column(Numeric(6, 2))
+    band_low: Mapped[Decimal | None] = mapped_column(Numeric(6, 2))
+    band_high: Mapped[Decimal | None] = mapped_column(Numeric(6, 2))
+    grade: Mapped[str] = mapped_column(String(1))
+
+
 VERSIONED_MODELS: tuple[type[Versioned], ...] = (
     SavingsRate,
     CardTerms,
@@ -697,7 +782,16 @@ VERSIONED_MODELS: tuple[type[Versioned], ...] = (
     CardPerk,
     CardInterest,
 )
-APPEND_ONLY_TABLES = ("snapshot", "change_event", "review_action", "market_observation")
+APPEND_ONLY_TABLES = (
+    "snapshot",
+    "change_event",
+    "review_action",
+    "market_observation",
+    "cma_run",
+    "cma_adjustment",
+    "cma_release",
+    "cma_release_value",
+)
 
 __all__ = [
     "APPEND_ONLY_TABLES",
@@ -711,6 +805,10 @@ __all__ = [
     "CardReward",
     "CardTerms",
     "ChangeEvent",
+    "CmaAdjustment",
+    "CmaRelease",
+    "CmaReleaseValue",
+    "CmaRun",
     "CommunityReport",
     "Institution",
     "MarketObservation",

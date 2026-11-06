@@ -843,6 +843,96 @@ checked by finite differences); FX compounding; equal weights; the splice.
    0.49. With equal histories this is plain LW (tested).
 5. **Validation** after every computation and every manual change (`validate()`): symmetric, unit diagonal,
    |ρ| ≤ 1, min eigenvalue > 1e-8; otherwise Higham (2002) nearest correlation (tested on Higham's example).
-6. **Volatility floors (proposed, for the owner's review before a release):** cash 0.5%, gov_bond 3%, corp_bond
+6. **Volatility floors (approved by the owner 2026-11-06, with the pair-scaled shrinkage in 4):** cash 0.5%, gov_bond 3%, corp_bond
    3%, eq_large 18%, eq_midsmall 20%, gold 12%, usd 2%, eq_global 14%. Today they bind for corp_bond (2.2% → 3%)
    and usd (1.6% → 2%).
+
+---
+
+## 2026-11-06 — Building blocks, macro block and scenarios (VNCMA Prompt 7)
+
+Approved by the owner on 2026-11-06 ("tôi đồng ý với các suggestion của bạn"). Code: `core/cma/config.py`,
+`core/cma/blocks.py`, `core/cma/run.py`, `pipeline/market/members.py`; config `data/cma/config.yaml` (every value
+with source and note); `python -m pipeline market compute --by <name>`.
+
+1. **Macro block (spec §2), trailing window 120 months:**
+   - `pi` = 0.5 × official target 4.5% (Nghị quyết 244/2025/QH15, CPI 2026 ≈ 4.5%) + 0.5 × CPI y/y average.
+   - `pi_us` = 2.3% (config). `g` = average real GDP growth of the last 10 years.
+   - `r_star` = mean(interbank 3M − CPI), used for cash.
+   - `d` = `pi − pi_us`, cross-checked with the log trend of the SBV central rate (1.48%/yr since 2020).
+   - `tp` = mean(HNX 10Y − 1Y par yield) over all history (2013 →).
+   - Overrides need a value, a written reason and an author; the run refuses to start otherwise.
+2. **Government bonds: `y_eq = pi + r_star_gov + tp`, with `r_star_gov` = mean(HNX 1Y par yield − CPI).** The spec's
+   `r_star` (interbank − CPI, +1.3%) gives `y_eq` ≈ 6.8% against y0 ≈ 4.5% and an expected return of ≈ 2.6%,
+   below cash. VN government yields sit structurally below interbank and deposit rates (banks hold bonds for
+   liquidity), so the bond market's own real short rate (≈ −0.8%) is used. *Rejected:* the spec's formula
+   unchanged. Result ≈ 4.35%: still below cash (5.2%); this is how VN markets price and is shown in the
+   report's checks rather than forced.
+3. **Equities (Grinold–Kroner):** `g_eps = g × 0.6`; dilution `dS` = 1%;
+   `PE_target = 0.5 × PE_0 + 0.5 × median(P/E history)`.
+   - VN30: P/E from VNDIRECT (pe_vn30, from 2017-12).
+   - VNMID/VNSML: the **bottom-up** quarterly P/E of today's members; `eq_midsmall` = mean of the two.
+4. **D/P from members:** cap-weighted trailing dividend yield of today's members of VN30, VNMIDCAP and
+   VNSMALLCAP (`Market().equity(s).summary()`, about 312 calls a run).
+   - The bottom-up P/E comes from `Fundamental().equity(s).ratio()`. Rules:
+     - a quarter is closed 45 days after its end and needs at least half of today's members;
+     - it is fetched only when a new quarter has closed;
+     - the run fails if under 80% of members have data.
+   - Today's D/P also feeds the monthly total-return series (Prompt 5's `dp_eq_*`); a constant D/P does not
+     change volatility or correlation.
+   - vnstock's `ratio()` stops working after 2027-01-15. Before then, move to `vnstock_quant.fa.ratios()`.
+5. **Other classes:**
+   - gold: `pi_us + theta (0.5%) + d`. No SJC premium term, because the class is world gold in VND; the SJC
+     premium (now ≈ 6%, median since 2020 ≈ 12.6%) is reported only.
+   - usd: `i_usd (0%, the SBV cap on USD deposits) + d`.
+   - corp_bond: `E_gov + 2.0 − 1.0` (spread minus expected default loss).
+   - eq_global: mean of J.P. Morgan 2027 LTCMA U.S. large cap (7.5%) and Vanguard VCMM U.S. equities (midpoint
+     4.9%) + `d`. Check both against their pages before each release.
+   - real_estate: a range, rent 3–4% − cost 1–1.5% + (pi + 3% real income growth) × k (0.5–1.0); the model value
+     is the midpoint. No volatility and no correlation (grade C).
+6. **Scenarios:**
+   - adverse: `g` −1 pp, `d` +1 pp, P/E anchor at the 25th percentile;
+   - favourable: `g` +1 pp, `d` −1 pp, anchor at the 75th percentile;
+   - base: no shock.
+
+   Separately from the scenarios, each class gets an 80% band: final ± 1.2816 σ / √10.
+7. **Adjustments:**
+   - at most ±1.0 pp per class, one per class;
+   - a written reason and an author are required;
+   - entered in the config's `adjustments`, stored in `cma_adjustment`, and kept apart from the model value
+     (model, adjustment, final).
+8. **Storage:** `cma_run` (output, config, inputs manifest, code version) and `cma_adjustment`. Both are append-only
+   under the same trigger as `market_observation`.
+   - The inputs manifest lists, for every series, the current revision's count, SHA-256 of
+     (period_end, revision, value) and its snapshot ids; plus a hash of the savings rates behind cash.
+   - The macro config lives in git (`data/cma/config.yaml`) and is stored whole in each run with its SHA-256,
+     instead of a separate `macro_assumption` table (spec §5).
+   - The release tables (`cma_release`, `cma_release_value`) come in the same migration, for Prompt 8.
+
+---
+
+## 2026-11-06 — Draft report and release approval (VNCMA Prompt 8)
+
+Code: `core/cma/report.py`, `core/cma/release.py`, `review_app/vncma_view.py`, templates `vncma*.html`;
+`python -m pipeline market report [--run N]` writes `reports/vncma/vncma-<version>.{xlsx,json,md}` (gitignored).
+
+1. **Documents.** From one run:
+   - **xlsx** with the sheets Summary, Macro, Building blocks, Correlation, Scenarios, Inputs and Changes;
+   - **json**, which is the public API shape of `/v1/vncma/{version}`;
+   - **Vietnamese markdown**, with the disclaimer, grades A/B/C and the checks.
+
+   They contain derived statistics only: the Inputs sheet lists series with counts and hashes, never values.
+   Rates are decimal strings with two places, like the rest of the API.
+2. **Version names:** `<year>.<n>`, where the year is the one after the data's as-of year (data to 2026-10 →
+   "2027.1"). The unapproved run shows as `<version>-draft`. Only `\d{4}\.\d+` can be released.
+3. **Approval** happens in the review app at `/vncma/runs/{id}`, via an HTMX POST:
+   - The reviewer must type their full name. It is stored as `approved_by`, separately from the shared basic-auth
+     login.
+   - Before approving, the app checks that the correlation matrix is still valid, that the run has no release yet,
+     and that the version is not taken.
+   - On approval it writes `cma_release`, with the public payload and its SHA-256, plus one `cma_release_value`
+     per class as NUMERIC. Both tables are append-only (DB trigger).
+   - After approval it calls the existing site revalidation webhook.
+4. **Order of classes and macro variables** comes from `core/cma/config.py`, not from the JSON. PostgreSQL JSONB
+   does not keep key order.
+5. **Changes sheet:** each class's change from the previous release, in expected return and volatility.

@@ -27,7 +27,7 @@ from sqlalchemy.orm import Session
 from core.config import Settings, get_settings
 from core.models import Institution, Snapshot, Source
 from pipeline.fetch.storage import MinioStore, SnapshotStore
-from review_app import service
+from review_app import service, vncma_view
 from review_app.service import ReviewError
 from review_app.webhook import notify_site
 
@@ -188,6 +188,52 @@ def create_app(
             task_status=result.task_status,
             oob=True,
         )
+
+    # ------------------------------------------------------------------ VNCMA
+
+    @app.get("/vncma", response_class=HTMLResponse)
+    def vncma(request: Request, user: Reviewer, session: DB) -> HTMLResponse:
+        return render(request, "vncma.html", rows=vncma_view.runs(session), user=user)
+
+    @app.get("/vncma/runs/{run_id}", response_class=HTMLResponse)
+    def vncma_run(request: Request, run_id: int, user: Reviewer, session: DB) -> HTMLResponse:
+        view = vncma_view.run_view(session, run_id)
+        if view is None:
+            raise HTTPException(404, "no such run")
+        return render(request, "vncma_run.html", view=view, user=user)
+
+    @app.get("/vncma/runs/{run_id}/download/{fmt}")
+    def vncma_download(run_id: int, fmt: str, user: Reviewer, session: DB) -> Response:
+        if fmt not in vncma_view.FORMATS:
+            raise HTTPException(404)
+        doc = vncma_view.download(session, run_id, fmt)
+        if doc is None:
+            raise HTTPException(404, "no such run")
+        name, content, media = doc
+        return Response(
+            content,
+            media_type=media,
+            headers={"Content-Disposition": f'attachment; filename="{name}"'},
+        )
+
+    @app.post("/vncma/runs/{run_id}/release", dependencies=[Write])
+    def vncma_release(
+        run_id: int,
+        user: Reviewer,
+        session: DB,
+        background: BackgroundTasks,
+        version: Annotated[str, Form()] = "",
+        reviewer_name: Annotated[str, Form()] = "",
+        note: Annotated[str, Form()] = "",
+    ) -> Response:
+        from core.cma.release import ReleaseError, approve
+
+        try:
+            approve(session, run_id, version, reviewer_name, note)
+        except ReleaseError as exc:
+            raise HTTPException(409, str(exc)) from exc
+        background.add_task(notify_site, settings)  # the public VNCMA page rebuilds
+        return Response(status_code=204, headers={"HX-Redirect": f"/vncma/runs/{run_id}"})
 
     # ------------------------------------------------------------------ health
 

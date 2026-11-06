@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}VNCMA {{ view.doc.version }}{% endblock %}
+{% block content %}
+{% set run = view.run %}{% set doc = view.doc %}
+<h1>VNCMA {{ doc.version }} <small>run #{{ run.id }} · dữ liệu đến {{ doc.as_of }} · phương pháp {{ doc.methodology_version }}</small></h1>
+
+<p class="meta">
+  {% if view.release %}
+  <span class="status s-approved">Đã phát hành {{ view.release.version }}</span>
+  · duyệt bởi <b>{{ view.release.approved_by }}</b> lúc {{ view.release.approved_at.strftime("%d/%m/%Y %H:%M") }}
+  {% if view.release.note %}· {{ view.release.note }}{% endif %}
+  {% else %}
+  <span class="status">Bản nháp</span> · chạy bởi {{ run.created_by }} lúc {{ run.created_at.strftime("%d/%m/%Y %H:%M") }}
+  {% endif %}
+  <br><span class="muted">code {{ run.code_version }} · config {{ run.config_sha256[:12] }} · inputs {{ run.inputs_sha256[:12] }}</span>
+  <br>Tải về: <a href="/vncma/runs/{{ run.id }}/download/xlsx">xlsx</a> · <a href="/vncma/runs/{{ run.id }}/download/json">json</a> · <a href="/vncma/runs/{{ run.id }}/download/md">markdown</a>
+</p>
+
+<section class="warnings">
+  <h2>Kiểm tra hợp lý</h2>
+  <ul>{% for c in doc.checks %}<li>{% if c.startswith("FAIL") %}<b class="warn">{{ c }}</b>{% else %}{{ c }}{% endif %}</li>{% endfor %}</ul>
+</section>
+
+<table class="grid">
+  <thead><tr><th>Lớp tài sản</th><th class="num">Mô hình</th><th class="num">Điều chỉnh</th><th class="num">Kỳ vọng</th><th class="num">Số học</th><th class="num">Biến động</th><th class="num">Dải 80%</th><th class="num">Xấu</th><th class="num">Tốt</th><th>Hạng</th><th>Công thức</th></tr></thead>
+  <tbody>
+  {% for c in doc.classes %}
+  <tr>
+    <td>{{ c.name }}{% if not c.optimizer_default %} <span class="tag">tham khảo</span>{% endif %}</td>
+    <td class="num">{{ c.model_return }}</td>
+    <td class="num">{{ c.adjustment_pp }}</td>
+    <td class="num"><b>{{ c.expected_return }}</b></td>
+    <td class="num">{{ c.arithmetic_return|show }}</td>
+    <td class="num">{{ c.volatility|show }}</td>
+    <td class="num">{% if c.band_80 %}{{ c.band_80[0] }} … {{ c.band_80[1] }}{% elif c.range %}{{ c.range[0] }} … {{ c.range[1] }}{% else %}—{% endif %}</td>
+    <td class="num">{{ c.scenarios.adverse }}</td>
+    <td class="num">{{ c.scenarios.favourable }}</td>
+    <td>{{ c.grade }}</td>
+    <td class="muted">{{ c.formula }}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+<h2 style="margin-top:1rem">Điều chỉnh chủ quan ({{ view.adjustments|length }})</h2>
+{% if view.adjustments %}
+<table class="grid">
+  <thead><tr><th>Lớp</th><th class="num">Điểm %</th><th>Lý do</th><th>Người đề xuất</th></tr></thead>
+  <tbody>{% for a in view.adjustments %}<tr><td>{{ a.asset_class }}</td><td class="num">{{ a.delta_pp }}</td><td>{{ a.reason }}</td><td>{{ a.author }}</td></tr>{% endfor %}</tbody>
+</table>
+{% else %}<p class="muted">Không có. Giá trị kỳ vọng bằng giá trị mô hình.</p>{% endif %}
+
+<h2 style="margin-top:1rem">Giả định vĩ mô</h2>
+<table class="grid">
+  <thead><tr><th>Biến</th><th class="num">Giá trị</th><th>Cách tính</th></tr></thead>
+  <tbody>{% for k, m in view.macro.items() %}<tr><td><code>{{ k }}</code></td><td class="num">{{ "%.2f"|format(m.value) }}</td><td>{{ m.derivation }}{% if m.override %} <b class="warn">(ghi đè: {{ m.override.reason }}, {{ m.override.author }})</b>{% endif %}</td></tr>{% endfor %}</tbody>
+</table>
+
+<h2 style="margin-top:1rem">Tương quan</h2>
+<table class="grid">
+  <thead><tr><th></th>{% for n in view.corr.classes %}<th class="num">{{ n }}</th>{% endfor %}</tr></thead>
+  <tbody>{% for row in view.corr.matrix %}<tr><th>{{ view.corr.classes[loop.index0] }}</th>{% for x in row %}<td class="num">{{ "%.2f"|format(x) }}</td>{% endfor %}</tr>{% endfor %}</tbody>
+</table>
+
+{% if not view.release %}
+<h2 style="margin-top:1rem">Duyệt phát hành</h2>
+<p class="muted">Phát hành là bất biến: không sửa hay xoá được. Trang công khai sẽ tự cập nhật sau khi duyệt.</p>
+<form class="actions" hx-post="/vncma/runs/{{ run.id }}/release"
+      hx-confirm="Phát hành bản này? Không thể hoàn tác.">
+  <label>Phiên bản <input name="version" value="{{ view.suggested_version }}" required style="width:7rem"></label>
+  <label>Họ tên người duyệt <input name="reviewer_name" required style="width:14rem"></label>
+  <input name="note" placeholder="Ghi chú (không bắt buộc)">
+  <button class="ok">Duyệt phát hành</button>
+</form>
+{% endif %}
+{% endblock %}
