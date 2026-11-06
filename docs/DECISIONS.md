@@ -969,3 +969,13 @@ Code: `core/cma/report.py`, `core/cma/release.py`, `review_app/vncma_view.py`, t
    - the review app's release POST calls the existing revalidate webhook;
    - the page reads through `getVncma()` under the same "soivi" cache tag, so it is rebuilt with the new
      release.
+
+---
+
+## 2026-11-06 — Cloud mode is the default from `.env`
+
+`make web` without `CLOUD=1` restarted the `api` container (a dependency of `web`) against the local Postgres. That
+database has no VNCMA tables, so the API failed and the site build stopped. The Makefile now reads the default from
+`SOIVI_CLOUD=1` in `.env`, so every target starts in the same mode, and `CLOUD=0/1` still overrides it for one
+command. `make help` and the `api`, `web` and `review` targets print the mode. Tests are unaffected
+(`tests/conftest.py` pins local services).

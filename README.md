@@ -70,16 +70,15 @@ alembic revision --autogenerate -m "describe the change"
 
 ## Cloud mode (Neon + S3)
 
-Add `CLOUD=1` to point the pipeline, scheduler, review app and API at `DATABASE_URL` (Neon) and `S3_*` (AWS S3) from `.env` instead of the local Postgres and MinIO:
+In cloud mode the pipeline, scheduler, review app, API and site use `DATABASE_URL` (Neon) and `S3_*` (AWS S3) from `.env` instead of the local Postgres and MinIO. Set the default once in `.env`:
 
 ```bash
-make migrate CLOUD=1                       # migrations on Neon
-make review CLOUD=1                        # review app reading Neon and S3
-make scheduler CLOUD=1                     # monthly runs write to Neon and S3
-make pipeline CLOUD=1 ARGS="run --institution ACB"
+SOIVI_CLOUD=1        # every make target runs in cloud mode; 0 (or unset) = local
 ```
 
-Without `CLOUD=1` everything stays local. Tests always use the local Docker Postgres and MinIO, whatever `.env` says.
+Then `make migrate`, `make review`, `make api`, `make web`, `make scheduler` and `make pipeline ARGS="..."` all use Neon and S3. `make help` prints the current mode. To run one command the other way, add `CLOUD=0` or `CLOUD=1`. Keep one mode for all containers: starting `web` also restarts `api`, and an API in local mode has no VNCMA tables.
+
+Tests always use the local Docker Postgres and MinIO, whatever `.env` says.
 
 ## VNCMA market data
 
