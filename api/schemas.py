@@ -245,3 +245,84 @@ class MethodologyOut(Envelope):
     savings_channels: list[str]
     spend_categories: list[str]
     personas: list[str]
+
+
+# --------------------------------------------------------------------------- VNCMA
+
+
+class VncmaScenarios(Model):
+    adverse: Decimal
+    base: Decimal
+    favourable: Decimal
+
+
+class VncmaClass(Model):
+    id: str
+    name: str
+    expected_return: Decimal = Field(description="Geometric, VND nominal, percent per year (final)")
+    model_return: Decimal
+    adjustment_pp: Decimal
+    adjustment_reason: str | None = None
+    arithmetic_return: Decimal | None = None
+    volatility: Decimal | None = Field(default=None, description="Annual, percent")
+    volatility_historical: Decimal | None = None
+    band_80: list[Decimal] | None = Field(
+        default=None, description="expected +- 1.28 vol / sqrt(10)"
+    )
+    range: list[Decimal] | None = Field(default=None, description="Low and high (real estate)")
+    scenarios: VncmaScenarios
+    grade: str = Field(description="Data quality: A, B or C")
+    optimizer_default: bool
+    formula: str
+
+
+class VncmaCorrelation(Model):
+    classes: list[str]
+    matrix: list[list[float]]
+
+
+class VncmaMacro(Model):
+    value: Decimal
+    name: str
+    derivation: str
+
+
+class VncmaProvenance(Model):
+    run_id: int
+    code_version: str
+    config_sha256: str
+    inputs_sha256: str
+    payload_sha256: str | None = None
+
+
+class VncmaOut(Model):
+    """One approved VNCMA release. `methodology_version` is the VNCMA method's version."""
+
+    version: str
+    status: str
+    methodology_version: str
+    as_of: dt.date
+    horizon_years: int
+    currency: str
+    return_basis: str
+    approved_by: str | None
+    approved_at: dt.datetime | None
+    classes: list[VncmaClass]
+    correlation: VncmaCorrelation
+    macro: dict[str, VncmaMacro]
+    checks: list[str]
+    provenance: VncmaProvenance
+    disclaimer: dict[str, str]
+    methodology_url: str
+    downloads: dict[str, str]
+
+
+class VncmaReleaseRef(Model):
+    version: str
+    as_of: dt.date
+    approved_at: dt.datetime
+    methodology_version: str
+
+
+class VncmaReleasesOut(Envelope):
+    releases: list[VncmaReleaseRef]

@@ -13,6 +13,7 @@ export function Header({ lang }: { lang: Lang }) {
     ["/lai-suat-tiet-kiem", d.nav.savings],
     ["/the-tin-dung", d.nav.cards],
     ["/bien-dong-lai-suat", d.nav.moves],
+    ["/gia-dinh-thi-truong", d.nav.vncma],
     ["/phuong-phap", d.nav.method],
   ];
   return (

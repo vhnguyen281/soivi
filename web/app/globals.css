@@ -7,6 +7,9 @@
  */
 :root {
   color-scheme: light;
+  /* Diverging pair for the VNCMA correlation heatmap (blue = +, red = -). */
+  --div-pos: #2a78d6;
+  --div-neg: #e34948;
   --surface: #ffffff;
   --surface-alt: #f2f6f4;
   --surface-raised: #ffffff;
@@ -32,6 +35,8 @@
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;
+    --div-pos: #3987e5;
+    --div-neg: #e66767;
     --surface: #0e1613;
     --surface-alt: #15201c;
     --surface-raised: #1a2622;
@@ -816,4 +821,43 @@ a.sv-btn--secondary:hover {
   border: 0;
   border-top: 1px solid var(--line);
 }
+}
+
+/* VNCMA correlation heatmap: one cell per pair, the value printed in each cell. */
+.vncma-heat {
+  border-collapse: separate;
+  border-spacing: 2px;
+  font-variant-numeric: tabular-nums;
+}
+.vncma-heat th {
+  font-weight: 600;
+  font-size: 0.8125rem;
+  padding: 0.25rem 0.5rem;
+  text-align: center;
+  color: var(--ink-muted);
+}
+.vncma-heat tbody th {
+  text-align: left;
+}
+.vncma-heat td {
+  min-width: 3.5rem;
+  padding: 0.5rem 0.25rem;
+  text-align: center;
+  border-radius: 4px;
+}
+.vncma-heat td:hover {
+  outline: 2px solid var(--ink);
+  outline-offset: -2px;
+}
+.vncma-scale {
+  display: inline-block;
+  width: 12rem;
+  height: 0.6rem;
+  border-radius: 4px;
+  background: linear-gradient(to right, var(--div-neg), var(--surface-alt), var(--div-pos));
+}
+@media (forced-colors: active) {
+  .vncma-heat td {
+    border: 1px solid CanvasText;
+  }
 }

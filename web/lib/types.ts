@@ -162,3 +162,38 @@ export type Change = {
   changes: { field: string; old: unknown; new: unknown }[];
   provenance: Provenance;
 };
+
+// VNCMA (GET /vncma/latest): rates are decimal strings, percent per year.
+export type VncmaClass = {
+  id: string;
+  name: string;
+  expected_return: string;
+  model_return: string;
+  adjustment_pp: string;
+  adjustment_reason: string | null;
+  arithmetic_return: string | null;
+  volatility: string | null;
+  band_80: [string, string] | null;
+  range: [string, string] | null;
+  scenarios: { adverse: string; base: string; favourable: string };
+  grade: "A" | "B" | "C";
+  optimizer_default: boolean;
+  formula: string;
+};
+
+export type Vncma = {
+  version: string;
+  status: string;
+  methodology_version: string;
+  as_of: string;
+  horizon_years: number;
+  approved_by: string | null;
+  approved_at: string | null;
+  classes: VncmaClass[];
+  correlation: { classes: string[]; matrix: number[][] };
+  macro: Record<string, { value: string; name: string; derivation: string }>;
+  checks: string[];
+  disclaimer: { vi: string; en: string };
+  methodology_url: string;
+  downloads: Record<"xlsx" | "json" | "md", string>;
+};

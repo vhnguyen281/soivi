@@ -12,6 +12,7 @@ import type {
   Persona,
   SavingsRank,
   SavingsRate,
+  Vncma,
 } from "./types";
 
 /**
@@ -123,4 +124,15 @@ export async function getMethodologyVersion(): Promise<string> {
   cacheLife("soivi");
   cacheTag(TAG);
   return (await get<{ methodology_version: string }>("/methodology")).methodology_version;
+}
+
+/** The latest approved VNCMA release, or null before the first one. */
+export async function getVncma(): Promise<Vncma | null> {
+  "use cache";
+  cacheLife("soivi");
+  cacheTag(TAG);
+  const res = await fetch(`${API_URL}/vncma/latest`, { headers: { "Cache-Control": "no-cache" } });
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error(`Soivi API vncma answered HTTP ${res.status}`);
+  return (await res.json()) as Vncma;
 }

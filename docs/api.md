@@ -16,6 +16,9 @@ The API is read-only except `POST /reports`. It only serves values a person appr
 | `GET /changes?since=YYYY-MM-DD&limit=` | Approved changes, newest first: old → new per field; `kind` is `new` or `changed` |
 | `POST /reports` | A community report (multipart form; see below) |
 | `GET /methodology` | The methodology version and the options its formulas accept |
+| `GET /vncma/latest`, `GET /vncma/{version}` | An approved VNCMA release: 10-year expected returns, volatilities, correlations, scenarios, macro assumptions; `methodology_version` is the VNCMA method's (also in `X-VNCMA-Methodology-Version`) |
+| `GET /vncma/releases` | Every approved VNCMA release, newest first |
+| `GET /vncma/{version}/download/{xlsx,json,md}` | The release as a workbook, JSON or Vietnamese markdown |
 
 ## What every value carries
 

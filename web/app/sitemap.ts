@@ -21,6 +21,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: "/lai-suat-tiet-kiem", modified: latest(rates.map((r) => r.provenance.checked_at)), priority: 0.9 },
     { path: "/the-tin-dung", priority: 0.9 },
     { path: "/bien-dong-lai-suat", priority: 0.7 },
+    { path: "/gia-dinh-thi-truong", priority: 0.6 },
     { path: "/phuong-phap", priority: 0.5 },
     { path: "/doc-lap", priority: 0.3 },
     ...[...banks.entries()].map(([slug, checked]) => ({

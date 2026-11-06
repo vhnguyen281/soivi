@@ -936,3 +936,36 @@ Code: `core/cma/report.py`, `core/cma/release.py`, `review_app/vncma_view.py`, t
 4. **Order of classes and macro variables** comes from `core/cma/config.py`, not from the JSON. PostgreSQL JSONB
    does not keep key order.
 5. **Changes sheet:** each class's change from the previous release, in expected return and volatility.
+
+---
+
+## 2026-11-06 — Publishing VNCMA: API and site page (VNCMA Prompt 10)
+
+1. **API paths have no `/v1` prefix:**
+   - `GET /vncma/latest`, `/vncma/{version}`, `/vncma/releases` and `/vncma/{version}/download/{xlsx,json,md}`;
+   - this follows "Public API v1" (2026-10-29), not the prompt's `/v1/...`;
+   - only approved `cma_release` rows are served, so drafts never leave the review app; with no release yet,
+     `latest` answers 404.
+2. **Methodology version:**
+   - Each response carries the VNCMA method's version in `methodology_version` and in
+     `X-VNCMA-Methodology-Version`.
+   - `X-Methodology-Version` stays the site-wide scoring version, as on every other endpoint.
+3. **Site page `/gia-dinh-thi-truong`** (vi and `/en`), in the header menu and the sitemap. Its sections:
+   - the class table: expected return, volatility, 80% band, adverse and favourable scenarios, grade; adjustments
+     and reference classes are badged;
+   - the scenario text;
+   - the correlation heatmap;
+   - the macro table;
+   - the methodology link;
+   - downloads, through a same-origin proxy `/api/vncma/{version}/{fmt}` because the API is not public;
+   - the release's own disclaimer.
+4. **Heatmap colours:**
+   - Diverging blue (+) and red (−) with the neutral `--surface-alt` at 0 (the dataviz reference pair). The
+     colour is validated in light and dark mode.
+   - The fill is at most 60% of the pole, so the ink text keeps its contrast.
+   - The value is printed in each cell and given as a title and aria-label.
+   - Cells get borders in forced-colors mode.
+5. **Rebuild on approval:**
+   - the review app's release POST calls the existing revalidate webhook;
+   - the page reads through `getVncma()` under the same "soivi" cache tag, so it is rebuilt with the new
+     release.
