@@ -79,8 +79,20 @@ lợi suất trái phiếu chính phủ (từ 08/2020).
 | CEIC, Trading Economics | Chuỗi dài (10 năm từ 2013, có cả 2008) | Trả phí. |
 | Investing.com | Lịch sử ngày/tuần/tháng | Điều khoản cấm thu thập tự động; chỉ có thể tải tay. |
 
-Đề xuất: **HNX là nguồn chính** (đủ 10+ năm, chính thức), ADB để đối chiếu. Bước tiếp: kiểm tra trang HNX có tra cứu
-theo ngày hay tải Excel không.
+**Đã chọn HNX (06/11/2026). Kiểm tra cùng ngày:**
+- Trang: `https://www.hnx.vn/vi-vn/trai-phieu/duong-cong-loi-suat.html`. Không có robots.txt (404), nên không có quy tắc chặn.
+- Tra cứu theo ngày bằng form POST chỉ đọc: `POST /ModuleReportBonds/Bond_YieldCurve/SearchAndNextPageYieldCurveData`,
+  tham số `pDate=dd/mm/yyyy`. Kết quả là bảng HTML: kỳ hạn còn lại 3, 6, 9 tháng và 1, 2, 3, 5, 7, 10, 15, 20 năm;
+  cột spot rate liên tục, par yield, spot rate theo năm (%, dấu phẩy thập phân).
+- Có dữ liệu cho 30/12/2013, 30/06/2016, 29/12/2017, 28/12/2018, 30/12/2019, 31/12/2020, 05/11/2026.
+  Ngày nghỉ trả bảng rỗng (ví dụ 31/12/2018), nên số cuối tháng = ngày giao dịch gần nhất trước đó.
+- Lịch sử theo tháng 2013–nay ≈ 155 ngày, mỗi lần một yêu cầu, nghỉ ≥ 5 giây: khoảng 15 phút cho một lần nạp.
+- **TLS:** hnx.vn không gửi kèm chứng chỉ trung gian "GlobalSign GCC R3 EV TLS CA 2025". Bộ thu thập sẽ dùng kho gốc
+  certifi cộng thêm chứng chỉ trung gian này. Tải từ địa chỉ trong chứng chỉ của HNX
+  (`http://secure.globalsign.com/cacert/gsgccr3evtlsca2025.crt`), SHA-256
+  `1B:29:28:02:…:37:17:9A:26`, hết hạn 16/07/2027, đã xác minh với gốc GlobalSign R3. Không tắt kiểm tra TLS.
+- Dùng **par yield 10 năm** (và 5 năm) cho chỉ số tổng lợi nhuận `gov_bond`; `tp` = trung bình (10 năm − 1 năm).
+  ADB dùng để đối chiếu.
 
 ## 6. Đề xuất cách tính P/E cho VNMID/VNSML
 vnstock không có P/E cho hai chỉ số này, nhưng `Fundamental().equity(s).ratio()` có **P/E và vốn hóa theo quý từ 2018-Q1**

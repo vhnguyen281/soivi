@@ -723,3 +723,8 @@ statistics are monthly, so an always-on server is not needed yet.
    `PE_0` and `PE_target` from the same series so level bias cancels in ln(PE_target/PE_0); grade B). Both
    approved by the owner on 2026-11-06 (probe-report.md §5–6). HNX's TLS chain is incomplete; a fetcher must add
    the intermediate certificate, never disable verification.
+6. **HNX yield curve checked (2026-11-06):** read-only `POST /ModuleReportBonds/Bond_YieldCurve/SearchAndNextPageYieldCurveData`
+   with `pDate=dd/mm/yyyy`; HTML table of tenors 3M–20Y (continuous spot, par yield, annual spot); history from 2013;
+   holidays return an empty table (step back a day). No robots.txt. The fetcher pins GlobalSign's intermediate
+   "GCC R3 EV TLS CA 2025" on top of certifi (expires 2027-07-16). Use par yields; HNX replaces vnstock for `gov_bond`
+   history, vnstock stays a cross-check for 2020+.
