@@ -49,14 +49,15 @@ retries, provenance, raw payload to MinIO with SHA-256, clear errors naming the 
 ```
 Done when: two ingests in a row; the second adds nothing.
 
-## Prompt 4 — Daily collectors (start early: cannot be backfilled)
+## Prompt 4 — Monthly collectors (decided 2026-11-05: monthly, run on the Mac)
 ```
-Add to the existing scheduler: (1) a daily snapshot of Macro().currency().deposit_rate(mode="term") as a cross-check
-for our own savings_rate data; (2) SJC gold buy/sell daily — via vnstock if the probe found it, otherwise an adapter
-for the official SJC page following our polite-crawling rules (robots.txt, 5 s, honest User-Agent) with fixture tests
-and raise-on-layout-change. Alerts on failure through the existing notify path.
+Add a monthly `python -m pipeline market collect` step, run together with ingest: (1) a snapshot of
+Macro().currency().deposit_rate(mode="term") as a cross-check for our own savings_rate data; (2) one SJC gold
+buy/sell point per month — via vnstock if the probe found it, otherwise an adapter for the official SJC page
+following our polite-crawling rules (robots.txt, 5 s, honest User-Agent) with fixture tests and
+raise-on-layout-change. Allow a manually entered monthly point with its source when the fetch fails.
 ```
-Done when: the scheduler has stored two days of both.
+Done when: one month of both is stored with provenance.
 
 ## Prompt 5 — Monthly total-return series
 ```

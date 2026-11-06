@@ -260,9 +260,9 @@ def test_server_error_then_success(
 
 
 def test_due_sources(db: Session, bank: Institution) -> None:
-    # 12:00 UTC = 19:00 in Vietnam; the latest savings slot was 15:00 VN = 08:00 UTC.
+    # Bank sources are monthly: the latest slot was 1 Oct 07:00 VN = 00:00 UTC.
     now = dt.datetime(2026, 10, 26, 12, tzinfo=dt.UTC)
-    slot = dt.datetime(2026, 10, 26, 8, tzinfo=dt.UTC)
+    slot = dt.datetime(2026, 10, 1, 0, tzinfo=dt.UTC)
     never = make_source(db, bank, "https://a.vn/1")
     fresh = make_source(
         db,

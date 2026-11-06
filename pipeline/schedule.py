@@ -2,15 +2,20 @@
 
 Slots are wall-clock times in Asia/Ho_Chi_Minh (settings.timezone):
 
-    savings_rate_page          every day at 07:00 and 15:00
+    savings_rate_page,
     card_tariff_pdf,
-    card_product_page          every Monday at 07:00
+    card_product_page,
     official                   the 1st of every month at 07:00
     news feeds                 every hour 06:00-22:00 (pipeline/news, feeds.yaml)
 
-A source is due when its most recent slot has passed and it hasn't been tried
-since. A failed attempt is retried every hour for up to 6 hours after the slot,
-then waits for the next slot (the failures still count towards staleness).
+Bank sources moved from daily/weekly to monthly on 2026-11-05 (DECISIONS.md):
+the pipeline runs on the owner's Mac, not an always-on server. A source is due
+when its most recent slot has passed and it hasn't been tried since, so a run
+started after the 1st (Mac was off) still picks up that month's slot.
+
+A failed attempt is retried every hour for up to 6 hours after the slot, then
+waits for the next slot (the failures still count towards staleness). Re-run a
+failed source by hand with --institution or --source.
 """
 
 import datetime as dt
@@ -48,9 +53,9 @@ DAILY = Schedule(hours=(7,), label="hằng ngày 07:00")
 NEWS = Schedule(hours=tuple(range(6, 23)), label="mỗi giờ 06:00–22:00")
 
 SCHEDULES: dict[SourceKind, Schedule] = {
-    SourceKind.SAVINGS_RATE_PAGE: DAILY_TWICE,
-    SourceKind.CARD_TARIFF_PDF: WEEKLY,
-    SourceKind.CARD_PRODUCT_PAGE: WEEKLY,
+    SourceKind.SAVINGS_RATE_PAGE: MONTHLY,
+    SourceKind.CARD_TARIFF_PDF: MONTHLY,
+    SourceKind.CARD_PRODUCT_PAGE: MONTHLY,
     SourceKind.OFFICIAL: MONTHLY,
     SourceKind.NEWS_FEED: NEWS,
 }

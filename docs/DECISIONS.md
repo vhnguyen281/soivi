@@ -621,3 +621,35 @@ assumptions for Vietnamese asset classes. Spec: `docs/vncma/spec.md`; prompts: `
 
 **Open follow-ups:** where vnstock runs (host vs container, device limits of the plan); reuse of `snapshot`/`source`
 vs parallel market tables; VNCMA methodology version naming; publishing brand and review committee.
+
+---
+
+## 2026-11-05 — Monthly updates and hosting without a VPS
+
+**Context.** The owner judged a VPS too expensive for now. Savings rates and card terms change rarely, and VNCMA
+statistics are monthly, so an always-on server is not needed yet.
+
+**Decisions.**
+
+1. **Every bank source runs monthly** (savings pages, card tariffs, card product pages, official: the 1st at 07:00
+   Asia/Ho_Chi_Minh), replacing the daily/weekly slots of 2026-10-28. `cadence_hours` is 744 (31 days) for every
+   seeded source, so data shows as unverified after 2 × 744 h ≈ 62 days without a successful fetch.
+   - A run started after the 1st (machine was off) still picks up that month's slot.
+   - A failed source is retried only within 6 h of the slot; after that, re-run it with `--institution` or `--source`.
+   - News feeds stay as they are; they only run while the scheduler runs, and a news item can still trigger an
+     early re-check of one bank.
+   - The site keeps its freshness flag, so slower updates stay visible to readers.
+2. **No VPS for now. Target hosting:**
+   - public site (`web/`) on Vercel;
+   - PostgreSQL 16 on Neon (managed, Singapore). Not MongoDB: versioning, append-only triggers and the VNCMA cash
+     class all depend on PostgreSQL (see 2026-10-25 and the VNCMA entry above);
+   - snapshots in the owner's AWS S3 bucket (ap-southeast-1, versioning on) instead of MinIO;
+   - pipeline, review app and VNCMA jobs run on the owner's Mac when needed. vnstock is tied to that device anyway.
+   - Open: where the public API runs so Vercel can reach it (candidate: the read-only API as a Vercel Python
+     function reading Neon). To be checked before deploying.
+3. **VNCMA collectors are monthly, not daily** (changes VNCMA Prompt 4). The cash class uses our own approved
+   savings rates; SJC gold takes one monthly point. The vnstock deposit-rate snapshot becomes a monthly cross-check.
+
+**Revisit** when updates need to be more frequent than monthly: a small VPS (about USD 5/month) or a scheduled CI job.
+
+---

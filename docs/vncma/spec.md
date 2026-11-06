@@ -78,7 +78,7 @@ Proposed tables — refine in Prompt 0 and record the final design in DECISIONS.
   as `core/versioning.py`); DB trigger blocks UPDATE/DELETE like the versioned tables.
 
 ## 6. Where it plugs in
-- `pipeline/market/` — vnstock wrapper, ingest, daily collectors (deposit-rate snapshot, SJC gold).
+- `pipeline/market/` — vnstock wrapper, ingest, monthly collectors (deposit-rate snapshot, SJC gold; see DECISIONS 2026-11-05).
 - `core/cma/` — series builders, stats, building blocks, scenarios, report.
 - `review_app` — a VNCMA tab: run summary, adjustments with reasons, approve release.
 - `api` — `GET /v1/vncma/latest`, `GET /v1/vncma/{version}`.

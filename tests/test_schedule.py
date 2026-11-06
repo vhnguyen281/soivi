@@ -51,20 +51,19 @@ def src(kind: SourceKind = SourceKind.SAVINGS_RATE_PAGE, **kw: object) -> Source
     return Source(kind=kind, cadence_hours=12, consecutive_failures=0, **kw)
 
 
-NOW = vn(2026, 10, 28, 15, 5)  # 5 minutes after the 15:00 slot
+NOW = vn(2026, 10, 28, 15, 5)  # bank sources are monthly: the latest slot was 1 Oct 07:00
 
 
 @pytest.mark.parametrize(
     ("source", "due"),
     [
         (src(), True),  # never tried
-        (src(last_attempt_at=vn(2026, 10, 28, 7, 1), last_status="parsed"), True),  # morning only
-        (src(last_attempt_at=vn(2026, 10, 28, 15, 1), last_status="parsed"), False),  # done
-        (src(last_attempt_at=vn(2026, 10, 28, 15, 1), last_status="unchanged"), False),
-        (
-            src(last_attempt_at=vn(2026, 10, 28, 15, 1), last_status="fetch_failed"),
-            False,
-        ),  # retry in 1 h
+        (src(last_attempt_at=vn(2026, 10, 1, 7, 1), last_status="parsed"), False),  # done
+        (src(last_attempt_at=vn(2026, 10, 20, 9, 0), last_status="unchanged"), False),
+        # Last run in September (Mac was off on 1 Oct): caught up on the next run.
+        (src(last_attempt_at=vn(2026, 9, 15, 10, 0), last_status="parsed"), True),
+        # Failed long after the slot: no automatic retry until next month.
+        (src(last_attempt_at=vn(2026, 10, 28, 15, 1), last_status="fetch_failed"), False),
         (
             src(
                 kind=SourceKind.CARD_TARIFF_PDF,
@@ -75,8 +74,8 @@ NOW = vn(2026, 10, 28, 15, 5)  # 5 minutes after the 15:00 slot
         ),
         (
             src(
-                kind=SourceKind.CARD_TARIFF_PDF,
-                last_attempt_at=vn(2026, 10, 19, 7, 2),
+                kind=SourceKind.CARD_PRODUCT_PAGE,
+                last_attempt_at=vn(2026, 9, 21, 7, 2),
                 last_status="parsed",
             ),
             True,
@@ -96,10 +95,10 @@ def test_is_due(source: Source, due: bool) -> None:
 
 
 def test_failed_run_is_retried_hourly_for_six_hours() -> None:
-    failed = src(last_attempt_at=vn(2026, 10, 28, 15, 1), last_status="parse_failed")
-    assert not is_due(failed, vn(2026, 10, 28, 15, 50), VN)
-    assert is_due(failed, vn(2026, 10, 28, 16, 2), VN)
-    late = src(last_attempt_at=vn(2026, 10, 28, 20, 0), last_status="fetch_failed")
-    assert is_due(late, vn(2026, 10, 28, 21, 0), VN)  # 6 h after the 15:00 slot
-    assert not is_due(late, vn(2026, 10, 28, 21, 30), VN)  # window over: next slot
-    assert is_due(late, vn(2026, 10, 29, 7, 0), VN)
+    failed = src(last_attempt_at=vn(2026, 11, 1, 7, 1), last_status="parse_failed")
+    assert not is_due(failed, vn(2026, 11, 1, 7, 50), VN)
+    assert is_due(failed, vn(2026, 11, 1, 8, 2), VN)
+    late = src(last_attempt_at=vn(2026, 11, 1, 12, 0), last_status="fetch_failed")
+    assert is_due(late, vn(2026, 11, 1, 13, 0), VN)  # 6 h after the 07:00 slot
+    assert not is_due(late, vn(2026, 11, 1, 13, 30), VN)  # window over: next slot
+    assert is_due(late, vn(2026, 12, 1, 7, 0), VN)

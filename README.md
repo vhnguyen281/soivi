@@ -88,9 +88,9 @@ Writing an adapter: subclass `BaseAdapter` in `pipeline/adapters/`, decorate it 
 
 | Source kind | Runs at (Asia/Ho_Chi_Minh) |
 |---|---|
-| savings_rate_page | every day at 07:00 and 15:00 |
-| card_tariff_pdf, card_product_page | Mondays at 07:00 |
-| official | the 1st of each month at 07:00 |
+| savings_rate_page, card_tariff_pdf, card_product_page, official | the 1st of each month at 07:00 |
+
+If the machine was off on the 1st, the next run picks up that month's slot. Data counts as unverified after 2 × 744 h (about 62 days) without a successful fetch.
 
 A failed run is retried hourly for up to 6 hours. Runs never overlap (file lock).
 

@@ -1,136 +1,136 @@
 institution,kind,variant,url,fetch_method,cadence_hours,adapter,needs_check,note
-AGRIBANK,savings_rate_page,,https://www.agribank.com.vn/wcm/connect/ttkhac/lai-suat/lai-suat-cn?source=library&srv=cmpnt&cmpntid=c1687c7c-142f-4616-a8b0-02f09a14f844,http,12,agribank_savings,false,HTML fragment loaded by /vn/lai-suat-tien-gui (docs/adapters/agribank.md)
-AGRIBANK,card_tariff_pdf,,https://www.agribank.com.vn/vn/bieu-phi,http,168,,false,Fee index page; card schedule is linked from it
-VIETCOMBANK,savings_rate_page,,https://www.vietcombank.com.vn/vi-VN/api/interestrates?accountType=Personal,http,12,vietcombank_savings,false,JSON endpoint behind the rate page (docs/adapters/vietcombank.md)
-VIETCOMBANK,card_tariff_pdf,,https://www.vietcombank.com.vn/vi-VN/KHCN/Cong-cu-Tien-ich/KHCN---Bieu-mau-va-bieu-phi,http,168,,false,Fee and form index page
-VIETINBANK,savings_rate_page,,https://www.vietinbank.vn/ca-nhan/cong-cu-tien-ich/lai-suat-khcn,http,12,vietinbank_savings,false,Static HTML table (docs/adapters/vietinbank.md)
-VIETINBANK,card_tariff_pdf,,https://www.vietinbank.vn/ca-nhan/cong-cu-tien-ich/bieu-phi-va-bieu-mau/bieu-phi-dich-vu-ap-dung-cho-san-pham-the-tin-dung-quoc-te-40-html,http,168,,false,International credit card fees
-BIDV,savings_rate_page,,https://bidv.com.vn/ServicesBIDV/InterestDetailServlet,http,12,bidv_savings_counter,false,JSON servlet behind /vn/tra-cuu-lai-suat (POST; docs/adapters/bidv.md)
-BIDV,savings_rate_page,online,https://bidv.com.vn/ServicesLaiSuatOnline/InterestDetailOnlineServlet,http,12,bidv_savings_online,false,JSON servlet behind /vn/tra-cuu-lai-suat-online (POST)
-BIDV,card_tariff_pdf,,https://bidv.com.vn/wps/wcm/connect/72dde5da-a10a-4596-ad69-19c0f26bcb98/BIEU+PHI+UP+WEB+211225+bs+Superads.docx.pdf?MOD=AJPERES&CACHEID=ROOTWORKSPACE-72dde5da-a10a-4596-ad69-19c0f26bcb98-pGWqsTr,pdf,168,bidv_card_tariff,false,Card fee schedule (applies from 20/08/2026); only section 1 (credit cards) is read; dated file name: re-check when BIDV publishes a new one
-ACB,savings_rate_page,,https://acb.com.vn/lai-suat-tien-gui,http,12,acb_savings,false,Static HTML tables with rowspans (docs/adapters/acb.md)
-ACB,card_tariff_pdf,,https://acb.com.vn/bieu-mau-bieu-phi,http,168,,false,Fee and form index page
-ABBANK,savings_rate_page,,https://www.abbank.vn/thong-tin/lai-suat,http,12,,false,
-ABBANK,card_tariff_pdf,,https://www.abbank.vn/thong-tin/bieu-phi,http,168,,false,Fee index page
-BACABANK,savings_rate_page,,https://www.baca-bank.vn/SitePages/website/lai-xuat.aspx?ac=L%u00e3i%20su%u1ea5t&s=LX,http,12,,false,
-BACABANK,card_tariff_pdf,,,http,168,,true,No card fee page found on the site or by search
-BAOVIETBANK,savings_rate_page,,https://www.baovietbank.vn/vn/lai-suat,http,12,,false,
-BAOVIETBANK,card_tariff_pdf,,https://www.baovietbank.vn/vn/cong-cu/df08c6f9-92ff-4ac7-ad65-f860cbff64d7,http,168,,false,Linked as fee schedule from homepage; opaque ID URL
-BVBANK,savings_rate_page,,https://bvbank.net.vn/wp-content/uploads/2026/10/Bieu-LSNY_Web_19.10.2026.pdf,pdf,12,,true,Dated PDF (19/10/2026) linked from homepage; find a stable rate page
-BVBANK,card_tariff_pdf,,https://bvbank.net.vn/ca-nhan/bieu-phi-bieu-mau/,http,168,,false,Fee and form index page
-EXIMBANK,savings_rate_page,,https://eximbank.com.vn/lai-suat-tiet-kiem,http,12,,false,
-EXIMBANK,card_tariff_pdf,,https://media.eximbank.com.vn/exim/files/Bieu%20phi%20dich%20vu%20KHCN%20hieu%20luc%20tu%2002-03-2026.pdf,pdf,168,,true,Dated PDF (from 02/03/2026) found by search; not fetched; find the index page
-HDBANK,savings_rate_page,,https://hdbank.com.vn/vi/personal/cong-cu/interest-rate,pdf,12,hdbank_savings,false,"Rate listing rendered in a browser; adapter fetches the newest deposit PDF (docs/adapters/hdbank.md)"
-HDBANK,card_tariff_pdf,,https://cdn.hdbank.com.vn/hdbank-file/product/editor/98SgKQlVhNjHglehnlUU20260119102949/19126BieuphiThetindungcanhan_1768793446486.pdf,pdf,168,,true,Dated PDF (19/01/2026) found by search; not fetched; find the index page
-KIENLONGBANK,savings_rate_page,,https://kienlongbank.com/lai-suat-kienlongbank,http,12,,false,
-KIENLONGBANK,card_tariff_pdf,,https://kienlongbank.com/bieu-phi,http,168,,false,Fee index page
-LPBANK,savings_rate_page,,https://lpbank.com.vn/ca-nhan/lai-suat,http,12,,false,
-LPBANK,card_tariff_pdf,,https://lpbank.com.vn/ca-nhan/bieu-phi,http,168,,false,Fee index page
-MB,savings_rate_page,,https://www.mbbank.com.vn/fee,browser,12,mb_savings,false,Rendered in headless Chromium; the rate API needs a page token (docs/adapters/mb.md)
-MB,card_tariff_pdf,,https://www.mbbank.com.vn/fee,http,168,,true,URL named in MB's own card fee PDF; site returns 403 to our crawler
-MSB,savings_rate_page,,https://www.msb.com.vn/khach-hang-ca-nhan/lai-suat-tien-gui/,http,12,,false,
-MSB,card_tariff_pdf,,https://www.msb.com.vn/khach-hang-ca-nhan/bieu-mau-bieu-phi/,http,168,,false,Fee and form index page
-NAMABANK,savings_rate_page,,https://www.namabank.com.vn/lai-suat,http,12,,false,
-NAMABANK,card_tariff_pdf,,https://www.namabank.com.vn/bieu-phi-han-muc,http,168,,false,Fee and limit page
-NCB,savings_rate_page,,https://www.ncb-bank.vn/vi/lai-suat-tien-gui,http,12,,true,Linked from homepage but returns 403 to our crawler
-NCB,card_tariff_pdf,,https://www.ncb-bank.vn/vi/bieu-phi,http,168,,true,Linked from homepage but returns 403 to our crawler
-OCB,savings_rate_page,,https://ocb.com.vn/vi/TOOLS_SLUG/lai-suat,http,12,,false,Odd but real slug linked from homepage
-OCB,card_tariff_pdf,,https://ocb.com.vn/vi/TOOLS_SLUG/bieu-phi,http,168,,false,Fee index page
-PGBANK,savings_rate_page,,,http,12,,true,Site returns 403 to our crawler; no deposit rate page found by search
-PGBANK,card_tariff_pdf,,https://www.pgbank.com.vn/uploads/272024/fcc57c3a-4cd6-4497-868f-634978b7b68b.pdf,pdf,168,,true,Card fee PDF effective 01/08/2024 found by search; may be outdated; site returns 403
-PVCOMBANK,savings_rate_page,,https://www.pvcombank.com.vn/static/BieuPhi/Bieu_lai_suat_tien_gui_danh_cho_KHCN_Tong_hop.pdf,pdf,12,,false,Stable PDF name ('Tong hop')
-PVCOMBANK,card_tariff_pdf,,https://www.pvcombank.com.vn/tin-tuc/tin-pvcombank/bieu-phi-dich-vu-qua-he-thong-ngan-hang-tmcp-dai-chung-viet-nam-pvcombank,http,168,,false,Fee index page
-SACOMBANK,savings_rate_page,,https://www.sacombank.com.vn/content/dam/sacombank/files/cong-cu/lai-suat/tien-gui/khcn/SACOMBANK_LAISUATNIEMYETTAIQUAY_KHCN_VIE.pdf,pdf,12,sacombank_savings,false,"Listed-rate PDF with a stable file name, linked from /cong-cu/lai-suat.html (docs/adapters/sacombank.md)"
-SACOMBANK,card_tariff_pdf,,https://www.sacombank.com.vn/cong-cu/bieu-phi.html,http,168,,false,Fee index page
-SAIGONBANK,savings_rate_page,,https://www.saigonbank.com.vn/vi/truy-cap-nhanh/lai-suat,http,12,,false,
-SAIGONBANK,card_tariff_pdf,,https://www.saigonbank.com.vn/vi/truy-cap-nhanh/bieu-phi-dich-vu,http,168,,false,Fee index page
-SCB,savings_rate_page,,https://www.scb.com.vn/vie/lai-suat,http,12,,false,
-SCB,card_tariff_pdf,,https://www.scb.com.vn/vie/bieu-phi,http,168,,false,Fee index page
-SEABANK,savings_rate_page,,,http,12,,true,No rate table page found; homepage links only to rate-change news
-SEABANK,card_tariff_pdf,,https://www.seabank.com.vn/cong-cu-tien-ich/bieu-mau,http,168,,false,Fee and form index page
-SHB,savings_rate_page,,https://ibanking.shb.com.vn/Rate/TideRate,http,12,,true,SHB online-banking rate table found by search; returns 403 to our crawler
-SHB,card_tariff_pdf,,https://www.shb.com.vn/wp-content/uploads/2024/12/Ph%E1%BB%A5-l%E1%BB%A5c-I-Bi%E1%BB%83u-ph%C3%AD-s%E1%BA%A3n-ph%E1%BA%A9m-d%E1%BB%8Bch-v%E1%BB%A5-th%E1%BA%BB-KHCN-09122024.pdf,pdf,168,,true,Card fee PDF effective 09/12/2024 found by search; may be outdated; site returns 403
-TECHCOMBANK,savings_rate_page,,https://techcombank.com/graphql/execute.json/techcombank/viewDocumentList%3BcfPath%3D/content/dam/techcombank/master-data/vi/list-view-document/cong-cu-tien-ich/bieu-phi-lai-suat/khcn/,pdf,12,techcombank_savings,false,Document listing JSON; adapter fetches the current savings PDF it names (docs/adapters/techcombank.md)
-TECHCOMBANK,card_tariff_pdf,,https://techcombank.com/content/dam/techcombank/public-site/documents/techcombank-bieu-phi-dich-vu-the-tin-dung-cho-khach-hang-thuong.pdf,pdf,168,techcombank_card_tariff,false,Undated file name; standard customers; read with the LLM (docs/adapters/techcombank.md)
-TECHCOMBANK,card_product_page,,https://techcombank.com/khach-hang-ca-nhan/chi-tieu/the/the-tin-dung,http,168,,false,Credit card list: headlines only; replaced by the card pages (techcombank_card_pages) on 2026-10-30
-TPBANK,savings_rate_page,,https://tpb.vn/cong-cu-tinh-toan/lai-suat,http,12,,false,
-TPBANK,card_tariff_pdf,,https://tpb.vn/cong-cu-tinh-toan/bieu-phi,http,168,,false,Fee index page
-VIB,savings_rate_page,,https://www.vib.com.vn/vn/tiet-kiem,http,12,,false,Savings product page with rate notes; check it holds the full table
-VIB,card_tariff_pdf,,,http,168,,true,No single schedule; fees are per card at /vn/the-tin-dung/<card>/bieu-phi-va-dieu-kien
-VIB,card_product_page,,https://www.vib.com.vn/vn/the-tin-dung,http,168,,false,Card list; each card links its own fee page
-VIETABANK,savings_rate_page,,https://www.vietabank.com.vn/tien-ich/lai-suat-tien-gui.html,http,12,,false,
-VIETABANK,card_tariff_pdf,,https://www.vietabank.com.vn/tien-ich/bieu-phi.html,http,168,,false,Fee index page
-VIETBANK,savings_rate_page,,https://www.vietbank.com.vn/lai-suat,http,12,,false,
-VIETBANK,card_tariff_pdf,,,http,168,,true,No card fee page found; /bieu-phi returned HTTP 500
-VPBANK,savings_rate_page,,https://www.vpbank.com.vn/uiux-api/api/document?categoryPath=%2Ftai-lieu-bieu-mau%2Flai-suat-huy-dong%2Fkhach-hang-ca-nhan&pageIndex=1&pageSize=4&sort=publishTime%2CDESC&lang=vi,pdf,12,vpbank_savings,false,"Document API; adapter OCRs the newest image-only rate PDF (docs/adapters/vpbank.md)"
-VPBANK,card_tariff_pdf,,https://www.vpbank.com.vn/uiux-api/api/document?categoryPath=%2Ftai-lieu-bieu-mau%2Fbieu-phi%2Fkhach-hang-ca-nhan&pageIndex=1&pageSize=10&sort=publishTime%2CDESC&lang=vi,pdf,168,vpbank_card_tariff,false,Document API (personal fee schedules); adapter takes the newest 'Biểu phí thẻ tín dụng tại VPBank' PDF. The old direct PDF was an undated 2020 file
-GPBANK,savings_rate_page,,https://www.gpbank.com.vn/InterestDetail,http,12,,true,Found by search but returned 404 to our crawler
-GPBANK,card_tariff_pdf,,,http,168,,true,No credit card product found (only debit cards); confirm whether GPBank issues credit cards
-MBV,savings_rate_page,,https://www.mbv.com.vn/tin-tuc/bieu-lai-suat-27052026,http,12,,true,Rate table published as a dated news post (27/05/2026); find a stable page
-MBV,card_tariff_pdf,,https://storage.mbv.com.vn/website/2025/08/15/8e41c5ab89_BIEU_PHI_KHCN_THONG_THUONG.pdf,pdf,168,,true,Dated PDF (08/2025) found by search; not fetched
-VCBNEO,savings_rate_page,,https://www.vcbneo.com.vn/Pages/InterestRate.aspx,http,12,,false,
-VCBNEO,card_tariff_pdf,,,http,168,,true,No card fee page found
-VIKKIBANK,savings_rate_page,,https://vikkibank.vn/lai-suat-tien-gui/,http,12,,false,
-VIKKIBANK,card_tariff_pdf,,https://vikkibank.vn/bieu-phi-khcn/,http,168,,false,Personal-customer fee page
-HSBC,savings_rate_page,,,http,12,,true,Deposit rates are linked from https://www.hsbc.com.vn/help/rates-and-fees/ (used for card fees); pick the deposit page
-HSBC,card_tariff_pdf,,https://www.hsbc.com.vn/help/rates-and-fees/,http,168,,false,Rates and fees hub page
-STANDARDCHARTERED,savings_rate_page,,https://www.sc.com/vn/deposits/interest-rates/,http,12,,false,
-STANDARDCHARTERED,card_tariff_pdf,,https://av.sc.com/vn/content/docs/vn-credit-card-fees-charges-vn.pdf,pdf,168,,true,PDF loads but its text did not match fee keywords (may be scanned); check by hand
-SHINHANBANK,savings_rate_page,,,http,12,,true,No standard rate table found; site has a TLS certificate chain problem for our client
-SHINHANBANK,card_tariff_pdf,,https://shinhan.com.vn/vi/support/bieu-phi-le-phi.html,http,168,,true,Found by search; not fetched because of the TLS certificate problem
-HONGLEONG,savings_rate_page,,https://www.hlbank.com.vn/vi/help-and-support/interest-rates.html,http,12,,false,
-HONGLEONG,card_tariff_pdf,,https://www.hlbank.com.vn/vi/help-and-support/fees-and-charges.html,http,168,,false,Fee index page
-PUBLICBANK,savings_rate_page,,https://publicbank.com.vn/ToolsUtilities/InterestRate,http,12,,false,
-PUBLICBANK,card_tariff_pdf,,,http,168,,true,No card fee page found
-CIMB,savings_rate_page,,,http,12,,true,Only a deposit promotion page found
-CIMB,card_tariff_pdf,,https://www.cimbbank.com.vn/vi/personal/digital-banking/schedule-of-charges.html,http,168,,false,Schedule of charges
-WOORI,savings_rate_page,,,http,12,,true,Rates are in the combined PDF used for card fees; no separate page found
-WOORI,card_tariff_pdf,,https://woori.com.vn/wp-content/uploads/2025/05/2025.05.09_Interest-Rates-Fees_V.pdf,pdf,168,,true,Dated combined rates and fees PDF (09/05/2025); site has a TLS certificate problem for our client
-UOB,savings_rate_page,,https://www.uob.com.vn/web-resources/personal/pdf/personal/vi/save/index/personal-banking-deposit-interest-rates.pdf,pdf,12,,false,Stable PDF name
-UOB,card_tariff_pdf,,https://www.uob.com.vn/assets/web-resources/personal/pdf/vi/uobv-fees-and-charges-of-credit-card-and-cashplus.pdf,pdf,168,,false,Stable PDF name
-FECREDIT,card_product_page,,https://www.fecredit.com.vn/the-tin-dung/,http,168,,false,Card list; fees are on each card's page
-FECREDIT,card_tariff_pdf,,,http,168,,true,No single fee schedule found; fees are published per card
-HOMECREDIT,card_product_page,,https://www.homecredit.vn/the-tin-dung-online,http,168,,false,
-HOMECREDIT,card_tariff_pdf,,,http,168,,true,Only a fee-change announcement found; no standing schedule
-HDSAISON,card_product_page,,https://www.hdsaison.com.vn/vn/the-tin-dung.html,http,168,,false,
-HDSAISON,card_tariff_pdf,,https://www.hdsaison.com.vn/vn/bieu-mau-the-tin-dung.html,http,168,,false,Card forms and fees page
-LOTTEFINANCE,card_product_page,,https://lottefinance.vn/web/card/cardList,http,168,,false,
-LOTTEFINANCE,card_tariff_pdf,,https://lottefinance.vn/images/resources/file/BIEU_PHI_%20THE_TIN_DUNG_LOTTE_FINANCE.pdf,pdf,168,,false,Stable PDF name
-SHINHANFINANCE,card_product_page,,https://shinhanfinance.com.vn/product/card/the-tin-dung,http,168,,false,
-SHINHANFINANCE,card_tariff_pdf,,,http,168,,true,No fee schedule found
-BIDV,card_product_page,visa-infinite,https://bidv.com.vn/bidv/ca-nhan/san-pham-dich-vu/dich-vu-the/the-tin-dung-quoc-te/the-bidv-visa-infinite,http,168,bidv_card_products,false,Card page: rewards and perks for this card; read with the LLM
-BIDV,card_product_page,jcb-ultimate,https://bidv.com.vn/bidv/ca-nhan/san-pham-dich-vu/dich-vu-the/the-tin-dung-quoc-te/the-bidv-jcb-ultimate,http,168,bidv_card_products,false,Card page: rewards and perks for this card; read with the LLM
-BIDV,card_product_page,mc-world-travel,https://bidv.com.vn/bidv/ca-nhan/san-pham-dich-vu/dich-vu-the/the-tin-dung-quoc-te/bidv-world-travel,http,168,bidv_card_products,false,Card page: rewards and perks for this card; read with the LLM
-BIDV,card_product_page,jcb-well-being,https://bidv.com.vn/bidv/ca-nhan/san-pham-dich-vu/dich-vu-the/the-tin-dung-quoc-te/2/the-bidv-jcb-well-being,http,168,bidv_card_products,false,Card page: rewards and perks for this card; read with the LLM
-BIDV,card_product_page,visa-cashback-online,https://bidv.com.vn/bidv/ca-nhan/san-pham-dich-vu/dich-vu-the/the-tin-dung-quoc-te/2/the-bidv-visa-cashback-online,http,168,bidv_card_products,false,Card page: rewards and perks for this card; read with the LLM
-BIDV,card_product_page,visa-cashback-360,https://bidv.com.vn/bidv/ca-nhan/san-pham-dich-vu/dich-vu-the/the-tin-dung-quoc-te/2/the-bidv-visa-cashback-360,http,168,bidv_card_products,false,Card page: rewards and perks for this card; read with the LLM
-BIDV,card_product_page,visa-flexi,https://bidv.com.vn/bidv/ca-nhan/san-pham-dich-vu/dich-vu-the/the-tin-dung-quoc-te/2/bidvvisaflexinew,http,168,bidv_card_products,false,Card page: rewards and perks for this card; read with the LLM
-BIDV,card_product_page,visa-easy,https://bidv.com.vn/bidv/ca-nhan/san-pham-dich-vu/dich-vu-the/the-tin-dung-quoc-te/2/the-bidv-visa-easy,http,168,bidv_card_products,false,Card page: rewards and perks for this card; read with the LLM
-BIDV,card_product_page,mc-inspire,https://bidv.com.vn/bidv/ca-nhan/san-pham-dich-vu/dich-vu-the/the-tin-dung-quoc-te/2/the-bidv-mastercard-inspire,http,168,bidv_card_products,false,Card page: rewards and perks for this card; read with the LLM
-BIDV,card_product_page,mc-vietravel-standard,https://bidv.com.vn/bidv/ca-nhan/san-pham-dich-vu/dich-vu-the/the-tin-dung-quoc-te/3/bidvvietravelstandardnew,http,168,bidv_card_products,false,Card page: rewards and perks for this card; read with the LLM
-BIDV,card_product_page,mc-vietravel-platinum,https://bidv.com.vn/bidv/ca-nhan/san-pham-dich-vu/dich-vu-the/the-tin-dung-quoc-te/3/thebidvvietravel+platinumnew,http,168,bidv_card_products,false,Card page: rewards and perks for this card; read with the LLM
-BIDV,card_product_page,visa-precious,https://bidv.com.vn/bidv/ca-nhan/san-pham-dich-vu/dich-vu-the/the-tin-dung-quoc-te/the_ngung_phat_hanh/bidvvisapreciousnew,http,168,bidv_card_products,false,Card page: rewards and perks for this card; read with the LLM
-BIDV,card_product_page,visa-platinum,https://bidv.com.vn/bidv/ca-nhan/san-pham-dich-vu/dich-vu-the/the-tin-dung-quoc-te/the_ngung_phat_hanh/bidvvisaplatinumnew,http,168,bidv_card_products,false,Card page: rewards and perks for this card; read with the LLM
-VPBANK,card_product_page,mc2,https://www.vpbank.com.vn/ca-nhan/the-tin-dung/mc2-mastercard,http,168,vpbank_card_products,false,Card page: rewards and perks for this card (details in page data); read with the LLM
-VPBANK,card_product_page,z,https://www.vpbank.com.vn/ca-nhan/the-tin-dung/the-tin-dung-z,http,168,vpbank_card_products,false,Card page: rewards and perks for this card (details in page data); read with the LLM
-VPBANK,card_product_page,platinum-travel-miles,https://www.vpbank.com.vn/ca-nhan/the-tin-dung/platinum-travel-miles,http,168,vpbank_card_products,false,Card page: rewards and perks for this card (details in page data); read with the LLM
-VPBANK,card_product_page,signature-travel-miles,https://www.vpbank.com.vn/ca-nhan/the-tin-dung/the-tin-dung-vpbank-visa-signature-travel-miles,http,168,vpbank_card_products,false,Card page: rewards and perks for this card (details in page data); read with the LLM
-VPBANK,card_product_page,commcredit,https://www.vpbank.com.vn/ca-nhan/the-tin-dung/commcredit,http,168,vpbank_card_products,false,Card page: rewards and perks for this card (details in page data); read with the LLM
-VPBANK,card_product_page,unionpay,https://www.vpbank.com.vn/ca-nhan/the-tin-dung/vpbank-UnionPay,http,168,vpbank_card_products,false,Card page: rewards and perks for this card (details in page data); read with the LLM
-VPBANK,card_product_page,gameon,https://www.vpbank.com.vn/ca-nhan/the-tin-dung/the-tin-dung-vpbank-gameon-mastercard,http,168,vpbank_card_products,false,Card page: rewards and perks for this card (details in page data); read with the LLM
-VPBANK,card_product_page,mwg,https://www.vpbank.com.vn/ca-nhan/the-tin-dung/the-tin-dung-MWG-Mastercard,http,168,vpbank_card_products,false,Card page: rewards and perks for this card (details in page data); read with the LLM
-VPBANK,card_product_page,s-rewards,https://www.vpbank.com.vn/ca-nhan/the-tin-dung/the-tin-dung-vpbank-s-rewards-mastercard,http,168,vpbank_card_products,false,Card page: rewards and perks for this card (details in page data); read with the LLM
-VPBANK,card_product_page,private-visa-infinite,https://www.vpbank.com.vn/ca-nhan/the-tin-dung/the-tin-dung-vpbank-private-visa-infinite,http,168,vpbank_card_products,false,Card page: rewards and perks for this card (details in page data); read with the LLM
-VPBANK,card_product_page,flex,https://www.vpbank.com.vn/ca-nhan/the-tin-dung/vpbank-flex,http,168,vpbank_card_products,false,Card page: rewards and perks for this card (details in page data); read with the LLM
-TECHCOMBANK,card_product_page,visa-signature,https://techcombank.com/khach-hang-ca-nhan/chi-tieu/the/the-tin-dung/techcombank-visa-signature,http,168,techcombank_card_pages,false,Card page: rewards and perks for this card; read with the LLM
-TECHCOMBANK,card_product_page,priority-visa-signature,https://techcombank.com/khach-hang-ca-nhan/chi-tieu/the/the-tin-dung/techcombank-priority-visa-signature,http,168,techcombank_card_pages,false,Card page: rewards and perks for this card; read with the LLM
-TECHCOMBANK,card_product_page,visa-infinite,https://techcombank.com/khach-hang-ca-nhan/chi-tieu/the/the-tin-dung/techcombank-private-visa-infinite,http,168,techcombank_card_pages,false,Card page: rewards and perks for this card; read with the LLM
-TECHCOMBANK,card_product_page,wealth-visa-infinite-private,https://techcomwealth.techcombank.com/the/the-tin-dung/techcomwealth-visa-infinite-private,http,168,techcombank_card_pages,false,Card page: rewards and perks for this card; read with the LLM
-TECHCOMBANK,card_product_page,spark,https://techcombank.com/khach-hang-ca-nhan/chi-tieu/the/the-tin-dung/techcombank-spark,http,168,techcombank_card_pages,false,Card page: rewards and perks for this card; read with the LLM
-TECHCOMBANK,card_product_page,everyday,https://techcombank.com/khach-hang-ca-nhan/chi-tieu/the/the-tin-dung/techcombank-everyday,http,168,techcombank_card_pages,false,Card page: rewards and perks for this card; read with the LLM
-TECHCOMBANK,card_product_page,style,https://techcombank.com/khach-hang-ca-nhan/chi-tieu/the/the-tin-dung/techcombank-style,http,168,techcombank_card_pages,false,Card page: rewards and perks for this card; read with the LLM
-TECHCOMBANK,card_product_page,visa-eco,https://techcombank.com/khach-hang-ca-nhan/chi-tieu/the/the-tin-dung/techcombank-visa-eco,http,168,techcombank_card_pages,false,Card page: rewards and perks for this card; read with the LLM
-TECHCOMBANK,card_product_page,visa-classic,https://techcombank.com/khach-hang-ca-nhan/chi-tieu/the/the-tin-dung/the-tin-dung-techcombank-visa-classic,http,168,techcombank_card_pages,false,Card page: rewards and perks for this card; read with the LLM
-TECHCOMBANK,card_product_page,vna-visa-platinum,https://techcombank.com/khach-hang-ca-nhan/chi-tieu/the/the-tin-dung/vietnam-airlines-techcombank-visa-platinum,http,168,techcombank_card_pages,false,Card page: rewards and perks for this card; read with the LLM
-TECHCOMBANK,card_product_page,vna-visa-gold,https://techcombank.com/khach-hang-ca-nhan/chi-tieu/the/the-tin-dung/vietnam-airlines-techcombank-visa-gold,http,168,techcombank_card_pages,false,Card page: rewards and perks for this card; read with the LLM
-TECHCOMBANK,card_product_page,vna-visa-classic,https://techcombank.com/khach-hang-ca-nhan/chi-tieu/the/the-tin-dung/vietnam-airlines-techcombank-visa-classic,http,168,techcombank_card_pages,false,Card page: rewards and perks for this card; read with the LLM
+AGRIBANK,savings_rate_page,,https://www.agribank.com.vn/wcm/connect/ttkhac/lai-suat/lai-suat-cn?source=library&srv=cmpnt&cmpntid=c1687c7c-142f-4616-a8b0-02f09a14f844,http,744,agribank_savings,false,HTML fragment loaded by /vn/lai-suat-tien-gui (docs/adapters/agribank.md)
+AGRIBANK,card_tariff_pdf,,https://www.agribank.com.vn/vn/bieu-phi,http,744,,false,Fee index page; card schedule is linked from it
+VIETCOMBANK,savings_rate_page,,https://www.vietcombank.com.vn/vi-VN/api/interestrates?accountType=Personal,http,744,vietcombank_savings,false,JSON endpoint behind the rate page (docs/adapters/vietcombank.md)
+VIETCOMBANK,card_tariff_pdf,,https://www.vietcombank.com.vn/vi-VN/KHCN/Cong-cu-Tien-ich/KHCN---Bieu-mau-va-bieu-phi,http,744,,false,Fee and form index page
+VIETINBANK,savings_rate_page,,https://www.vietinbank.vn/ca-nhan/cong-cu-tien-ich/lai-suat-khcn,http,744,vietinbank_savings,false,Static HTML table (docs/adapters/vietinbank.md)
+VIETINBANK,card_tariff_pdf,,https://www.vietinbank.vn/ca-nhan/cong-cu-tien-ich/bieu-phi-va-bieu-mau/bieu-phi-dich-vu-ap-dung-cho-san-pham-the-tin-dung-quoc-te-40-html,http,744,,false,International credit card fees
+BIDV,savings_rate_page,,https://bidv.com.vn/ServicesBIDV/InterestDetailServlet,http,744,bidv_savings_counter,false,JSON servlet behind /vn/tra-cuu-lai-suat (POST; docs/adapters/bidv.md)
+BIDV,savings_rate_page,online,https://bidv.com.vn/ServicesLaiSuatOnline/InterestDetailOnlineServlet,http,744,bidv_savings_online,false,JSON servlet behind /vn/tra-cuu-lai-suat-online (POST)
+BIDV,card_tariff_pdf,,https://bidv.com.vn/wps/wcm/connect/72dde5da-a10a-4596-ad69-19c0f26bcb98/BIEU+PHI+UP+WEB+211225+bs+Superads.docx.pdf?MOD=AJPERES&CACHEID=ROOTWORKSPACE-72dde5da-a10a-4596-ad69-19c0f26bcb98-pGWqsTr,pdf,744,bidv_card_tariff,false,Card fee schedule (applies from 20/08/2026); only section 1 (credit cards) is read; dated file name: re-check when BIDV publishes a new one
+ACB,savings_rate_page,,https://acb.com.vn/lai-suat-tien-gui,http,744,acb_savings,false,Static HTML tables with rowspans (docs/adapters/acb.md)
+ACB,card_tariff_pdf,,https://acb.com.vn/bieu-mau-bieu-phi,http,744,,false,Fee and form index page
+ABBANK,savings_rate_page,,https://www.abbank.vn/thong-tin/lai-suat,http,744,,false,
+ABBANK,card_tariff_pdf,,https://www.abbank.vn/thong-tin/bieu-phi,http,744,,false,Fee index page
+BACABANK,savings_rate_page,,https://www.baca-bank.vn/SitePages/website/lai-xuat.aspx?ac=L%u00e3i%20su%u1ea5t&s=LX,http,744,,false,
+BACABANK,card_tariff_pdf,,,http,744,,true,No card fee page found on the site or by search
+BAOVIETBANK,savings_rate_page,,https://www.baovietbank.vn/vn/lai-suat,http,744,,false,
+BAOVIETBANK,card_tariff_pdf,,https://www.baovietbank.vn/vn/cong-cu/df08c6f9-92ff-4ac7-ad65-f860cbff64d7,http,744,,false,Linked as fee schedule from homepage; opaque ID URL
+BVBANK,savings_rate_page,,https://bvbank.net.vn/wp-content/uploads/2026/10/Bieu-LSNY_Web_19.10.2026.pdf,pdf,744,,true,Dated PDF (19/10/2026) linked from homepage; find a stable rate page
+BVBANK,card_tariff_pdf,,https://bvbank.net.vn/ca-nhan/bieu-phi-bieu-mau/,http,744,,false,Fee and form index page
+EXIMBANK,savings_rate_page,,https://eximbank.com.vn/lai-suat-tiet-kiem,http,744,,false,
+EXIMBANK,card_tariff_pdf,,https://media.eximbank.com.vn/exim/files/Bieu%20phi%20dich%20vu%20KHCN%20hieu%20luc%20tu%2002-03-2026.pdf,pdf,744,,true,Dated PDF (from 02/03/2026) found by search; not fetched; find the index page
+HDBANK,savings_rate_page,,https://hdbank.com.vn/vi/personal/cong-cu/interest-rate,pdf,744,hdbank_savings,false,Rate listing rendered in a browser; adapter fetches the newest deposit PDF (docs/adapters/hdbank.md)
+HDBANK,card_tariff_pdf,,https://cdn.hdbank.com.vn/hdbank-file/product/editor/98SgKQlVhNjHglehnlUU20260119102949/19126BieuphiThetindungcanhan_1768793446486.pdf,pdf,744,,true,Dated PDF (19/01/2026) found by search; not fetched; find the index page
+KIENLONGBANK,savings_rate_page,,https://kienlongbank.com/lai-suat-kienlongbank,http,744,,false,
+KIENLONGBANK,card_tariff_pdf,,https://kienlongbank.com/bieu-phi,http,744,,false,Fee index page
+LPBANK,savings_rate_page,,https://lpbank.com.vn/ca-nhan/lai-suat,http,744,,false,
+LPBANK,card_tariff_pdf,,https://lpbank.com.vn/ca-nhan/bieu-phi,http,744,,false,Fee index page
+MB,savings_rate_page,,https://www.mbbank.com.vn/fee,browser,744,mb_savings,false,Rendered in headless Chromium; the rate API needs a page token (docs/adapters/mb.md)
+MB,card_tariff_pdf,,https://www.mbbank.com.vn/fee,http,744,,true,URL named in MB's own card fee PDF; site returns 403 to our crawler
+MSB,savings_rate_page,,https://www.msb.com.vn/khach-hang-ca-nhan/lai-suat-tien-gui/,http,744,,false,
+MSB,card_tariff_pdf,,https://www.msb.com.vn/khach-hang-ca-nhan/bieu-mau-bieu-phi/,http,744,,false,Fee and form index page
+NAMABANK,savings_rate_page,,https://www.namabank.com.vn/lai-suat,http,744,,false,
+NAMABANK,card_tariff_pdf,,https://www.namabank.com.vn/bieu-phi-han-muc,http,744,,false,Fee and limit page
+NCB,savings_rate_page,,https://www.ncb-bank.vn/vi/lai-suat-tien-gui,http,744,,true,Linked from homepage but returns 403 to our crawler
+NCB,card_tariff_pdf,,https://www.ncb-bank.vn/vi/bieu-phi,http,744,,true,Linked from homepage but returns 403 to our crawler
+OCB,savings_rate_page,,https://ocb.com.vn/vi/TOOLS_SLUG/lai-suat,http,744,,false,Odd but real slug linked from homepage
+OCB,card_tariff_pdf,,https://ocb.com.vn/vi/TOOLS_SLUG/bieu-phi,http,744,,false,Fee index page
+PGBANK,savings_rate_page,,,http,744,,true,Site returns 403 to our crawler; no deposit rate page found by search
+PGBANK,card_tariff_pdf,,https://www.pgbank.com.vn/uploads/272024/fcc57c3a-4cd6-4497-868f-634978b7b68b.pdf,pdf,744,,true,Card fee PDF effective 01/08/2024 found by search; may be outdated; site returns 403
+PVCOMBANK,savings_rate_page,,https://www.pvcombank.com.vn/static/BieuPhi/Bieu_lai_suat_tien_gui_danh_cho_KHCN_Tong_hop.pdf,pdf,744,,false,Stable PDF name ('Tong hop')
+PVCOMBANK,card_tariff_pdf,,https://www.pvcombank.com.vn/tin-tuc/tin-pvcombank/bieu-phi-dich-vu-qua-he-thong-ngan-hang-tmcp-dai-chung-viet-nam-pvcombank,http,744,,false,Fee index page
+SACOMBANK,savings_rate_page,,https://www.sacombank.com.vn/content/dam/sacombank/files/cong-cu/lai-suat/tien-gui/khcn/SACOMBANK_LAISUATNIEMYETTAIQUAY_KHCN_VIE.pdf,pdf,744,sacombank_savings,false,"Listed-rate PDF with a stable file name, linked from /cong-cu/lai-suat.html (docs/adapters/sacombank.md)"
+SACOMBANK,card_tariff_pdf,,https://www.sacombank.com.vn/cong-cu/bieu-phi.html,http,744,,false,Fee index page
+SAIGONBANK,savings_rate_page,,https://www.saigonbank.com.vn/vi/truy-cap-nhanh/lai-suat,http,744,,false,
+SAIGONBANK,card_tariff_pdf,,https://www.saigonbank.com.vn/vi/truy-cap-nhanh/bieu-phi-dich-vu,http,744,,false,Fee index page
+SCB,savings_rate_page,,https://www.scb.com.vn/vie/lai-suat,http,744,,false,
+SCB,card_tariff_pdf,,https://www.scb.com.vn/vie/bieu-phi,http,744,,false,Fee index page
+SEABANK,savings_rate_page,,,http,744,,true,No rate table page found; homepage links only to rate-change news
+SEABANK,card_tariff_pdf,,https://www.seabank.com.vn/cong-cu-tien-ich/bieu-mau,http,744,,false,Fee and form index page
+SHB,savings_rate_page,,https://ibanking.shb.com.vn/Rate/TideRate,http,744,,true,SHB online-banking rate table found by search; returns 403 to our crawler
+SHB,card_tariff_pdf,,https://www.shb.com.vn/wp-content/uploads/2024/12/Ph%E1%BB%A5-l%E1%BB%A5c-I-Bi%E1%BB%83u-ph%C3%AD-s%E1%BA%A3n-ph%E1%BA%A9m-d%E1%BB%8Bch-v%E1%BB%A5-th%E1%BA%BB-KHCN-09122024.pdf,pdf,744,,true,Card fee PDF effective 09/12/2024 found by search; may be outdated; site returns 403
+TECHCOMBANK,savings_rate_page,,https://techcombank.com/graphql/execute.json/techcombank/viewDocumentList%3BcfPath%3D/content/dam/techcombank/master-data/vi/list-view-document/cong-cu-tien-ich/bieu-phi-lai-suat/khcn/,pdf,744,techcombank_savings,false,Document listing JSON; adapter fetches the current savings PDF it names (docs/adapters/techcombank.md)
+TECHCOMBANK,card_tariff_pdf,,https://techcombank.com/content/dam/techcombank/public-site/documents/techcombank-bieu-phi-dich-vu-the-tin-dung-cho-khach-hang-thuong.pdf,pdf,744,techcombank_card_tariff,false,Undated file name; standard customers; read with the LLM (docs/adapters/techcombank.md)
+TECHCOMBANK,card_product_page,,https://techcombank.com/khach-hang-ca-nhan/chi-tieu/the/the-tin-dung,http,744,,false,Credit card list: headlines only; replaced by the card pages (techcombank_card_pages) on 2026-10-30
+TPBANK,savings_rate_page,,https://tpb.vn/cong-cu-tinh-toan/lai-suat,http,744,,false,
+TPBANK,card_tariff_pdf,,https://tpb.vn/cong-cu-tinh-toan/bieu-phi,http,744,,false,Fee index page
+VIB,savings_rate_page,,https://www.vib.com.vn/vn/tiet-kiem,http,744,,false,Savings product page with rate notes; check it holds the full table
+VIB,card_tariff_pdf,,,http,744,,true,No single schedule; fees are per card at /vn/the-tin-dung/<card>/bieu-phi-va-dieu-kien
+VIB,card_product_page,,https://www.vib.com.vn/vn/the-tin-dung,http,744,,false,Card list; each card links its own fee page
+VIETABANK,savings_rate_page,,https://www.vietabank.com.vn/tien-ich/lai-suat-tien-gui.html,http,744,,false,
+VIETABANK,card_tariff_pdf,,https://www.vietabank.com.vn/tien-ich/bieu-phi.html,http,744,,false,Fee index page
+VIETBANK,savings_rate_page,,https://www.vietbank.com.vn/lai-suat,http,744,,false,
+VIETBANK,card_tariff_pdf,,,http,744,,true,No card fee page found; /bieu-phi returned HTTP 500
+VPBANK,savings_rate_page,,https://www.vpbank.com.vn/uiux-api/api/document?categoryPath=%2Ftai-lieu-bieu-mau%2Flai-suat-huy-dong%2Fkhach-hang-ca-nhan&pageIndex=1&pageSize=4&sort=publishTime%2CDESC&lang=vi,pdf,744,vpbank_savings,false,Document API; adapter OCRs the newest image-only rate PDF (docs/adapters/vpbank.md)
+VPBANK,card_tariff_pdf,,https://www.vpbank.com.vn/uiux-api/api/document?categoryPath=%2Ftai-lieu-bieu-mau%2Fbieu-phi%2Fkhach-hang-ca-nhan&pageIndex=1&pageSize=10&sort=publishTime%2CDESC&lang=vi,pdf,744,vpbank_card_tariff,false,Document API (personal fee schedules); adapter takes the newest 'Biểu phí thẻ tín dụng tại VPBank' PDF. The old direct PDF was an undated 2020 file
+GPBANK,savings_rate_page,,https://www.gpbank.com.vn/InterestDetail,http,744,,true,Found by search but returned 404 to our crawler
+GPBANK,card_tariff_pdf,,,http,744,,true,No credit card product found (only debit cards); confirm whether GPBank issues credit cards
+MBV,savings_rate_page,,https://www.mbv.com.vn/tin-tuc/bieu-lai-suat-27052026,http,744,,true,Rate table published as a dated news post (27/05/2026); find a stable page
+MBV,card_tariff_pdf,,https://storage.mbv.com.vn/website/2025/08/15/8e41c5ab89_BIEU_PHI_KHCN_THONG_THUONG.pdf,pdf,744,,true,Dated PDF (08/2025) found by search; not fetched
+VCBNEO,savings_rate_page,,https://www.vcbneo.com.vn/Pages/InterestRate.aspx,http,744,,false,
+VCBNEO,card_tariff_pdf,,,http,744,,true,No card fee page found
+VIKKIBANK,savings_rate_page,,https://vikkibank.vn/lai-suat-tien-gui/,http,744,,false,
+VIKKIBANK,card_tariff_pdf,,https://vikkibank.vn/bieu-phi-khcn/,http,744,,false,Personal-customer fee page
+HSBC,savings_rate_page,,,http,744,,true,Deposit rates are linked from https://www.hsbc.com.vn/help/rates-and-fees/ (used for card fees); pick the deposit page
+HSBC,card_tariff_pdf,,https://www.hsbc.com.vn/help/rates-and-fees/,http,744,,false,Rates and fees hub page
+STANDARDCHARTERED,savings_rate_page,,https://www.sc.com/vn/deposits/interest-rates/,http,744,,false,
+STANDARDCHARTERED,card_tariff_pdf,,https://av.sc.com/vn/content/docs/vn-credit-card-fees-charges-vn.pdf,pdf,744,,true,PDF loads but its text did not match fee keywords (may be scanned); check by hand
+SHINHANBANK,savings_rate_page,,,http,744,,true,No standard rate table found; site has a TLS certificate chain problem for our client
+SHINHANBANK,card_tariff_pdf,,https://shinhan.com.vn/vi/support/bieu-phi-le-phi.html,http,744,,true,Found by search; not fetched because of the TLS certificate problem
+HONGLEONG,savings_rate_page,,https://www.hlbank.com.vn/vi/help-and-support/interest-rates.html,http,744,,false,
+HONGLEONG,card_tariff_pdf,,https://www.hlbank.com.vn/vi/help-and-support/fees-and-charges.html,http,744,,false,Fee index page
+PUBLICBANK,savings_rate_page,,https://publicbank.com.vn/ToolsUtilities/InterestRate,http,744,,false,
+PUBLICBANK,card_tariff_pdf,,,http,744,,true,No card fee page found
+CIMB,savings_rate_page,,,http,744,,true,Only a deposit promotion page found
+CIMB,card_tariff_pdf,,https://www.cimbbank.com.vn/vi/personal/digital-banking/schedule-of-charges.html,http,744,,false,Schedule of charges
+WOORI,savings_rate_page,,,http,744,,true,Rates are in the combined PDF used for card fees; no separate page found
+WOORI,card_tariff_pdf,,https://woori.com.vn/wp-content/uploads/2025/05/2025.05.09_Interest-Rates-Fees_V.pdf,pdf,744,,true,Dated combined rates and fees PDF (09/05/2025); site has a TLS certificate problem for our client
+UOB,savings_rate_page,,https://www.uob.com.vn/web-resources/personal/pdf/personal/vi/save/index/personal-banking-deposit-interest-rates.pdf,pdf,744,,false,Stable PDF name
+UOB,card_tariff_pdf,,https://www.uob.com.vn/assets/web-resources/personal/pdf/vi/uobv-fees-and-charges-of-credit-card-and-cashplus.pdf,pdf,744,,false,Stable PDF name
+FECREDIT,card_product_page,,https://www.fecredit.com.vn/the-tin-dung/,http,744,,false,Card list; fees are on each card's page
+FECREDIT,card_tariff_pdf,,,http,744,,true,No single fee schedule found; fees are published per card
+HOMECREDIT,card_product_page,,https://www.homecredit.vn/the-tin-dung-online,http,744,,false,
+HOMECREDIT,card_tariff_pdf,,,http,744,,true,Only a fee-change announcement found; no standing schedule
+HDSAISON,card_product_page,,https://www.hdsaison.com.vn/vn/the-tin-dung.html,http,744,,false,
+HDSAISON,card_tariff_pdf,,https://www.hdsaison.com.vn/vn/bieu-mau-the-tin-dung.html,http,744,,false,Card forms and fees page
+LOTTEFINANCE,card_product_page,,https://lottefinance.vn/web/card/cardList,http,744,,false,
+LOTTEFINANCE,card_tariff_pdf,,https://lottefinance.vn/images/resources/file/BIEU_PHI_%20THE_TIN_DUNG_LOTTE_FINANCE.pdf,pdf,744,,false,Stable PDF name
+SHINHANFINANCE,card_product_page,,https://shinhanfinance.com.vn/product/card/the-tin-dung,http,744,,false,
+SHINHANFINANCE,card_tariff_pdf,,,http,744,,true,No fee schedule found
+BIDV,card_product_page,visa-infinite,https://bidv.com.vn/bidv/ca-nhan/san-pham-dich-vu/dich-vu-the/the-tin-dung-quoc-te/the-bidv-visa-infinite,http,744,bidv_card_products,false,Card page: rewards and perks for this card; read with the LLM
+BIDV,card_product_page,jcb-ultimate,https://bidv.com.vn/bidv/ca-nhan/san-pham-dich-vu/dich-vu-the/the-tin-dung-quoc-te/the-bidv-jcb-ultimate,http,744,bidv_card_products,false,Card page: rewards and perks for this card; read with the LLM
+BIDV,card_product_page,mc-world-travel,https://bidv.com.vn/bidv/ca-nhan/san-pham-dich-vu/dich-vu-the/the-tin-dung-quoc-te/bidv-world-travel,http,744,bidv_card_products,false,Card page: rewards and perks for this card; read with the LLM
+BIDV,card_product_page,jcb-well-being,https://bidv.com.vn/bidv/ca-nhan/san-pham-dich-vu/dich-vu-the/the-tin-dung-quoc-te/2/the-bidv-jcb-well-being,http,744,bidv_card_products,false,Card page: rewards and perks for this card; read with the LLM
+BIDV,card_product_page,visa-cashback-online,https://bidv.com.vn/bidv/ca-nhan/san-pham-dich-vu/dich-vu-the/the-tin-dung-quoc-te/2/the-bidv-visa-cashback-online,http,744,bidv_card_products,false,Card page: rewards and perks for this card; read with the LLM
+BIDV,card_product_page,visa-cashback-360,https://bidv.com.vn/bidv/ca-nhan/san-pham-dich-vu/dich-vu-the/the-tin-dung-quoc-te/2/the-bidv-visa-cashback-360,http,744,bidv_card_products,false,Card page: rewards and perks for this card; read with the LLM
+BIDV,card_product_page,visa-flexi,https://bidv.com.vn/bidv/ca-nhan/san-pham-dich-vu/dich-vu-the/the-tin-dung-quoc-te/2/bidvvisaflexinew,http,744,bidv_card_products,false,Card page: rewards and perks for this card; read with the LLM
+BIDV,card_product_page,visa-easy,https://bidv.com.vn/bidv/ca-nhan/san-pham-dich-vu/dich-vu-the/the-tin-dung-quoc-te/2/the-bidv-visa-easy,http,744,bidv_card_products,false,Card page: rewards and perks for this card; read with the LLM
+BIDV,card_product_page,mc-inspire,https://bidv.com.vn/bidv/ca-nhan/san-pham-dich-vu/dich-vu-the/the-tin-dung-quoc-te/2/the-bidv-mastercard-inspire,http,744,bidv_card_products,false,Card page: rewards and perks for this card; read with the LLM
+BIDV,card_product_page,mc-vietravel-standard,https://bidv.com.vn/bidv/ca-nhan/san-pham-dich-vu/dich-vu-the/the-tin-dung-quoc-te/3/bidvvietravelstandardnew,http,744,bidv_card_products,false,Card page: rewards and perks for this card; read with the LLM
+BIDV,card_product_page,mc-vietravel-platinum,https://bidv.com.vn/bidv/ca-nhan/san-pham-dich-vu/dich-vu-the/the-tin-dung-quoc-te/3/thebidvvietravel+platinumnew,http,744,bidv_card_products,false,Card page: rewards and perks for this card; read with the LLM
+BIDV,card_product_page,visa-precious,https://bidv.com.vn/bidv/ca-nhan/san-pham-dich-vu/dich-vu-the/the-tin-dung-quoc-te/the_ngung_phat_hanh/bidvvisapreciousnew,http,744,bidv_card_products,false,Card page: rewards and perks for this card; read with the LLM
+BIDV,card_product_page,visa-platinum,https://bidv.com.vn/bidv/ca-nhan/san-pham-dich-vu/dich-vu-the/the-tin-dung-quoc-te/the_ngung_phat_hanh/bidvvisaplatinumnew,http,744,bidv_card_products,false,Card page: rewards and perks for this card; read with the LLM
+VPBANK,card_product_page,mc2,https://www.vpbank.com.vn/ca-nhan/the-tin-dung/mc2-mastercard,http,744,vpbank_card_products,false,Card page: rewards and perks for this card (details in page data); read with the LLM
+VPBANK,card_product_page,z,https://www.vpbank.com.vn/ca-nhan/the-tin-dung/the-tin-dung-z,http,744,vpbank_card_products,false,Card page: rewards and perks for this card (details in page data); read with the LLM
+VPBANK,card_product_page,platinum-travel-miles,https://www.vpbank.com.vn/ca-nhan/the-tin-dung/platinum-travel-miles,http,744,vpbank_card_products,false,Card page: rewards and perks for this card (details in page data); read with the LLM
+VPBANK,card_product_page,signature-travel-miles,https://www.vpbank.com.vn/ca-nhan/the-tin-dung/the-tin-dung-vpbank-visa-signature-travel-miles,http,744,vpbank_card_products,false,Card page: rewards and perks for this card (details in page data); read with the LLM
+VPBANK,card_product_page,commcredit,https://www.vpbank.com.vn/ca-nhan/the-tin-dung/commcredit,http,744,vpbank_card_products,false,Card page: rewards and perks for this card (details in page data); read with the LLM
+VPBANK,card_product_page,unionpay,https://www.vpbank.com.vn/ca-nhan/the-tin-dung/vpbank-UnionPay,http,744,vpbank_card_products,false,Card page: rewards and perks for this card (details in page data); read with the LLM
+VPBANK,card_product_page,gameon,https://www.vpbank.com.vn/ca-nhan/the-tin-dung/the-tin-dung-vpbank-gameon-mastercard,http,744,vpbank_card_products,false,Card page: rewards and perks for this card (details in page data); read with the LLM
+VPBANK,card_product_page,mwg,https://www.vpbank.com.vn/ca-nhan/the-tin-dung/the-tin-dung-MWG-Mastercard,http,744,vpbank_card_products,false,Card page: rewards and perks for this card (details in page data); read with the LLM
+VPBANK,card_product_page,s-rewards,https://www.vpbank.com.vn/ca-nhan/the-tin-dung/the-tin-dung-vpbank-s-rewards-mastercard,http,744,vpbank_card_products,false,Card page: rewards and perks for this card (details in page data); read with the LLM
+VPBANK,card_product_page,private-visa-infinite,https://www.vpbank.com.vn/ca-nhan/the-tin-dung/the-tin-dung-vpbank-private-visa-infinite,http,744,vpbank_card_products,false,Card page: rewards and perks for this card (details in page data); read with the LLM
+VPBANK,card_product_page,flex,https://www.vpbank.com.vn/ca-nhan/the-tin-dung/vpbank-flex,http,744,vpbank_card_products,false,Card page: rewards and perks for this card (details in page data); read with the LLM
+TECHCOMBANK,card_product_page,visa-signature,https://techcombank.com/khach-hang-ca-nhan/chi-tieu/the/the-tin-dung/techcombank-visa-signature,http,744,techcombank_card_pages,false,Card page: rewards and perks for this card; read with the LLM
+TECHCOMBANK,card_product_page,priority-visa-signature,https://techcombank.com/khach-hang-ca-nhan/chi-tieu/the/the-tin-dung/techcombank-priority-visa-signature,http,744,techcombank_card_pages,false,Card page: rewards and perks for this card; read with the LLM
+TECHCOMBANK,card_product_page,visa-infinite,https://techcombank.com/khach-hang-ca-nhan/chi-tieu/the/the-tin-dung/techcombank-private-visa-infinite,http,744,techcombank_card_pages,false,Card page: rewards and perks for this card; read with the LLM
+TECHCOMBANK,card_product_page,wealth-visa-infinite-private,https://techcomwealth.techcombank.com/the/the-tin-dung/techcomwealth-visa-infinite-private,http,744,techcombank_card_pages,false,Card page: rewards and perks for this card; read with the LLM
+TECHCOMBANK,card_product_page,spark,https://techcombank.com/khach-hang-ca-nhan/chi-tieu/the/the-tin-dung/techcombank-spark,http,744,techcombank_card_pages,false,Card page: rewards and perks for this card; read with the LLM
+TECHCOMBANK,card_product_page,everyday,https://techcombank.com/khach-hang-ca-nhan/chi-tieu/the/the-tin-dung/techcombank-everyday,http,744,techcombank_card_pages,false,Card page: rewards and perks for this card; read with the LLM
+TECHCOMBANK,card_product_page,style,https://techcombank.com/khach-hang-ca-nhan/chi-tieu/the/the-tin-dung/techcombank-style,http,744,techcombank_card_pages,false,Card page: rewards and perks for this card; read with the LLM
+TECHCOMBANK,card_product_page,visa-eco,https://techcombank.com/khach-hang-ca-nhan/chi-tieu/the/the-tin-dung/techcombank-visa-eco,http,744,techcombank_card_pages,false,Card page: rewards and perks for this card; read with the LLM
+TECHCOMBANK,card_product_page,visa-classic,https://techcombank.com/khach-hang-ca-nhan/chi-tieu/the/the-tin-dung/the-tin-dung-techcombank-visa-classic,http,744,techcombank_card_pages,false,Card page: rewards and perks for this card; read with the LLM
+TECHCOMBANK,card_product_page,vna-visa-platinum,https://techcombank.com/khach-hang-ca-nhan/chi-tieu/the/the-tin-dung/vietnam-airlines-techcombank-visa-platinum,http,744,techcombank_card_pages,false,Card page: rewards and perks for this card; read with the LLM
+TECHCOMBANK,card_product_page,vna-visa-gold,https://techcombank.com/khach-hang-ca-nhan/chi-tieu/the/the-tin-dung/vietnam-airlines-techcombank-visa-gold,http,744,techcombank_card_pages,false,Card page: rewards and perks for this card; read with the LLM
+TECHCOMBANK,card_product_page,vna-visa-classic,https://techcombank.com/khach-hang-ca-nhan/chi-tieu/the/the-tin-dung/vietnam-airlines-techcombank-visa-classic,http,744,techcombank_card_pages,false,Card page: rewards and perks for this card; read with the LLM
