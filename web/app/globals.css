@@ -909,3 +909,25 @@ a.sv-btn--secondary:hover {
     border: 1px solid CanvasText;
   }
 }
+
+/* Goal planner: one bar per portfolio, the chance of reaching the goal (single series). */
+.goal-track {
+  display: block;
+  height: 0.75rem;
+  border-radius: 4px;
+  background: var(--surface-alt);
+}
+.goal-fill {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+  background: var(--jade);
+}
+@media (forced-colors: active) {
+  .goal-track {
+    border: 1px solid CanvasText;
+  }
+  .goal-fill {
+    background: Highlight;
+  }
+}

@@ -1073,3 +1073,38 @@ Code: `core/cma/portfolios.py`; config `data/cma/portfolios.yaml`.
    - API: `GET /vncma/{version|latest}/portfolios`, approved sets only.
    - Site: `/danh-muc-mau`, with one stacked bar per portfolio (the validated 7-hue categorical palette, colour
      fixed per class) plus a legend and a full table view.
+
+---
+
+## 2026-11-07 — Goal probability tool (goals-based planning, Phase B)
+
+Page `/muc-tieu` (vi and `/en`); logic `web/lib/goals.ts` with unit tests; component `web/components/GoalPlanner.tsx`.
+
+1. **Inputs:**
+   - goal amount and years (1–40);
+   - savings today and a monthly contribution, optionally raised each year;
+   - "in today's money" (on by default), which inflates the goal by VNCMA's `pi`.
+2. **Model, per approved model portfolio:**
+   - Monthly log returns are normal with mean ln(1+G)/12 and variance σ²/12. G and σ are the portfolio's
+     expected geometric return and volatility.
+   - Simulation: 4,000 paths, from a seeded generator (same inputs → same answer).
+   - The final value is linear in the monthly contribution, so one simulation gives:
+     - the chance of reaching the goal;
+     - the median and the 10th-percentile final value;
+     - the monthly amount needed for an 80% chance.
+3. **Scenarios:**
+   - The base, adverse and favourable runs shift G by the portfolio's weighted shift of its classes in the
+     VNCMA scenarios.
+   - Shift sizes: a few tenths of a pp to about 1.5 pp a year.
+   - The shift is how assumption risk shows up in the tool, next to market risk (spec §5.7).
+4. **Privacy:** everything runs in the browser, so nothing typed is sent or stored. There is no account, no API call
+   and no logging of inputs.
+5. **Presentation:**
+   - The headline is the chance of reaching the goal (a single-series bar per portfolio, plus a full table). The
+     page does not show yearly gains or losses, the framing the planning workflow recommends for loss-averse
+     users.
+   - Results are before tax and fees.
+   - The page carries a "not personal advice" disclaimer.
+   - The tool is only shown once model portfolios are approved.
+6. **Cost in the browser:** about 0.3 s for 10 years and 0.9 s for 40 years (5 portfolios × 3 scenarios × 4,000
+   paths). The button shows "Đang tính…" while it runs.

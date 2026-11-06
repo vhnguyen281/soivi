@@ -185,7 +185,10 @@ export default async function ModelPortfoliosPage({ params }: PageProps<"/[lang]
           <section className="sv-panel space-y-2">
             <h2 className="t-h3">{x.how}</h2>
             <p className="text-muted">{x.howText}</p>
-            <p>
+            <p className="flex flex-wrap gap-4">
+              <Link href={href(lang, "/muc-tieu")}>
+                {lang === "vi" ? "Tính khả năng đạt mục tiêu của bạn" : "Check the chance of reaching your goal"}
+              </Link>
               <Link href={href(lang, "/gia-dinh-thi-truong")}>{x.vncma}</Link>
             </p>
           </section>
