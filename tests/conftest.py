@@ -5,6 +5,10 @@ from `make up` (or TEST_DATABASE_URL). It is rebuilt from the Alembic migrations
 on every run, so these tests also check that the migrations apply and roll back.
 If Postgres is not reachable the tests are skipped, unless SOIVI_REQUIRE_DB=1
 (set in CI) turns that into a failure.
+
+Tests never touch the cloud. `.env` may point DATABASE_URL at Neon and S3_* at
+AWS; before anything reads settings, this file points them at the local Docker
+Postgres and MinIO, and stops the run if the test database is not local.
 """
 
 import datetime as dt
@@ -16,25 +20,60 @@ from typing import TYPE_CHECKING
 import pytest
 from alembic import command
 from alembic.config import Config
+from dotenv import dotenv_values
 from sqlalchemy import Engine, create_engine, text
 from sqlalchemy.engine import URL, make_url
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import Session
-
-from core.config import get_settings
 
 if TYPE_CHECKING:
     from pipeline.fetch.polite import PoliteHttp
     from tests.http_fixture import FakeClock, FixtureServer
 
 ROOT = Path(__file__).resolve().parent.parent
+LOCAL_HOSTS = {"localhost", "127.0.0.1", "::1", "postgres", "minio"}
+
+
+def _pin_local_environment() -> URL:
+    """Point every setting the code under test might use at local services."""
+    dotenv = {k: v for k, v in dotenv_values(ROOT / ".env").items() if v is not None}
+
+    def get(name: str, default: str = "") -> str:
+        return os.environ.get(name) or dotenv.get(name) or default
+
+    if get("TEST_DATABASE_URL"):
+        url = make_url(get("TEST_DATABASE_URL"))
+    else:
+        base = make_url(
+            get("DATABASE_URL", "postgresql+psycopg://soivi:soivi@localhost:5432/soivi")
+        )
+        if base.host not in LOCAL_HOSTS:
+            # .env points at the cloud: use the local Docker Postgres from POSTGRES_*.
+            base = make_url(
+                f"postgresql+psycopg://{get('POSTGRES_USER', 'soivi')}@localhost:"
+                f"{get('POSTGRES_PORT', '5432')}/soivi"
+            ).set(password=get("POSTGRES_PASSWORD") or None)
+        url = base.set(database="soivi_test")
+    if url.host not in LOCAL_HOSTS:
+        pytest.exit(f"refusing to run tests against a non-local database ({url.host})", 2)
+
+    os.environ["DATABASE_URL"] = url.render_as_string(hide_password=False)
+    if get("S3_ENDPOINT", "localhost:9000").split(":")[0] not in LOCAL_HOSTS:
+        os.environ["S3_ENDPOINT"] = f"localhost:{get('MINIO_API_PORT', '9000')}"
+        os.environ["S3_ACCESS_KEY"] = get("MINIO_ROOT_USER", "soivi")
+        os.environ["S3_SECRET_KEY"] = get("MINIO_ROOT_PASSWORD")
+        os.environ["S3_SECURE"] = "false"
+    # No paid or outgoing calls from tests: no LLM key, no Telegram bot.
+    os.environ["ANTHROPIC_API_KEY"] = ""
+    os.environ["TELEGRAM_BOT_TOKEN"] = ""
+    return url
+
+
+TEST_DB_URL = _pin_local_environment()
 
 
 def _test_db_url() -> URL:
-    explicit = os.environ.get("TEST_DATABASE_URL")
-    if explicit:
-        return make_url(explicit)
-    return make_url(get_settings().database_url).set(database="soivi_test")
+    return TEST_DB_URL
 
 
 def _recreate_database(url: URL) -> None:
