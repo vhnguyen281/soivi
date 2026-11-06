@@ -1,0 +1,84 @@
+{
+ "call": "Market().index(\"USA30\", scope=\"global\").ohlcv(start=\"2000-01-01\", interval=\"1D\", limit=10000)",
+ "captured_at": "2026-11-06T06:05:09.720408+00:00",
+ "total_rows": 264,
+ "columns": [
+  "time",
+  "open",
+  "high",
+  "low",
+  "close",
+  "volume"
+ ],
+ "dtypes": {
+  "time": "datetime64[ns, UTC]",
+  "open": "float64",
+  "high": "float64",
+  "low": "float64",
+  "close": "float64",
+  "volume": "float64"
+ },
+ "attrs": {
+  "access_domain": "['dukascopy.com']",
+  "access_method": "['GET']",
+  "access_protocol": "https",
+  "algorithm_participation": "Yêu cầu đi từ máy người dùng tới nguồn. vnstock đọc phản hồi thô của nguồn rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình: đặt tên cột theo chuẩn chung, ép kiểu, quy đổi đơn vị và múi giờ, ghép các trang, đối chiếu mã, kỳ báo cáo và các dòng tương đương. Các bước này có suy diễn và đối chiếu nên kết quả không phải lúc nào cũng khớp hoàn toàn với dữ liệu gốc; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất.",
+  "algorithm_role": "retrieve_normalize",
+  "disclaimer": "vnstock là công cụ phần mềm chạy trên máy người dùng: yêu cầu xuất phát từ thiết bị của người dùng tới nguồn, vnstock đọc phản hồi rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình. vnstock không phải đơn vị cung cấp dữ liệu và không tư vấn đầu tư tài chính. Việc tái tạo có suy diễn và đối chiếu nên dữ liệu không phải lúc nào cũng chính xác tuyệt đối; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất. Các liên kết điều khoản và thông số tệp robots.txt chỉ mang tính tham khảo chung, có thể thay đổi theo thời gian mà không báo trước và không hẳn áp dụng trực tiếp cho từng trang hoặc địa chỉ truy xuất cụ thể; người dùng tự đối chiếu và chịu trách nhiệm tuân thủ quy định của bên cung cấp nguồn.",
+  "is_tool_only": "True",
+  "latency_ms": "146",
+  "length": "264",
+  "organisation": "Dukascopy Bank SA",
+  "request_count": "1",
+  "requested_at": "2026-11-06T06:05:09.567Z",
+  "robots_txt": "jetta.dukascopy.com: 404. www: Allow /, disallows /fxspider/*.",
+  "route": "market.global_index.ohlcv",
+  "source": "dukascopy",
+  "source_name": "Dukascopy (hàng hoá, ngoại hối)",
+  "symbol": "USA30",
+  "terms_url": "https://www.dukascopy.com/swiss/english/legal-pages/terms-of-use/",
+  "tool": "vnstock"
+ },
+ "rows": [
+  {
+   "time": "2026-01-01T00:00:00.000Z",
+   "open": 48127.54,
+   "high": 48165.99,
+   "low": 48097.5,
+   "close": 48144.48,
+   "volume": 0.015324
+  },
+  {
+   "time": "2026-01-02T00:00:00.000Z",
+   "open": 48144.98,
+   "high": 48404.13,
+   "low": 47830.0,
+   "close": 48368.32,
+   "volume": 5.363914
+  },
+  {
+   "time": "2026-01-04T00:00:00.000Z",
+   "open": 48395.05,
+   "high": 48399.0,
+   "low": 48341.4,
+   "close": 48372.43,
+   "volume": 0.031726
+  },
+  {
+   "time": "2026-01-05T00:00:00.000Z",
+   "open": 48371.9,
+   "high": 49212.61,
+   "low": 48318.4,
+   "close": 48959.4,
+   "volume": 4.355442
+  },
+  {
+   "time": "2026-01-06T00:00:00.000Z",
+   "open": 48960.98,
+   "high": 49508.42,
+   "low": 48842.93,
+   "close": 49479.0,
+   "volume": 3.939057
+  }
+ ]
+}

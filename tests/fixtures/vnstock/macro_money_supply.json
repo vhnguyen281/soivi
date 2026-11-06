@@ -1,0 +1,76 @@
+{
+ "call": "Macro().economy().money_supply(start=\"2000\")",
+ "captured_at": "2026-11-06T06:04:33.718526+00:00",
+ "total_rows": 38,
+ "columns": [
+  "time",
+  "total",
+  "institutional",
+  "private",
+  "vnindex"
+ ],
+ "dtypes": {
+  "time": "datetime64[ns, Asia/Ho_Chi_Minh]",
+  "total": "float64",
+  "institutional": "float64",
+  "private": "float64",
+  "vnindex": "float64"
+ },
+ "attrs": {
+  "access_domain": "['aseansc.com.vn']",
+  "access_method": "['GET']",
+  "access_protocol": "https",
+  "algorithm_participation": "Yêu cầu đi từ máy người dùng tới nguồn. vnstock đọc phản hồi thô của nguồn rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình: đặt tên cột theo chuẩn chung, ép kiểu, quy đổi đơn vị và múi giờ, ghép các trang, đối chiếu mã, kỳ báo cáo và các dòng tương đương. Các bước này có suy diễn và đối chiếu nên kết quả không phải lúc nào cũng khớp hoàn toàn với dữ liệu gốc; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất.",
+  "algorithm_role": "retrieve_normalize",
+  "disclaimer": "vnstock là công cụ phần mềm chạy trên máy người dùng: yêu cầu xuất phát từ thiết bị của người dùng tới nguồn, vnstock đọc phản hồi rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình. vnstock không phải đơn vị cung cấp dữ liệu và không tư vấn đầu tư tài chính. Việc tái tạo có suy diễn và đối chiếu nên dữ liệu không phải lúc nào cũng chính xác tuyệt đối; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất. Các liên kết điều khoản và thông số tệp robots.txt chỉ mang tính tham khảo chung, có thể thay đổi theo thời gian mà không báo trước và không hẳn áp dụng trực tiếp cho từng trang hoặc địa chỉ truy xuất cụ thể; người dùng tự đối chiếu và chịu trách nhiệm tuân thủ quy định của bên cung cấp nguồn.",
+  "is_tool_only": "True",
+  "latency_ms": "17",
+  "length": "38",
+  "organisation": "Công ty CP Chứng khoán Asean",
+  "request_count": "1",
+  "requested_at": "2026-11-06T06:04:33.695Z",
+  "robots_txt": "www: User-agent *, Allow /. asean-apigw: 301, no robots.",
+  "route": "macro.currency.money_supply",
+  "source": "asean",
+  "source_name": "Asean Securities",
+  "terms_url": "https://www.aseansc.com.vn/policy/dieu-khoan-dich-vu-aseansc.pdf",
+  "tool": "vnstock"
+ },
+ "rows": [
+  {
+   "time": "2016-03-30T17:00:00.000Z",
+   "total": 6267958.0,
+   "institutional": 2102752.0,
+   "private": 3206498.0,
+   "vnindex": 561.22
+  },
+  {
+   "time": "2016-06-29T17:00:00.000Z",
+   "total": 6592394.0,
+   "institutional": 2281285.0,
+   "private": 3357394.0,
+   "vnindex": 632.26
+  },
+  {
+   "time": "2016-09-29T17:00:00.000Z",
+   "total": 6829893.0,
+   "institutional": 2349984.0,
+   "private": 3479828.0,
+   "vnindex": 685.73
+  },
+  {
+   "time": "2016-12-30T17:00:00.000Z",
+   "total": 7125801.0,
+   "institutional": 2508964.0,
+   "private": 3489426.0,
+   "vnindex": 664.87
+  },
+  {
+   "time": "2017-03-30T17:00:00.000Z",
+   "total": 7374307.0,
+   "institutional": 2488046.0,
+   "private": 3708825.0,
+   "vnindex": 722.31
+  }
+ ]
+}

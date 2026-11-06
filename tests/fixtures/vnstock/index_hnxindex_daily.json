@@ -1,0 +1,87 @@
+{
+ "call": "Market().index(\"HNXINDEX\").ohlcv(start=\"2000-01-01\", interval=\"1D\", limit=10000, source=\"vci\")",
+ "captured_at": "2026-11-06T06:04:06.328897+00:00",
+ "total_rows": 5230,
+ "columns": [
+  "time",
+  "open",
+  "high",
+  "low",
+  "close",
+  "volume"
+ ],
+ "dtypes": {
+  "time": "datetime64[ns, Asia/Ho_Chi_Minh]",
+  "open": "float64",
+  "high": "float64",
+  "low": "float64",
+  "close": "float64",
+  "volume": "int64"
+ },
+ "attrs": {
+  "access_domain": "['vietcap.com.vn']",
+  "access_method": "['POST']",
+  "access_protocol": "https",
+  "algorithm_participation": "Yêu cầu đi từ máy người dùng tới nguồn. vnstock đọc phản hồi thô của nguồn rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình: đặt tên cột theo chuẩn chung, ép kiểu, quy đổi đơn vị và múi giờ, ghép các trang, đối chiếu mã, kỳ báo cáo và các dòng tương đương. Các bước này có suy diễn và đối chiếu nên kết quả không phải lúc nào cũng khớp hoàn toàn với dữ liệu gốc; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất.",
+  "algorithm_role": "retrieve_normalize",
+  "disclaimer": "vnstock là công cụ phần mềm chạy trên máy người dùng: yêu cầu xuất phát từ thiết bị của người dùng tới nguồn, vnstock đọc phản hồi rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình. vnstock không phải đơn vị cung cấp dữ liệu và không tư vấn đầu tư tài chính. Việc tái tạo có suy diễn và đối chiếu nên dữ liệu không phải lúc nào cũng chính xác tuyệt đối; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất. Các liên kết điều khoản và thông số tệp robots.txt chỉ mang tính tham khảo chung, có thể thay đổi theo thời gian mà không báo trước và không hẳn áp dụng trực tiếp cho từng trang hoặc địa chỉ truy xuất cụ thể; người dùng tự đối chiếu và chịu trách nhiệm tuân thủ quy định của bên cung cấp nguồn.",
+  "end": "2026-11-06",
+  "interval": "1D",
+  "is_tool_only": "True",
+  "latency_ms": "375",
+  "length": "5230",
+  "organisation": "Công ty CP Chứng khoán Vietcap",
+  "request_count": "1",
+  "requested_at": "2026-11-06T06:04:05.924Z",
+  "robots_txt": "trading: User-agent *, Allow /, Crawl-delay 10. www: Disallow /cgi-bin/ only.",
+  "route": "market.index.ohlcv",
+  "source": "vci",
+  "source_name": "Vietcap (VCI)",
+  "start": "2000-01-01",
+  "symbol": "HNXINDEX",
+  "terms_url": "https://www.vietcap.com.vn/dieu-khoan-su-dung-chinh-sach-bao-mat",
+  "tool": "vnstock"
+ },
+ "rows": [
+  {
+   "time": "2005-07-14T00:00:00.000Z",
+   "open": 100.0,
+   "high": 100.0,
+   "low": 100.0,
+   "close": 100.0,
+   "volume": 622854
+  },
+  {
+   "time": "2005-07-18T00:00:00.000Z",
+   "open": 99.48,
+   "high": 99.48,
+   "low": 99.48,
+   "close": 99.48,
+   "volume": 31320
+  },
+  {
+   "time": "2005-07-20T00:00:00.000Z",
+   "open": 95.57,
+   "high": 95.57,
+   "low": 95.57,
+   "close": 95.57,
+   "volume": 250640
+  },
+  {
+   "time": "2005-07-22T00:00:00.000Z",
+   "open": 97.46,
+   "high": 97.46,
+   "low": 97.46,
+   "close": 97.46,
+   "volume": 14850
+  },
+  {
+   "time": "2005-07-25T00:00:00.000Z",
+   "open": 96.51,
+   "high": 96.51,
+   "low": 96.51,
+   "close": 96.51,
+   "volume": 11880
+  }
+ ]
+}

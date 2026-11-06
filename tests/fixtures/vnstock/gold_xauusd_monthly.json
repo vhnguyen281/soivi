@@ -1,0 +1,85 @@
+{
+ "call": "Market().commodity(\"XAUUSD\").ohlcv(start=\"2000-01-01\", interval=\"1M\", limit=10000)",
+ "captured_at": "2026-11-06T06:04:57.839240+00:00",
+ "total_rows": 11,
+ "columns": [
+  "time",
+  "open",
+  "high",
+  "low",
+  "close",
+  "volume"
+ ],
+ "dtypes": {
+  "time": "datetime64[ns, UTC]",
+  "open": "float64",
+  "high": "float64",
+  "low": "float64",
+  "close": "float64",
+  "volume": "float64"
+ },
+ "attrs": {
+  "access_domain": "['dukascopy.com']",
+  "access_method": "['GET']",
+  "access_protocol": "https",
+  "algorithm_participation": "Yêu cầu đi từ máy người dùng tới nguồn. vnstock đọc phản hồi thô của nguồn rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình: đặt tên cột theo chuẩn chung, ép kiểu, quy đổi đơn vị và múi giờ, ghép các trang, đối chiếu mã, kỳ báo cáo và các dòng tương đương. Ngoài ra, vnstock tự tính các cột ghi trong derived_fields, là những giá trị nguồn không trả sẵn, chẳng hạn nến khung lớn gộp từ nến khung nhỏ hay tổng cộng từ các thành phần. Các bước này có suy diễn và đối chiếu nên kết quả không phải lúc nào cũng khớp hoàn toàn với dữ liệu gốc; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất.",
+  "algorithm_role": "retrieve_derive",
+  "derived_fields": "['time', 'open', 'high', 'low', 'close', 'volume', 'value']",
+  "disclaimer": "vnstock là công cụ phần mềm chạy trên máy người dùng: yêu cầu xuất phát từ thiết bị của người dùng tới nguồn, vnstock đọc phản hồi rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình. vnstock không phải đơn vị cung cấp dữ liệu và không tư vấn đầu tư tài chính. Việc tái tạo có suy diễn và đối chiếu nên dữ liệu không phải lúc nào cũng chính xác tuyệt đối; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất. Các liên kết điều khoản và thông số tệp robots.txt chỉ mang tính tham khảo chung, có thể thay đổi theo thời gian mà không báo trước và không hẳn áp dụng trực tiếp cho từng trang hoặc địa chỉ truy xuất cụ thể; người dùng tự đối chiếu và chịu trách nhiệm tuân thủ quy định của bên cung cấp nguồn.",
+  "is_tool_only": "True",
+  "latency_ms": "13",
+  "length": "11",
+  "organisation": "Dukascopy Bank SA",
+  "request_count": "1",
+  "requested_at": "2026-11-06T06:04:57.820Z",
+  "robots_txt": "jetta.dukascopy.com: 404. www: Allow /, disallows /fxspider/*.",
+  "route": "market.commodity.ohlcv",
+  "source": "dukascopy",
+  "source_name": "Dukascopy (hàng hoá, ngoại hối)",
+  "symbol": "XAUUSD",
+  "terms_url": "https://www.dukascopy.com/swiss/english/legal-pages/terms-of-use/",
+  "tool": "vnstock"
+ },
+ "rows": [
+  {
+   "time": "2026-01-01T00:00:00.000Z",
+   "open": 4323.7,
+   "high": 5596.8,
+   "low": 4309.62,
+   "close": 4895.12,
+   "volume": 1258.502831
+  },
+  {
+   "time": "2026-02-01T00:00:00.000Z",
+   "open": 4817.6,
+   "high": 5280.88,
+   "low": 4401.04,
+   "close": 5277.42,
+   "volume": 994.774683
+  },
+  {
+   "time": "2026-03-01T00:00:00.000Z",
+   "open": 5372.2,
+   "high": 5418.88,
+   "low": 4098.27,
+   "close": 4696.06,
+   "volume": 1193.921885
+  },
+  {
+   "time": "2026-04-01T00:00:00.000Z",
+   "open": 4695.96,
+   "high": 4889.34,
+   "low": 4509.88,
+   "close": 4626.4,
+   "volume": 938.001142
+  },
+  {
+   "time": "2026-05-01T00:00:00.000Z",
+   "open": 4626.3,
+   "high": 4773.34,
+   "low": 4366.05,
+   "close": 4539.34,
+   "volume": 1042.78975
+  }
+ ]
+}

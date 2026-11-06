@@ -66,3 +66,32 @@ Pages: /docs/vnstock/quy-mo-fund, /vi-mo-macro, /dinh-gia-analytics, /thi-truong
 - **Licence** (effective 30/11/2026): one user per Bronze/Silver/Golden, **up to 13 registered devices** per package;
   no right to resell or distribute source data; users must check each source's terms (CafeF, DigiInvest, vnd,
   dukascopy, asean). Publishing derived statistics is not addressed directly — confirm before publishing.
+
+## Confirmed by the probe (2026-11-06, vnstock 5.2.1, Golden) — supersedes the sections above
+Full results: [probe-results.md](probe-results.md); summary and open decisions: [probe-report.md](probe-report.md).
+Fixtures (first 5 rows of each call): `tests/fixtures/vnstock/<name>.json`.
+
+| need | call that works | history | notes |
+|---|---|---|---|
+| index prices | `Market().index(s).ohlcv(start=, interval="1D", limit=10000, source="vci")` | VNINDEX 2004-01, HNXINDEX 2005-07, VN30 2012-02, VNMID/VNSML 2015-05, VN100 2022-06 | **`limit` is required**: without it ohlcv stops at 1,000 rows. Only `vci` and `kbs` serve indices; `kbs` starts 2012-06 and returns VNMID/VNSML empty. `interval="1M"` works. |
+| index list / members | `Reference().index.list()`, `.groups()`, `.members("VN30")` | — | members: one column `symbol`. |
+| P/E, P/B | `Analytics().valuation(i).pe(duration="20Y")`, `.pb()`, `.evaluation()` | 2017-12 (≈9 y) | columns `report_date`, `pe`. Valid indices: VNINDEX, VN30, HNX/HNXINDEX only. |
+| stock summary | `Market().equity(s).summary()` | current | `dividend_yield` is a fraction (0.039), `pe`, `pb`, `market_cap` (VND). |
+| ratios, income | `Fundamental().equity(s).ratio()`, `.income_statement()` | 2018 | long format with units. |
+| dividends | `Reference().events.calendar(start=, end=, event_type="dividend")` | — | filter is loose: also returns share issues; keep `event_type == "DIV"`. |
+| CPI | `Macro().economy().cpi(start=)` | 2016-01 | `cpi_total`, `cpi_core` in **% y/y**. |
+| GDP | `Macro().economy().gdp(start=, period="year"\|"quarter")` | year 2015; quarter non-null from 2018-Q3 | % growth. |
+| money, credit | `Macro().economy().money_supply()`, `.credit()` | 2014–2016, quarterly, to 2025-06 | context only. |
+| FX | `Macro().currency().exchange_rate(start=)` | 2020-01 | `center_rate`, `vcb_rate`, `market_rate`. `Market().forex("USDVND")` fails (HTTP 400). |
+| policy rate | `Macro().currency().policy_rate(start=)` | 2021-01 | `refinance`, `discount`. |
+| interbank | `Macro().currency().interbank_rate(period="ON"\|"1W"\|"1M"\|"3M", start=)` | 2016-01 | column `interest`. |
+| deposit rates | `Macro().currency().deposit_rate(mode="term")` | snapshot | 30 banks; `interest_1m/3m/6m/13m/36m`; per-bank dates vary. |
+| gov bond yields | `Macro().global_macro.bond_yield(market="VN", tenor=, start=)` | 2020-08 | tenors 1Y, 2Y, 3Y, 5Y, 10Y; 7Y/15Y empty without error; `resolution` ignored (daily, incl. Sundays); OHLC columns, use `close`. |
+| US 10Y, Fed, DXY | `Macro().global_macro.bond_yield(market="US", ...)`, `.fed_rate()`, `.index("DXY")` | 2020-08 / 2021-01 | |
+| world gold | `Market().commodity("XAUUSD").ohlcv(...)` | **current calendar year only** | Dukascopy; earlier years return empty. SJC: gone (no symbol, `Macro().commodity()` raises). |
+| S&P 500 | `Market().index("USA500", scope="global").ohlcv(...)` (`SPX` also works) | **current calendar year only** | Dukascopy; `US500` fails (HTTP 400). |
+| funds | `Reference().fund.list("bond_fund")`, `Market().fund(s).history()`, `.nav()`, `.performance()` | NAV from 2013 (DCBF, VFF) | 15 bond funds, 12 with ≥36 months; `inception_date` empty; some NAVs weekly. |
+
+General: macro data come from `asean` and are short whatever `start` says; `length` must be a row count; every
+result carries `df.attrs` provenance (source, route, organisation, terms_url, robots_txt). Several calls return an
+empty table instead of raising, so the wrapper must raise on empty results.

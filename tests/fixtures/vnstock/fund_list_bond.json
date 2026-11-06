@@ -1,0 +1,97 @@
+{
+ "call": "Reference().fund.list(\"bond_fund\")",
+ "captured_at": "2026-11-06T06:05:15.742397+00:00",
+ "total_rows": 15,
+ "columns": [
+  "ticker",
+  "organ_name",
+  "organ_short_name",
+  "fund_type",
+  "management_fee",
+  "inception_date",
+  "nav",
+  "nav_update_at"
+ ],
+ "dtypes": {
+  "ticker": "string",
+  "organ_name": "string",
+  "organ_short_name": "string",
+  "fund_type": "string",
+  "management_fee": "float64",
+  "inception_date": "datetime64[ns, Asia/Ho_Chi_Minh]",
+  "nav": "float64",
+  "nav_update_at": "datetime64[ns, Asia/Ho_Chi_Minh]"
+ },
+ "attrs": {
+  "access_domain": "['cafef.vn']",
+  "access_method": "['GET']",
+  "access_protocol": "https",
+  "algorithm_participation": "Yêu cầu đi từ máy người dùng tới nguồn. vnstock đọc phản hồi thô của nguồn rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình: đặt tên cột theo chuẩn chung, ép kiểu, quy đổi đơn vị và múi giờ, ghép các trang, đối chiếu mã, kỳ báo cáo và các dòng tương đương. Các bước này có suy diễn và đối chiếu nên kết quả không phải lúc nào cũng khớp hoàn toàn với dữ liệu gốc; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất.",
+  "algorithm_role": "retrieve_normalize",
+  "disclaimer": "vnstock là công cụ phần mềm chạy trên máy người dùng: yêu cầu xuất phát từ thiết bị của người dùng tới nguồn, vnstock đọc phản hồi rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình. vnstock không phải đơn vị cung cấp dữ liệu và không tư vấn đầu tư tài chính. Việc tái tạo có suy diễn và đối chiếu nên dữ liệu không phải lúc nào cũng chính xác tuyệt đối; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất. Các liên kết điều khoản và thông số tệp robots.txt chỉ mang tính tham khảo chung, có thể thay đổi theo thời gian mà không báo trước và không hẳn áp dụng trực tiếp cho từng trang hoặc địa chỉ truy xuất cụ thể; người dùng tự đối chiếu và chịu trách nhiệm tuân thủ quy định của bên cung cấp nguồn.",
+  "is_tool_only": "True",
+  "latency_ms": "212",
+  "length": "15",
+  "organisation": "Công ty Cổ phần VCCorp",
+  "request_count": "1",
+  "requested_at": "2026-11-06T06:05:15.521Z",
+  "robots_txt": "cafef.vn: User-agent *, Allow /. apiweb.cafef.vn, cafefnew.mediacdn.vn, cafef1.mediacdn.vn: 404, no rules.",
+  "route": "reference.fund.list",
+  "source": "cafef",
+  "source_name": "CafeF",
+  "terms_url": "https://cafef.vn/static/chinh-sach-bao-mat.html",
+  "tool": "vnstock"
+ },
+ "rows": [
+  {
+   "ticker": "LHBF",
+   "organ_name": null,
+   "organ_short_name": "CTCP Quản lý Quỹ Đầu tư Lighthouse (LIGHTHOUSE CAPITAL)",
+   "fund_type": "bond_fund",
+   "management_fee": null,
+   "inception_date": null,
+   "nav": 15455.12,
+   "nav_update_at": "2026-11-04T17:00:00.000Z"
+  },
+  {
+   "ticker": "VNDBF",
+   "organ_name": null,
+   "organ_short_name": "Công ty TNHH MTV Quản lý Quỹ đầu tư chứng khoán I.P.A (IPAAM)",
+   "fund_type": "bond_fund",
+   "management_fee": null,
+   "inception_date": null,
+   "nav": 16492.44,
+   "nav_update_at": "2026-11-05T17:00:00.000Z"
+  },
+  {
+   "ticker": "VCBF-FIF",
+   "organ_name": null,
+   "organ_short_name": "Công ty TNHH Quản lý quỹ đầu tư chứng khoán Vietcombank (VCBF)",
+   "fund_type": "bond_fund",
+   "management_fee": null,
+   "inception_date": null,
+   "nav": 16567.02,
+   "nav_update_at": "2026-11-04T17:00:00.000Z"
+  },
+  {
+   "ticker": "DCBF",
+   "organ_name": null,
+   "organ_short_name": "Công ty Cổ phần Quản lý Quỹ đầu tư Dragon Capital Việt Nam (DRAGON CAPITAL VIETNAM)",
+   "fund_type": "bond_fund",
+   "management_fee": null,
+   "inception_date": null,
+   "nav": 30847.49,
+   "nav_update_at": "2026-11-04T17:00:00.000Z"
+  },
+  {
+   "ticker": "VFF",
+   "organ_name": null,
+   "organ_short_name": "Công ty Cổ phần Quản lỹ Quỹ VinaCapital (VINACAPITAL)",
+   "fund_type": "bond_fund",
+   "management_fee": null,
+   "inception_date": null,
+   "nav": 27214.48,
+   "nav_update_at": "2026-11-04T17:00:00.000Z"
+  }
+ ]
+}

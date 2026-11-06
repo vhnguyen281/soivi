@@ -1,0 +1,56 @@
+{
+ "call": "Analytics().valuation(\"HNXINDEX\").pe(duration=\"20Y\")",
+ "captured_at": "2026-11-06T06:04:18.265741+00:00",
+ "total_rows": 2220,
+ "columns": [
+  "report_date",
+  "pe"
+ ],
+ "dtypes": {
+  "report_date": "datetime64[ns, Asia/Ho_Chi_Minh]",
+  "pe": "float64"
+ },
+ "attrs": {
+  "access_domain": "['vndirect.com.vn']",
+  "access_method": "['GET']",
+  "access_protocol": "https",
+  "algorithm_participation": "Yêu cầu đi từ máy người dùng tới nguồn. vnstock đọc phản hồi thô của nguồn rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình: đặt tên cột theo chuẩn chung, ép kiểu, quy đổi đơn vị và múi giờ, ghép các trang, đối chiếu mã, kỳ báo cáo và các dòng tương đương. Các bước này có suy diễn và đối chiếu nên kết quả không phải lúc nào cũng khớp hoàn toàn với dữ liệu gốc; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất.",
+  "algorithm_role": "retrieve_normalize",
+  "disclaimer": "vnstock là công cụ phần mềm chạy trên máy người dùng: yêu cầu xuất phát từ thiết bị của người dùng tới nguồn, vnstock đọc phản hồi rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình. vnstock không phải đơn vị cung cấp dữ liệu và không tư vấn đầu tư tài chính. Việc tái tạo có suy diễn và đối chiếu nên dữ liệu không phải lúc nào cũng chính xác tuyệt đối; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất. Các liên kết điều khoản và thông số tệp robots.txt chỉ mang tính tham khảo chung, có thể thay đổi theo thời gian mà không báo trước và không hẳn áp dụng trực tiếp cho từng trang hoặc địa chỉ truy xuất cụ thể; người dùng tự đối chiếu và chịu trách nhiệm tuân thủ quy định của bên cung cấp nguồn.",
+  "is_tool_only": "True",
+  "latency_ms": "348",
+  "length": "2220",
+  "organisation": "Công ty CP Chứng khoán VNDIRECT",
+  "request_count": "1",
+  "requested_at": "2026-11-06T06:04:17.908Z",
+  "robots_txt": "404 trên trang chủ và máy chủ API (nguồn không thiết lập tệp robots.txt riêng).",
+  "route": "insights.valuation.pe",
+  "source": "vnd",
+  "source_name": "VNDirect (VND)",
+  "symbol": "HNXINDEX",
+  "terms_url": "https://www.vndirect.com.vn/dieu-khoan-su-dung/",
+  "tool": "vnstock"
+ },
+ "rows": [
+  {
+   "report_date": "2017-12-14T17:00:00.000Z",
+   "pe": 12.5078167619
+  },
+  {
+   "report_date": "2017-12-17T17:00:00.000Z",
+   "pe": 12.6727182338
+  },
+  {
+   "report_date": "2017-12-18T17:00:00.000Z",
+   "pe": 12.6374528917
+  },
+  {
+   "report_date": "2017-12-19T17:00:00.000Z",
+   "pe": 12.7194347203
+  },
+  {
+   "report_date": "2017-12-20T17:00:00.000Z",
+   "pe": 12.6790204434
+  }
+ ]
+}

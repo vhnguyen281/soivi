@@ -1,0 +1,90 @@
+{
+ "call": "Macro().economy().gdp(start=\"1990\", period=\"year\")",
+ "captured_at": "2026-11-06T06:04:31.624300+00:00",
+ "total_rows": 11,
+ "columns": [
+  "time",
+  "agriculture",
+  "industry",
+  "services",
+  "tax",
+  "gdp",
+  "vnindex"
+ ],
+ "dtypes": {
+  "time": "datetime64[ns, Asia/Ho_Chi_Minh]",
+  "agriculture": "float64",
+  "industry": "float64",
+  "services": "float64",
+  "tax": "float64",
+  "gdp": "float64",
+  "vnindex": "float64"
+ },
+ "attrs": {
+  "access_domain": "['aseansc.com.vn']",
+  "access_method": "['GET']",
+  "access_protocol": "https",
+  "algorithm_participation": "Yêu cầu đi từ máy người dùng tới nguồn. vnstock đọc phản hồi thô của nguồn rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình: đặt tên cột theo chuẩn chung, ép kiểu, quy đổi đơn vị và múi giờ, ghép các trang, đối chiếu mã, kỳ báo cáo và các dòng tương đương. Các bước này có suy diễn và đối chiếu nên kết quả không phải lúc nào cũng khớp hoàn toàn với dữ liệu gốc; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất.",
+  "algorithm_role": "retrieve_normalize",
+  "disclaimer": "vnstock là công cụ phần mềm chạy trên máy người dùng: yêu cầu xuất phát từ thiết bị của người dùng tới nguồn, vnstock đọc phản hồi rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình. vnstock không phải đơn vị cung cấp dữ liệu và không tư vấn đầu tư tài chính. Việc tái tạo có suy diễn và đối chiếu nên dữ liệu không phải lúc nào cũng chính xác tuyệt đối; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất. Các liên kết điều khoản và thông số tệp robots.txt chỉ mang tính tham khảo chung, có thể thay đổi theo thời gian mà không báo trước và không hẳn áp dụng trực tiếp cho từng trang hoặc địa chỉ truy xuất cụ thể; người dùng tự đối chiếu và chịu trách nhiệm tuân thủ quy định của bên cung cấp nguồn.",
+  "is_tool_only": "True",
+  "latency_ms": "15",
+  "length": "11",
+  "organisation": "Công ty CP Chứng khoán Asean",
+  "request_count": "1",
+  "requested_at": "2026-11-06T06:04:31.602Z",
+  "robots_txt": "www: User-agent *, Allow /. asean-apigw: 301, no robots.",
+  "route": "macro.economy.gdp",
+  "source": "asean",
+  "source_name": "Asean Securities",
+  "terms_url": "https://www.aseansc.com.vn/policy/dieu-khoan-dich-vu-aseansc.pdf",
+  "tool": "vnstock"
+ },
+ "rows": [
+  {
+   "time": "2015-12-30T17:00:00.000Z",
+   "agriculture": 0.00045,
+   "industry": -2.55231,
+   "services": -2.998,
+   "tax": null,
+   "gdp": 6.67931,
+   "vnindex": null
+  },
+  {
+   "time": "2016-12-30T17:00:00.000Z",
+   "agriculture": 0.21827,
+   "industry": 2.58695,
+   "services": 2.67423,
+   "tax": 0.73137,
+   "gdp": 6.21081,
+   "vnindex": 664.87
+  },
+  {
+   "time": "2017-12-30T17:00:00.000Z",
+   "agriculture": 0.44537,
+   "industry": 2.76843,
+   "services": 2.87046,
+   "tax": 0.72798,
+   "gdp": 6.81225,
+   "vnindex": 984.24
+  },
+  {
+   "time": "2018-12-30T17:00:00.000Z",
+   "agriculture": 0.55631,
+   "industry": 3.09731,
+   "services": 2.72719,
+   "tax": 0.69497,
+   "gdp": 7.0758,
+   "vnindex": 892.54
+  },
+  {
+   "time": "2019-12-30T17:00:00.000Z",
+   "agriculture": 0.28811,
+   "industry": 3.16679,
+   "services": 2.83053,
+   "tax": 0.73203,
+   "gdp": 7.01744,
+   "vnindex": 960.99
+  }
+ ]
+}

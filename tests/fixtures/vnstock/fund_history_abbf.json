@@ -1,0 +1,56 @@
+{
+ "call": "Market().fund(\"ABBF\").history()",
+ "captured_at": "2026-11-06T06:05:23.260902+00:00",
+ "total_rows": 323,
+ "columns": [
+  "time",
+  "nav"
+ ],
+ "dtypes": {
+  "time": "datetime64[ns, Asia/Ho_Chi_Minh]",
+  "nav": "float64"
+ },
+ "attrs": {
+  "access_domain": "['cafef.vn']",
+  "access_method": "['GET']",
+  "access_protocol": "https",
+  "algorithm_participation": "Yêu cầu đi từ máy người dùng tới nguồn. vnstock đọc phản hồi thô của nguồn rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình: đặt tên cột theo chuẩn chung, ép kiểu, quy đổi đơn vị và múi giờ, ghép các trang, đối chiếu mã, kỳ báo cáo và các dòng tương đương. Các bước này có suy diễn và đối chiếu nên kết quả không phải lúc nào cũng khớp hoàn toàn với dữ liệu gốc; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất.",
+  "algorithm_role": "retrieve_normalize",
+  "disclaimer": "vnstock là công cụ phần mềm chạy trên máy người dùng: yêu cầu xuất phát từ thiết bị của người dùng tới nguồn, vnstock đọc phản hồi rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình. vnstock không phải đơn vị cung cấp dữ liệu và không tư vấn đầu tư tài chính. Việc tái tạo có suy diễn và đối chiếu nên dữ liệu không phải lúc nào cũng chính xác tuyệt đối; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất. Các liên kết điều khoản và thông số tệp robots.txt chỉ mang tính tham khảo chung, có thể thay đổi theo thời gian mà không báo trước và không hẳn áp dụng trực tiếp cho từng trang hoặc địa chỉ truy xuất cụ thể; người dùng tự đối chiếu và chịu trách nhiệm tuân thủ quy định của bên cung cấp nguồn.",
+  "is_tool_only": "True",
+  "latency_ms": "100",
+  "length": "323",
+  "organisation": "Công ty Cổ phần VCCorp",
+  "request_count": "1",
+  "requested_at": "2026-11-06T06:05:23.155Z",
+  "robots_txt": "cafef.vn: User-agent *, Allow /. apiweb.cafef.vn, cafefnew.mediacdn.vn, cafef1.mediacdn.vn: 404, no rules.",
+  "route": "market.fund.history",
+  "source": "cafef",
+  "source_name": "CafeF",
+  "symbol": "ABBF",
+  "terms_url": "https://cafef.vn/static/chinh-sach-bao-mat.html",
+  "tool": "vnstock"
+ },
+ "rows": [
+  {
+   "time": "2025-01-12T17:00:00.000Z",
+   "nav": 13140.37
+  },
+  {
+   "time": "2025-01-13T17:00:00.000Z",
+   "nav": 13141.78
+  },
+  {
+   "time": "2025-01-14T17:00:00.000Z",
+   "nav": 13144.18
+  },
+  {
+   "time": "2025-01-15T17:00:00.000Z",
+   "nav": 13144.6
+  },
+  {
+   "time": "2025-01-16T17:00:00.000Z",
+   "nav": 13146.65
+  }
+ ]
+}

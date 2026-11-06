@@ -1,0 +1,94 @@
+{
+ "call": "Fundamental().equity(\"FPT\").income_statement()",
+ "captured_at": "2026-11-06T06:04:25.755623+00:00",
+ "total_rows": 1075,
+ "columns": [
+  "period",
+  "id",
+  "name",
+  "order",
+  "level",
+  "unit",
+  "value"
+ ],
+ "dtypes": {
+  "period": "category",
+  "id": "string",
+  "name": "string",
+  "order": "int64",
+  "level": "category",
+  "unit": "category",
+  "value": "float64"
+ },
+ "attrs": {
+  "access_domain": "['vietcap.com.vn']",
+  "access_method": "['GET']",
+  "access_protocol": "https",
+  "algorithm_participation": "Yêu cầu đi từ máy người dùng tới nguồn. vnstock đọc phản hồi thô của nguồn rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình: đặt tên cột theo chuẩn chung, ép kiểu, quy đổi đơn vị và múi giờ, ghép các trang, đối chiếu mã, kỳ báo cáo và các dòng tương đương. Các bước này có suy diễn và đối chiếu nên kết quả không phải lúc nào cũng khớp hoàn toàn với dữ liệu gốc; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất.",
+  "algorithm_role": "retrieve_normalize",
+  "disclaimer": "vnstock là công cụ phần mềm chạy trên máy người dùng: yêu cầu xuất phát từ thiết bị của người dùng tới nguồn, vnstock đọc phản hồi rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình. vnstock không phải đơn vị cung cấp dữ liệu và không tư vấn đầu tư tài chính. Việc tái tạo có suy diễn và đối chiếu nên dữ liệu không phải lúc nào cũng chính xác tuyệt đối; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất. Các liên kết điều khoản và thông số tệp robots.txt chỉ mang tính tham khảo chung, có thể thay đổi theo thời gian mà không báo trước và không hẳn áp dụng trực tiếp cho từng trang hoặc địa chỉ truy xuất cụ thể; người dùng tự đối chiếu và chịu trách nhiệm tuân thủ quy định của bên cung cấp nguồn.",
+  "format": "long",
+  "is_tool_only": "True",
+  "latency_ms": "1183",
+  "length": "1075",
+  "organisation": "Công ty CP Chứng khoán Vietcap",
+  "report": "income_statement",
+  "request_count": "2",
+  "requested_at": "2026-11-06T06:04:24.554Z",
+  "robots_txt": "trading: User-agent *, Allow /, Crawl-delay 10. www: Disallow /cgi-bin/ only.",
+  "route": "fundamental.equity.income_statement",
+  "source": "vci",
+  "source_name": "Vietcap (VCI)",
+  "symbol": "FPT",
+  "taxonomy_version": "vas_v1",
+  "terms_url": "https://www.vietcap.com.vn/dieu-khoan-su-dung-chinh-sach-bao-mat",
+  "tool": "vnstock"
+ },
+ "rows": [
+  {
+   "period": "2026-Q3",
+   "id": "IS_REVENUE",
+   "name": "DOANH THU BÁN HÀNG VÀ CUNG CẤP DỊCH VỤ",
+   "order": 1,
+   "level": 1,
+   "unit": "VNĐ",
+   "value": 13823172315922.0
+  },
+  {
+   "period": "2026-Q3",
+   "id": "IS_REVENUE_DEDUCTIONS",
+   "name": "Các khoản giảm trừ doanh thu",
+   "order": 2,
+   "level": 1,
+   "unit": "VNĐ",
+   "value": -69013312527.0
+  },
+  {
+   "period": "2026-Q3",
+   "id": "IS_NET_REVENUE",
+   "name": "Doanh thu thuần về bán hàng và cung cấp dịch vụ",
+   "order": 3,
+   "level": 1,
+   "unit": "VNĐ",
+   "value": 13754159003395.0
+  },
+  {
+   "period": "2026-Q3",
+   "id": "IS_COST_OF_GOODS_SOLD",
+   "name": "Giá vốn hàng bán",
+   "order": 4,
+   "level": 1,
+   "unit": "VNĐ",
+   "value": -9489817308109.0
+  },
+  {
+   "period": "2026-Q3",
+   "id": "IS_GROSS_PROFIT",
+   "name": "LỢI NHUẬN GỘP VỀ BÁN HÀNG VÀ CUNG CẤP DỊCH VỤ",
+   "order": 5,
+   "level": 1,
+   "unit": "VNĐ",
+   "value": 4264341695286.0
+  }
+ ]
+}

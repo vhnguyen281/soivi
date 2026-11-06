@@ -10,6 +10,7 @@ works on machines without it.
 """
 
 import datetime as dt
+from collections.abc import Sequence
 from dataclasses import dataclass
 from decimal import Decimal
 from typing import Any, Protocol
@@ -38,9 +39,28 @@ class IndexClose:
     source: str  # vnstock's df.attrs["source"], e.g. "kbs"
 
 
+# One step of a vnstock call chain: (name, args, kwargs). args=None means attribute
+# access, e.g. Reference().fund.list("bond_fund") is
+# [("Reference", (), {}), ("fund", None, {}), ("list", ("bond_fund",), {})].
+Step = tuple[str, tuple[Any, ...] | None, dict[str, Any]]
+
+
+def describe(chain: Sequence[Step]) -> str:
+    """`Market().index("VN30").ohlcv(start="2000-01-01")` for a chain."""
+    parts = []
+    for name, args, kwargs in chain:
+        if args is None:
+            parts.append(name)
+            continue
+        params = [repr(a) for a in args] + [f"{k}={v!r}" for k, v in kwargs.items()]
+        parts.append(f"{name}({', '.join(params)})")
+    return ".".join(parts).replace("'", '"')
+
+
 class MarketClient(Protocol):
     def status(self) -> AccountStatus: ...
     def latest_index_close(self, symbol: str) -> IndexClose: ...
+    def call(self, chain: Sequence[Step]) -> Any: ...
 
 
 class VnstockClient:
@@ -70,6 +90,21 @@ class VnstockClient:
             release_expires_on=release.get("expires_on"),
             release_days_left=release.get("days_left"),
         )
+
+    def call(self, chain: Sequence[Step]) -> Any:
+        """Run a call chain against vnstock and return what it returns (usually a DataFrame).
+
+        Used by the probe. Exceptions are wrapped in MarketDataError naming the call.
+        """
+        obj: Any = self._vnstock
+        try:
+            for name, args, kwargs in chain:
+                obj = getattr(obj, name)
+                if args is not None:
+                    obj = obj(*args, **kwargs)
+        except Exception as exc:
+            raise MarketDataError(f"{describe(chain)} failed: {type(exc).__name__}: {exc}") from exc
+        return obj
 
     def latest_index_close(self, symbol: str) -> IndexClose:
         call = f'Market().index("{symbol}").ohlcv(length=5)'

@@ -1,0 +1,87 @@
+{
+ "call": "Market().index(\"VN30\").ohlcv(start=\"2000-01-01\", interval=\"1M\", limit=10000)",
+ "captured_at": "2026-11-06T06:04:08.665427+00:00",
+ "total_rows": 174,
+ "columns": [
+  "time",
+  "open",
+  "high",
+  "low",
+  "close",
+  "volume"
+ ],
+ "dtypes": {
+  "time": "datetime64[ns, Asia/Ho_Chi_Minh]",
+  "open": "float64",
+  "high": "float64",
+  "low": "float64",
+  "close": "float64",
+  "volume": "int64"
+ },
+ "attrs": {
+  "access_domain": "['kbsec.com.vn']",
+  "access_method": "['GET']",
+  "access_protocol": "https",
+  "algorithm_participation": "Yêu cầu đi từ máy người dùng tới nguồn. vnstock đọc phản hồi thô của nguồn rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình: đặt tên cột theo chuẩn chung, ép kiểu, quy đổi đơn vị và múi giờ, ghép các trang, đối chiếu mã, kỳ báo cáo và các dòng tương đương. Các bước này có suy diễn và đối chiếu nên kết quả không phải lúc nào cũng khớp hoàn toàn với dữ liệu gốc; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất.",
+  "algorithm_role": "retrieve_normalize",
+  "disclaimer": "vnstock là công cụ phần mềm chạy trên máy người dùng: yêu cầu xuất phát từ thiết bị của người dùng tới nguồn, vnstock đọc phản hồi rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình. vnstock không phải đơn vị cung cấp dữ liệu và không tư vấn đầu tư tài chính. Việc tái tạo có suy diễn và đối chiếu nên dữ liệu không phải lúc nào cũng chính xác tuyệt đối; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất. Các liên kết điều khoản và thông số tệp robots.txt chỉ mang tính tham khảo chung, có thể thay đổi theo thời gian mà không báo trước và không hẳn áp dụng trực tiếp cho từng trang hoặc địa chỉ truy xuất cụ thể; người dùng tự đối chiếu và chịu trách nhiệm tuân thủ quy định của bên cung cấp nguồn.",
+  "end": "2026-11-06",
+  "interval": "1M",
+  "is_tool_only": "True",
+  "latency_ms": "49",
+  "length": "174",
+  "organisation": "Công ty TNHH Chứng khoán KB Việt Nam (KBSV)",
+  "request_count": "1",
+  "requested_at": "2026-11-06T06:04:08.606Z",
+  "robots_txt": "www: User-agent *, Allow /. kbbuddywts: 400 (WAF/firewall rule).",
+  "route": "market.index.ohlcv",
+  "source": "kbs",
+  "source_name": "KB Securities (KBS)",
+  "start": "2000-01-01",
+  "symbol": "VN30",
+  "terms_url": "https://www.kbsec.com.vn/vi/bo-dieu-khoan-dieu-kien-ve-bao-ve-du-lieu-ca-nhan.htm",
+  "tool": "vnstock"
+ },
+ "rows": [
+  {
+   "time": "2012-06-29T00:00:00.000Z",
+   "open": 505.65,
+   "high": 515.88,
+   "low": 489.93,
+   "close": 497.73,
+   "volume": 371444350
+  },
+  {
+   "time": "2012-07-31T00:00:00.000Z",
+   "open": 496.45,
+   "high": 507.98,
+   "low": 479.15,
+   "close": 491.98,
+   "volume": 282468500
+  },
+  {
+   "time": "2012-08-31T00:00:00.000Z",
+   "open": 491.0,
+   "high": 521.75,
+   "low": 446.06,
+   "close": 465.29,
+   "volume": 359729420
+  },
+  {
+   "time": "2012-09-28T00:00:00.000Z",
+   "open": 466.59,
+   "high": 476.0,
+   "low": 445.4,
+   "close": 456.48,
+   "volume": 279521860
+  },
+  {
+   "time": "2012-10-31T00:00:00.000Z",
+   "open": 454.82,
+   "high": 474.49,
+   "low": 447.35,
+   "close": 458.56,
+   "volume": 295148880
+  }
+ ]
+}

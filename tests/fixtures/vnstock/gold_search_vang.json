@@ -1,0 +1,46 @@
+{
+ "call": "Reference().search.symbol(\"vàng\", limit=20)",
+ "captured_at": "2026-11-06T06:05:02.001200+00:00",
+ "total_rows": 0,
+ "columns": [
+  "symbol",
+  "name",
+  "exchange",
+  "short_name",
+  "description",
+  "name_en",
+  "name_local",
+  "symbol_id"
+ ],
+ "dtypes": {
+  "symbol": "string",
+  "name": "string",
+  "exchange": "string",
+  "short_name": "string",
+  "description": "string",
+  "name_en": "string",
+  "name_local": "string",
+  "symbol_id": "string"
+ },
+ "attrs": {
+  "access_domain": "['dukascopy.com']",
+  "access_method": "['GET']",
+  "access_protocol": "https",
+  "algorithm_participation": "Yêu cầu đi từ máy người dùng tới nguồn. vnstock đọc phản hồi thô của nguồn rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình: đặt tên cột theo chuẩn chung, ép kiểu, quy đổi đơn vị và múi giờ, ghép các trang, đối chiếu mã, kỳ báo cáo và các dòng tương đương. Các bước này có suy diễn và đối chiếu nên kết quả không phải lúc nào cũng khớp hoàn toàn với dữ liệu gốc; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất.",
+  "algorithm_role": "retrieve_normalize",
+  "disclaimer": "vnstock là công cụ phần mềm chạy trên máy người dùng: yêu cầu xuất phát từ thiết bị của người dùng tới nguồn, vnstock đọc phản hồi rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình. vnstock không phải đơn vị cung cấp dữ liệu và không tư vấn đầu tư tài chính. Việc tái tạo có suy diễn và đối chiếu nên dữ liệu không phải lúc nào cũng chính xác tuyệt đối; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất. Các liên kết điều khoản và thông số tệp robots.txt chỉ mang tính tham khảo chung, có thể thay đổi theo thời gian mà không báo trước và không hẳn áp dụng trực tiếp cho từng trang hoặc địa chỉ truy xuất cụ thể; người dùng tự đối chiếu và chịu trách nhiệm tuân thủ quy định của bên cung cấp nguồn.",
+  "is_tool_only": "True",
+  "latency_ms": "17",
+  "length": "0",
+  "organisation": "Dukascopy Bank SA",
+  "request_count": "1",
+  "requested_at": "2026-11-06T06:05:01.970Z",
+  "robots_txt": "jetta.dukascopy.com: 404. www: Allow /, disallows /fxspider/*.",
+  "route": "reference.search.symbol",
+  "source": "dukascopy",
+  "source_name": "Dukascopy (hàng hoá, ngoại hối)",
+  "terms_url": "https://www.dukascopy.com/swiss/english/legal-pages/terms-of-use/",
+  "tool": "vnstock"
+ },
+ "rows": []
+}

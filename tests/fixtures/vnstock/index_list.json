@@ -1,0 +1,84 @@
+{
+ "call": "Reference().index.list()",
+ "captured_at": "2026-11-06T06:04:09.692661+00:00",
+ "total_rows": 29,
+ "columns": [
+  "symbol",
+  "name",
+  "description",
+  "full_name",
+  "group",
+  "index_id",
+  "sector_id"
+ ],
+ "dtypes": {
+  "symbol": "string",
+  "name": "string",
+  "description": "string",
+  "full_name": "string",
+  "group": "string",
+  "index_id": "float64",
+  "sector_id": "float64"
+ },
+ "attrs": {
+  "algorithm_participation": "Không gửi yêu cầu nào. Bảng lấy từ dữ liệu tham chiếu đóng gói sẵn trong thư viện (danh mục chỉ số, lịch nghỉ giao dịch), hoặc tính từ dữ liệu đó và đồng hồ trên máy người dùng. Dữ liệu đóng gói chỉ cập nhật tới bản thư viện đang cài, nên có thể thiếu thay đổi xảy ra sau đó. Các bước này có suy diễn và đối chiếu nên kết quả không phải lúc nào cũng khớp hoàn toàn với dữ liệu gốc; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất.",
+  "algorithm_role": "bundled_reference",
+  "disclaimer": "vnstock là công cụ phần mềm chạy trên máy người dùng: yêu cầu xuất phát từ thiết bị của người dùng tới nguồn, vnstock đọc phản hồi rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình. vnstock không phải đơn vị cung cấp dữ liệu và không tư vấn đầu tư tài chính. Việc tái tạo có suy diễn và đối chiếu nên dữ liệu không phải lúc nào cũng chính xác tuyệt đối; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất. Các liên kết điều khoản và thông số tệp robots.txt chỉ mang tính tham khảo chung, có thể thay đổi theo thời gian mà không báo trước và không hẳn áp dụng trực tiếp cho từng trang hoặc địa chỉ truy xuất cụ thể; người dùng tự đối chiếu và chịu trách nhiệm tuân thủ quy định của bên cung cấp nguồn.",
+  "is_tool_only": "True",
+  "length": "29",
+  "organisation": "Vnstock Project",
+  "robots_txt": "N/A (dữ liệu tích hợp nội bộ / metadata tĩnh, không qua mạng).",
+  "route": "reference.index.list",
+  "source": "builtin",
+  "source_name": "Dữ liệu dựng sẵn trong thư viện",
+  "terms_url": "https://vnstocks.com/policies/license",
+  "tool": "vnstock"
+ },
+ "rows": [
+  {
+   "symbol": "VN30",
+   "name": "VN30",
+   "description": "30 cổ phiếu vốn hóa lớn nhất & thanh khoản tốt nhất HOSE",
+   "full_name": "VN30 Index",
+   "group": "HOSE Indices",
+   "index_id": 5.0,
+   "sector_id": null
+  },
+  {
+   "symbol": "VNMID",
+   "name": "VNMID",
+   "description": "Mid-Cap Index - nhóm cổ phiếu vốn hóa trung bình",
+   "full_name": "VNMidCap Index",
+   "group": "HOSE Indices",
+   "index_id": 6.0,
+   "sector_id": null
+  },
+  {
+   "symbol": "VNSML",
+   "name": "VNSML",
+   "description": "Small-Cap Index - nhóm cổ phiếu vốn hóa nhỏ",
+   "full_name": "VNSmallCap Index",
+   "group": "HOSE Indices",
+   "index_id": 7.0,
+   "sector_id": null
+  },
+  {
+   "symbol": "VN100",
+   "name": "VN100",
+   "description": "100 cổ phiếu có vốn hoá lớn nhất HOSE",
+   "full_name": "VN100 Index",
+   "group": "HOSE Indices",
+   "index_id": 8.0,
+   "sector_id": null
+  },
+  {
+   "symbol": "VNALL",
+   "name": "VNALL",
+   "description": "Tất cả cổ phiếu trên HOSE và HNX",
+   "full_name": "VNAll Index",
+   "group": "HOSE Indices",
+   "index_id": 9.0,
+   "sector_id": null
+  }
+ ]
+}

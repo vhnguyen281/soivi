@@ -1,0 +1,104 @@
+{
+ "call": "Macro().currency().deposit_rate(mode=\"term\")",
+ "captured_at": "2026-11-06T06:04:42.410476+00:00",
+ "total_rows": 30,
+ "columns": [
+  "bank_code",
+  "bank_name",
+  "bank_name_en",
+  "time",
+  "interest_1m",
+  "interest_3m",
+  "interest_6m",
+  "interest_13m",
+  "interest_36m"
+ ],
+ "dtypes": {
+  "bank_code": "string",
+  "bank_name": "string",
+  "bank_name_en": "string",
+  "time": "datetime64[ns, Asia/Ho_Chi_Minh]",
+  "interest_1m": "float64",
+  "interest_3m": "float64",
+  "interest_6m": "float64",
+  "interest_13m": "float64",
+  "interest_36m": "float64"
+ },
+ "attrs": {
+  "access_domain": "['aseansc.com.vn']",
+  "access_method": "['GET']",
+  "access_protocol": "https",
+  "algorithm_participation": "Yêu cầu đi từ máy người dùng tới nguồn. vnstock đọc phản hồi thô của nguồn rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình: đặt tên cột theo chuẩn chung, ép kiểu, quy đổi đơn vị và múi giờ, ghép các trang, đối chiếu mã, kỳ báo cáo và các dòng tương đương. Các bước này có suy diễn và đối chiếu nên kết quả không phải lúc nào cũng khớp hoàn toàn với dữ liệu gốc; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất.",
+  "algorithm_role": "retrieve_normalize",
+  "disclaimer": "vnstock là công cụ phần mềm chạy trên máy người dùng: yêu cầu xuất phát từ thiết bị của người dùng tới nguồn, vnstock đọc phản hồi rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình. vnstock không phải đơn vị cung cấp dữ liệu và không tư vấn đầu tư tài chính. Việc tái tạo có suy diễn và đối chiếu nên dữ liệu không phải lúc nào cũng chính xác tuyệt đối; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất. Các liên kết điều khoản và thông số tệp robots.txt chỉ mang tính tham khảo chung, có thể thay đổi theo thời gian mà không báo trước và không hẳn áp dụng trực tiếp cho từng trang hoặc địa chỉ truy xuất cụ thể; người dùng tự đối chiếu và chịu trách nhiệm tuân thủ quy định của bên cung cấp nguồn.",
+  "is_tool_only": "True",
+  "latency_ms": "16",
+  "length": "30",
+  "organisation": "Công ty CP Chứng khoán Asean",
+  "request_count": "1",
+  "requested_at": "2026-11-06T06:04:42.386Z",
+  "robots_txt": "www: User-agent *, Allow /. asean-apigw: 301, no robots.",
+  "route": "macro.currency.deposit_rate",
+  "source": "asean",
+  "source_name": "Asean Securities",
+  "terms_url": "https://www.aseansc.com.vn/policy/dieu-khoan-dich-vu-aseansc.pdf",
+  "tool": "vnstock"
+ },
+ "rows": [
+  {
+   "bank_code": "ABB",
+   "bank_name": "ABBank",
+   "bank_name_en": "ABBank",
+   "time": "2026-10-01T17:00:00.000Z",
+   "interest_1m": 3.6,
+   "interest_3m": 3.8,
+   "interest_6m": 6.05,
+   "interest_13m": 6.05,
+   "interest_36m": 5.6
+  },
+  {
+   "bank_code": "ACB",
+   "bank_name": "Ngân hàng Á Châu",
+   "bank_name_en": "Asia Commercial Bank",
+   "time": "2026-10-01T17:00:00.000Z",
+   "interest_1m": 4.0,
+   "interest_3m": 4.4,
+   "interest_6m": 4.5,
+   "interest_13m": 5.4,
+   "interest_36m": 5.4
+  },
+  {
+   "bank_code": "AGRB",
+   "bank_name": "Agribank",
+   "bank_name_en": "Agribank",
+   "time": "2026-10-01T17:00:00.000Z",
+   "interest_1m": 2.6,
+   "interest_3m": 2.9,
+   "interest_6m": 4.0,
+   "interest_13m": 5.9,
+   "interest_36m": 4.8
+  },
+  {
+   "bank_code": "BAB",
+   "bank_name": "Ngân hàng Bắc Á",
+   "bank_name_en": "Bac A Commercial Bank",
+   "time": "2026-10-01T17:00:00.000Z",
+   "interest_1m": 4.75,
+   "interest_3m": 4.75,
+   "interest_6m": 7.05,
+   "interest_13m": 6.95,
+   "interest_36m": 6.95
+  },
+  {
+   "bank_code": "BAOVIETBANK",
+   "bank_name": "Ngân hàng Bảo Việt",
+   "bank_name_en": "Bao Viet Bank",
+   "time": "2026-10-01T17:00:00.000Z",
+   "interest_1m": 3.9,
+   "interest_3m": 4.2,
+   "interest_6m": 5.5,
+   "interest_13m": 5.8,
+   "interest_36m": 5.75
+  }
+ ]
+}

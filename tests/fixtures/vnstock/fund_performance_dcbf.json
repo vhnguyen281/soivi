@@ -1,0 +1,68 @@
+{
+ "call": "Market().fund(\"DCBF\").performance()",
+ "captured_at": "2026-11-06T06:05:17.300280+00:00",
+ "total_rows": 3,
+ "columns": [
+  "period",
+  "period_label",
+  "nav_start",
+  "nav_end",
+  "return_percent",
+  "annualized"
+ ],
+ "dtypes": {
+  "period": "string",
+  "period_label": "string",
+  "nav_start": "float64",
+  "nav_end": "float64",
+  "return_percent": "float64",
+  "annualized": "boolean"
+ },
+ "attrs": {
+  "access_domain": "['cafef.vn']",
+  "access_method": "['GET']",
+  "access_protocol": "https",
+  "algorithm_participation": "Yêu cầu đi từ máy người dùng tới nguồn. vnstock đọc phản hồi thô của nguồn rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình: đặt tên cột theo chuẩn chung, ép kiểu, quy đổi đơn vị và múi giờ, ghép các trang, đối chiếu mã, kỳ báo cáo và các dòng tương đương. Các bước này có suy diễn và đối chiếu nên kết quả không phải lúc nào cũng khớp hoàn toàn với dữ liệu gốc; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất.",
+  "algorithm_role": "retrieve_normalize",
+  "disclaimer": "vnstock là công cụ phần mềm chạy trên máy người dùng: yêu cầu xuất phát từ thiết bị của người dùng tới nguồn, vnstock đọc phản hồi rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình. vnstock không phải đơn vị cung cấp dữ liệu và không tư vấn đầu tư tài chính. Việc tái tạo có suy diễn và đối chiếu nên dữ liệu không phải lúc nào cũng chính xác tuyệt đối; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất. Các liên kết điều khoản và thông số tệp robots.txt chỉ mang tính tham khảo chung, có thể thay đổi theo thời gian mà không báo trước và không hẳn áp dụng trực tiếp cho từng trang hoặc địa chỉ truy xuất cụ thể; người dùng tự đối chiếu và chịu trách nhiệm tuân thủ quy định của bên cung cấp nguồn.",
+  "is_tool_only": "True",
+  "latency_ms": "530",
+  "length": "3",
+  "organisation": "Công ty Cổ phần VCCorp",
+  "request_count": "1",
+  "requested_at": "2026-11-06T06:05:16.761Z",
+  "robots_txt": "cafef.vn: User-agent *, Allow /. apiweb.cafef.vn, cafefnew.mediacdn.vn, cafef1.mediacdn.vn: 404, no rules.",
+  "route": "market.fund.performance",
+  "source": "cafef",
+  "source_name": "CafeF",
+  "symbol": "DCBF",
+  "terms_url": "https://cafef.vn/static/chinh-sach-bao-mat.html",
+  "tool": "vnstock"
+ },
+ "rows": [
+  {
+   "period": "ytd",
+   "period_label": "Từ đầu 2026",
+   "nav_start": 29009.27,
+   "nav_end": 30847.49,
+   "return_percent": 6.34,
+   "annualized": false
+  },
+  {
+   "period": "3y",
+   "period_label": "LN kép TB 3 năm",
+   "nav_start": 24944.67,
+   "nav_end": 30847.49,
+   "return_percent": 7.34,
+   "annualized": true
+  },
+  {
+   "period": "5y",
+   "period_label": "LN kép TB 5 năm",
+   "nav_start": 22004.19,
+   "nav_end": 30847.49,
+   "return_percent": 6.99,
+   "annualized": true
+  }
+ ]
+}

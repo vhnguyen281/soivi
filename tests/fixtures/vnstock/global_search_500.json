@@ -1,0 +1,97 @@
+{
+ "call": "Reference().search.symbol(\"500\", limit=20)",
+ "captured_at": "2026-11-06T06:05:03.050832+00:00",
+ "total_rows": 6,
+ "columns": [
+  "symbol",
+  "name",
+  "exchange",
+  "short_name",
+  "description",
+  "name_en",
+  "name_local",
+  "symbol_id"
+ ],
+ "dtypes": {
+  "symbol": "string",
+  "name": "string",
+  "exchange": "string",
+  "short_name": "string",
+  "description": "string",
+  "name_en": "string",
+  "name_local": "string",
+  "symbol_id": "string"
+ },
+ "attrs": {
+  "access_domain": "['dukascopy.com']",
+  "access_method": "['GET']",
+  "access_protocol": "https",
+  "algorithm_participation": "Yêu cầu đi từ máy người dùng tới nguồn. vnstock đọc phản hồi thô của nguồn rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình: đặt tên cột theo chuẩn chung, ép kiểu, quy đổi đơn vị và múi giờ, ghép các trang, đối chiếu mã, kỳ báo cáo và các dòng tương đương. Các bước này có suy diễn và đối chiếu nên kết quả không phải lúc nào cũng khớp hoàn toàn với dữ liệu gốc; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất.",
+  "algorithm_role": "retrieve_normalize",
+  "disclaimer": "vnstock là công cụ phần mềm chạy trên máy người dùng: yêu cầu xuất phát từ thiết bị của người dùng tới nguồn, vnstock đọc phản hồi rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình. vnstock không phải đơn vị cung cấp dữ liệu và không tư vấn đầu tư tài chính. Việc tái tạo có suy diễn và đối chiếu nên dữ liệu không phải lúc nào cũng chính xác tuyệt đối; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất. Các liên kết điều khoản và thông số tệp robots.txt chỉ mang tính tham khảo chung, có thể thay đổi theo thời gian mà không báo trước và không hẳn áp dụng trực tiếp cho từng trang hoặc địa chỉ truy xuất cụ thể; người dùng tự đối chiếu và chịu trách nhiệm tuân thủ quy định của bên cung cấp nguồn.",
+  "is_tool_only": "True",
+  "latency_ms": "16",
+  "length": "6",
+  "organisation": "Dukascopy Bank SA",
+  "request_count": "1",
+  "requested_at": "2026-11-06T06:05:03.021Z",
+  "robots_txt": "jetta.dukascopy.com: 404. www: Allow /, disallows /fxspider/*.",
+  "route": "reference.search.symbol",
+  "source": "dukascopy",
+  "source_name": "Dukascopy (hàng hoá, ngoại hối)",
+  "terms_url": "https://www.dukascopy.com/swiss/english/legal-pages/terms-of-use/",
+  "tool": "vnstock"
+ },
+ "rows": [
+  {
+   "symbol": "IUFS",
+   "name": "IUFS.US/USD",
+   "exchange": "ETF",
+   "short_name": "",
+   "description": "iShares S&P 500 Financial Sector UCITS ETF (LSE)",
+   "name_en": "",
+   "name_local": "GB",
+   "symbol_id": "IUFS.US-USD"
+  },
+  {
+   "symbol": "IVE",
+   "name": "IVE.US/USD",
+   "exchange": "ETF",
+   "short_name": "",
+   "description": "iShares S&P 500 Value ETF",
+   "name_en": "",
+   "name_local": "US",
+   "symbol_id": "IVE.US-USD"
+  },
+  {
+   "symbol": "IVW",
+   "name": "IVW.US/USD",
+   "exchange": "ETF",
+   "short_name": "",
+   "description": "iShares S&P 500 Growth ETF",
+   "name_en": "",
+   "name_local": "US",
+   "symbol_id": "IVW.US-USD"
+  },
+  {
+   "symbol": "SPY",
+   "name": "SPY.US/USD",
+   "exchange": "ETF",
+   "short_name": "",
+   "description": "SPDR S&P 500 ETF",
+   "name_en": "",
+   "name_local": "US",
+   "symbol_id": "SPY.US-USD"
+  },
+  {
+   "symbol": "USA500",
+   "name": "USA500.IDX/USD",
+   "exchange": "IDX_CASH",
+   "short_name": "",
+   "description": "US 500 Index",
+   "name_en": "",
+   "name_local": "US",
+   "symbol_id": "USA500.IDX-USD"
+  }
+ ]
+}

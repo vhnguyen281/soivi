@@ -689,3 +689,37 @@ statistics are monthly, so an always-on server is not needed yet.
    - The default `neondb` database on Neon only holds seed data from the first test; it can be dropped.
 3. **Neon runs PostgreSQL 18**, while the tests and local Docker run 16. Migrations and the restore work on 18.
    Revisit if a difference appears; recreating the Neon project on 16 is cheap while traffic is zero.
+
+---
+
+## 2026-11-06 — vnstock probe (VNCMA Prompt 2)
+
+1. **`python -m pipeline market probe`** runs every call VNCMA needs (live, 1 s between calls), writes
+   `docs/vncma/probe-results.md` (generated) and one 5-row fixture per call in `tests/fixtures/vnstock/`.
+   The human summary is `docs/vncma/probe-report.md`; confirmed calls are in `vnstock-api-notes.md`.
+   All calls still go through `pipeline/market/client.py` (new `call(chain)` method).
+2. **Domestic indices come from source `vci` with `limit=10000`** (VNINDEX from 2004, VNMID/VNSML from 2015).
+   The default `kbs` starts in 2012 and has no VNMID/VNSML.
+3. **Gaps found** (vnstock cannot fill them): gold and S&P 500 before the current year, USD/VND before 2020,
+   VN government yields before 08/2020, P/E before 12/2017 and for VNMID/VNSML. Proposed sources and options are
+   in probe-report.md §4; **pending the owner's review** (the "done when" of Prompt 2).
+4. The fixtures are short samples of third-party data, kept for offline tests only and never published.
+
+---
+
+## 2026-11-06 — Owner's decisions on the probe gaps (probe-report.md §4–6)
+
+1. **Gold history: World Bank Pink Sheet (monthly). S&P 500 history: Robert Shiller's data (Yale, monthly, with
+   dividends).** Both public; used for volatility and correlation. `eq_global`'s expected return still comes from
+   published global CMAs.
+2. **USD/VND from the SBV (NHNN).** sbv.gov.vn shows only today's central rate, so the monthly collector reads it
+   going forward. History 2016–2019 is open: an SBV archive if one exists, else IMF IFS (which republishes the SBV
+   rate), with the source stated.
+3. **P/E history of 9 years (from 12/2017) is accepted**; `PE_target` uses the 9-year median.
+4. **Licensing:** personal, non-commercial project for now, so no request to vnstocks yet. Revisit before any
+   commercial use or wide public release. Fixtures stay test-only.
+5. **Government bond yields: HNX yield curve is the main source** (from 2013, tenors to 15Y; ADB as a cross-check).
+   **VNMID/VNSML P/E: bottom-up** (Σ market cap ÷ Σ earnings of current members, quarterly from 2018;
+   `PE_0` and `PE_target` from the same series so level bias cancels in ln(PE_target/PE_0); grade B). Both
+   approved by the owner on 2026-11-06 (probe-report.md §5–6). HNX's TLS chain is incomplete; a fetcher must add
+   the intermediate certificate, never disable verification.

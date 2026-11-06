@@ -1,0 +1,63 @@
+{
+ "call": "Reference().index.groups()",
+ "captured_at": "2026-11-06T06:04:10.718269+00:00",
+ "total_rows": 16,
+ "columns": [
+  "group_name",
+  "group_code",
+  "category",
+  "description"
+ ],
+ "dtypes": {
+  "group_name": "string",
+  "group_code": "string",
+  "category": "string",
+  "description": "string"
+ },
+ "attrs": {
+  "algorithm_participation": "Không gửi yêu cầu nào. Bảng lấy từ dữ liệu tham chiếu đóng gói sẵn trong thư viện (danh mục chỉ số, lịch nghỉ giao dịch), hoặc tính từ dữ liệu đó và đồng hồ trên máy người dùng. Dữ liệu đóng gói chỉ cập nhật tới bản thư viện đang cài, nên có thể thiếu thay đổi xảy ra sau đó. Các bước này có suy diễn và đối chiếu nên kết quả không phải lúc nào cũng khớp hoàn toàn với dữ liệu gốc; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất.",
+  "algorithm_role": "bundled_reference",
+  "disclaimer": "vnstock là công cụ phần mềm chạy trên máy người dùng: yêu cầu xuất phát từ thiết bị của người dùng tới nguồn, vnstock đọc phản hồi rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình. vnstock không phải đơn vị cung cấp dữ liệu và không tư vấn đầu tư tài chính. Việc tái tạo có suy diễn và đối chiếu nên dữ liệu không phải lúc nào cũng chính xác tuyệt đối; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất. Các liên kết điều khoản và thông số tệp robots.txt chỉ mang tính tham khảo chung, có thể thay đổi theo thời gian mà không báo trước và không hẳn áp dụng trực tiếp cho từng trang hoặc địa chỉ truy xuất cụ thể; người dùng tự đối chiếu và chịu trách nhiệm tuân thủ quy định của bên cung cấp nguồn.",
+  "is_tool_only": "True",
+  "length": "16",
+  "organisation": "Công ty TNHH Chứng khoán KB Việt Nam (KBSV)",
+  "robots_txt": "www: User-agent *, Allow /. kbbuddywts: 400 (WAF/firewall rule).",
+  "route": "reference.index.groups",
+  "source": "kbs",
+  "source_name": "KB Securities (KBS)",
+  "terms_url": "https://www.kbsec.com.vn/vi/bo-dieu-khoan-dieu-kien-ve-bao-ve-du-lieu-ca-nhan.htm",
+  "tool": "vnstock"
+ },
+ "rows": [
+  {
+   "group_name": "BOND",
+   "group_code": "BOND",
+   "category": "Trái phiếu",
+   "description": "Corporate Bond - Trái phiếu doanh nghiệp niêm yết"
+  },
+  {
+   "group_name": "CW",
+   "group_code": "CW",
+   "category": "Chứng quyền",
+   "description": "Covered Warrant - Chứng quyền phát hành bởi các tổ chức tài chính"
+  },
+  {
+   "group_name": "ETF",
+   "group_code": "FUND",
+   "category": "ETF/Quỹ",
+   "description": "Exchange-Traded Fund - Quỹ chỉ số và quỹ trao đổi"
+  },
+  {
+   "group_name": "FU_INDEX",
+   "group_code": "DER",
+   "category": "Phái sinh",
+   "description": "Futures - Hợp đồng tương lai chỉ số"
+  },
+  {
+   "group_name": "HNX",
+   "group_code": "HNX",
+   "category": "Sàn giao dịch",
+   "description": "Sàn Giao dịch Chứng khoán Hà Nội"
+  }
+ ]
+}

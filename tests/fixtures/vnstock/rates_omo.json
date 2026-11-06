@@ -1,0 +1,83 @@
+{
+ "call": "Macro().currency().omo(start=\"2000\")",
+ "captured_at": "2026-11-06T06:04:43.544980+00:00",
+ "total_rows": 2414,
+ "columns": [
+  "time",
+  "vnindex",
+  "inflow_amount",
+  "outflow_amount",
+  "netflow_amount",
+  "cumulative_flow_amount"
+ ],
+ "dtypes": {
+  "time": "datetime64[ns, Asia/Ho_Chi_Minh]",
+  "vnindex": "float64",
+  "inflow_amount": "float64",
+  "outflow_amount": "float64",
+  "netflow_amount": "float64",
+  "cumulative_flow_amount": "float64"
+ },
+ "attrs": {
+  "access_domain": "['aseansc.com.vn']",
+  "access_method": "['GET']",
+  "access_protocol": "https",
+  "algorithm_participation": "Yêu cầu đi từ máy người dùng tới nguồn. vnstock đọc phản hồi thô của nguồn rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình: đặt tên cột theo chuẩn chung, ép kiểu, quy đổi đơn vị và múi giờ, ghép các trang, đối chiếu mã, kỳ báo cáo và các dòng tương đương. Các bước này có suy diễn và đối chiếu nên kết quả không phải lúc nào cũng khớp hoàn toàn với dữ liệu gốc; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất.",
+  "algorithm_role": "retrieve_normalize",
+  "disclaimer": "vnstock là công cụ phần mềm chạy trên máy người dùng: yêu cầu xuất phát từ thiết bị của người dùng tới nguồn, vnstock đọc phản hồi rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình. vnstock không phải đơn vị cung cấp dữ liệu và không tư vấn đầu tư tài chính. Việc tái tạo có suy diễn và đối chiếu nên dữ liệu không phải lúc nào cũng chính xác tuyệt đối; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất. Các liên kết điều khoản và thông số tệp robots.txt chỉ mang tính tham khảo chung, có thể thay đổi theo thời gian mà không báo trước và không hẳn áp dụng trực tiếp cho từng trang hoặc địa chỉ truy xuất cụ thể; người dùng tự đối chiếu và chịu trách nhiệm tuân thủ quy định của bên cung cấp nguồn.",
+  "is_tool_only": "True",
+  "latency_ms": "70",
+  "length": "2414",
+  "organisation": "Công ty CP Chứng khoán Asean",
+  "request_count": "1",
+  "requested_at": "2026-11-06T06:04:43.453Z",
+  "robots_txt": "www: User-agent *, Allow /. asean-apigw: 301, no robots.",
+  "route": "macro.currency.omo",
+  "source": "asean",
+  "source_name": "Asean Securities",
+  "terms_url": "https://www.aseansc.com.vn/policy/dieu-khoan-dich-vu-aseansc.pdf",
+  "tool": "vnstock"
+ },
+ "rows": [
+  {
+   "time": "2016-01-10T17:00:00.000Z",
+   "vnindex": 557.87,
+   "inflow_amount": 1300.0,
+   "outflow_amount": 3182.0,
+   "netflow_amount": -1882.0,
+   "cumulative_flow_amount": -1882.0
+  },
+  {
+   "time": "2016-01-11T17:00:00.000Z",
+   "vnindex": 564.26,
+   "inflow_amount": 2016.0,
+   "outflow_amount": 4924.0,
+   "netflow_amount": -2908.0,
+   "cumulative_flow_amount": -4790.0
+  },
+  {
+   "time": "2016-01-12T17:00:00.000Z",
+   "vnindex": 560.37,
+   "inflow_amount": 2086.0,
+   "outflow_amount": 4144.0,
+   "netflow_amount": -2058.0,
+   "cumulative_flow_amount": -6848.0
+  },
+  {
+   "time": "2016-01-13T17:00:00.000Z",
+   "vnindex": 553.03,
+   "inflow_amount": 7680.0,
+   "outflow_amount": 2111.0,
+   "netflow_amount": 5569.0,
+   "cumulative_flow_amount": -1279.0
+  },
+  {
+   "time": "2016-01-14T17:00:00.000Z",
+   "vnindex": 543.04,
+   "inflow_amount": 2071.0,
+   "outflow_amount": 1769.0,
+   "netflow_amount": 302.0,
+   "cumulative_flow_amount": -977.0
+  }
+ ]
+}

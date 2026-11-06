@@ -1,0 +1,49 @@
+{
+ "call": "Reference().index.members(\"VN30\")",
+ "captured_at": "2026-11-06T06:04:11.772659+00:00",
+ "total_rows": 30,
+ "columns": [
+  "symbol"
+ ],
+ "dtypes": {
+  "symbol": "string"
+ },
+ "attrs": {
+  "access_domain": "['kbsec.com.vn']",
+  "access_method": "['GET']",
+  "access_protocol": "https",
+  "algorithm_participation": "Yêu cầu đi từ máy người dùng tới nguồn. vnstock đọc phản hồi thô của nguồn rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình: đặt tên cột theo chuẩn chung, ép kiểu, quy đổi đơn vị và múi giờ, ghép các trang, đối chiếu mã, kỳ báo cáo và các dòng tương đương. Các bước này có suy diễn và đối chiếu nên kết quả không phải lúc nào cũng khớp hoàn toàn với dữ liệu gốc; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất.",
+  "algorithm_role": "retrieve_normalize",
+  "disclaimer": "vnstock là công cụ phần mềm chạy trên máy người dùng: yêu cầu xuất phát từ thiết bị của người dùng tới nguồn, vnstock đọc phản hồi rồi tái tạo thành bảng dữ liệu có cấu trúc để lập trình. vnstock không phải đơn vị cung cấp dữ liệu và không tư vấn đầu tư tài chính. Việc tái tạo có suy diễn và đối chiếu nên dữ liệu không phải lúc nào cũng chính xác tuyệt đối; khi phát hiện sai lệch, vnstock xác thực rồi sửa trong bản cập nhật thư viện gần nhất. Các liên kết điều khoản và thông số tệp robots.txt chỉ mang tính tham khảo chung, có thể thay đổi theo thời gian mà không báo trước và không hẳn áp dụng trực tiếp cho từng trang hoặc địa chỉ truy xuất cụ thể; người dùng tự đối chiếu và chịu trách nhiệm tuân thủ quy định của bên cung cấp nguồn.",
+  "group": "VN30",
+  "is_tool_only": "True",
+  "latency_ms": "30",
+  "length": "30",
+  "organisation": "Công ty TNHH Chứng khoán KB Việt Nam (KBSV)",
+  "request_count": "1",
+  "requested_at": "2026-11-06T06:04:11.740Z",
+  "robots_txt": "www: User-agent *, Allow /. kbbuddywts: 400 (WAF/firewall rule).",
+  "route": "reference.market.symbols_by_group",
+  "source": "kbs",
+  "source_name": "KB Securities (KBS)",
+  "terms_url": "https://www.kbsec.com.vn/vi/bo-dieu-khoan-dieu-kien-ve-bao-ve-du-lieu-ca-nhan.htm",
+  "tool": "vnstock"
+ },
+ "rows": [
+  {
+   "symbol": "ACB"
+  },
+  {
+   "symbol": "BID"
+  },
+  {
+   "symbol": "BSR"
+  },
+  {
+   "symbol": "CTG"
+  },
+  {
+   "symbol": "FPT"
+  }
+ ]
+}
