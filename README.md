@@ -89,7 +89,13 @@ Market and macro series for VNCMA (docs/vncma/) are configured in `data/seeds/ma
 uv run python -m pipeline market check     # vnstock version, tier, one live VN30 close
 uv run python -m pipeline market ingest    # every active series; --series a,b for some
 uv run python -m pipeline market probe     # re-run the vnstock probe (docs/vncma/probe-report.md)
+
+# A value by hand when a fetch fails (kept with its source and your name):
+uv run python -m pipeline market manual --series sjc_sell_close_vnd_luong --period 2026-10 \
+  --value 139000000 --source-url https://sjc.com.vn/ --entered-by "Your Name" --note "SJC API down"
 ```
+
+Monthly collectors (VNCMA Prompt 4) are ordinary series in the same file: SJC gold (month-end, from 2010), the SBV central rate of the day of the run, and the median of vnstock's deposit-rate table (a cross-check for our savings data). Run `market ingest` once a month, after the 1st.
 
 `ingest` stores one value per closed month in `market_observation` (append-only; corrections are new revisions) with the raw payload in S3. Running it again adds nothing unless a provider has new or corrected data.
 

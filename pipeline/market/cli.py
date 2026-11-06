@@ -4,6 +4,7 @@ import argparse
 import datetime as dt
 import sys
 from collections.abc import Callable
+from decimal import Decimal
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -24,6 +25,14 @@ def add_parser(sub: "argparse._SubParsersAction[argparse.ArgumentParser]") -> No
     probe.add_argument("--fixtures", type=Path, default=Path("tests/fixtures/vnstock"))
     ingest = msub.add_parser("ingest", help="fetch every active series; store monthly values")
     ingest.add_argument("--series", help="comma-separated series codes (default: all active)")
+    manual = msub.add_parser("manual", help="enter one value by hand (with its source)")
+    manual.add_argument("--series", required=True)
+    manual.add_argument("--period", required=True, help="YYYY-MM (daily: YYYY-MM-DD, yearly: YYYY)")
+    manual.add_argument("--value", required=True, type=Decimal)
+    manual.add_argument("--source-url", required=True, help="the page the value was read from")
+    manual.add_argument("--entered-by", required=True, help="your name (provenance)")
+    manual.add_argument("--note", required=True, help="why it was entered by hand")
+    manual.add_argument("--obs-date", type=dt.date.fromisoformat, help="date of the value")
 
 
 def run(args: argparse.Namespace, client_factory: Callable[[], MarketClient] | None) -> int:
@@ -33,6 +42,8 @@ def run(args: argparse.Namespace, client_factory: Callable[[], MarketClient] | N
         return _probe(args, client_factory or VnstockClient)
     if args.market_command == "ingest":
         return _ingest(args, client_factory or VnstockClient)
+    if args.market_command == "manual":
+        return _manual(args)
     raise AssertionError(args.market_command)
 
 
@@ -110,7 +121,9 @@ class _LazyFetchers(dict[str, "Fetcher"]):
         from pipeline.fetch.polite import PoliteHttp
         from pipeline.market.source import (
             HnxFetcher,
+            SbvFetcher,
             ShillerFetcher,
+            SjcFetcher,
             VnstockFetcher,
             WorldBankFetcher,
             hnx_ssl_context,
@@ -122,6 +135,10 @@ class _LazyFetchers(dict[str, "Fetcher"]):
             http = PoliteHttp(verify=hnx_ssl_context())
             self.closers.append(http.close)
             return HnxFetcher(http)
+        if provider in ("sjc", "sbv"):
+            http = PoliteHttp()
+            self.closers.append(http.close)
+            return SjcFetcher(http) if provider == "sjc" else SbvFetcher(http)
         if provider in ("worldbank", "shiller"):
             http = PoliteHttp()
             self.closers.append(http.close)
@@ -149,3 +166,26 @@ def _ingest(args: argparse.Namespace, client_factory: Callable[[], MarketClient]
     revised = sum(r.revised for r in results)
     print(f"{len(results)} groups: {new} new values, {revised} revised, {len(failed)} failed")
     return 1 if failed else 0
+
+
+def _manual(args: argparse.Namespace) -> int:
+    from core.db import session_scope
+    from pipeline.fetch.storage import MinioStore
+    from pipeline.market.manual import ManualEntry, enter
+
+    entry = ManualEntry(
+        series=args.series,
+        period=args.period,
+        value=args.value,
+        source_url=args.source_url,
+        entered_by=args.entered_by,
+        note=args.note,
+        obs_date=args.obs_date,
+    )
+    try:
+        with session_scope() as session:
+            print(enter(session, MinioStore(), entry, dt.datetime.now(dt.UTC)))
+    except MarketDataError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
+    return 0

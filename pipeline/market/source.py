@@ -27,7 +27,7 @@ from collections.abc import Callable, Iterable, Sequence
 from dataclasses import dataclass, field
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
-from typing import Any, Protocol
+from typing import Any, ClassVar, Protocol
 from urllib.parse import urljoin
 
 from pipeline.fetch.polite import FetchError
@@ -173,10 +173,12 @@ class VnstockFetcher:
     ) -> Fetched:
         chain = chain_from(request)
         call = describe(chain)
-        date_field = str(request["date_field"])
         df = self._call(chain)
         if df is None or not hasattr(df, "columns") or len(df) == 0:
             raise MarketDataError(f"{call} returned an empty table")
+        if request.get("reduce") == "median":
+            return self._median_today(df, call, value_fields, today)
+        date_field = str(request["date_field"])
         missing = [c for c in (date_field, *value_fields) if c not in df.columns]
         if missing:
             raise MarketDataError(f"{call} has no column(s) {missing}; got {list(df.columns)}")
@@ -205,6 +207,29 @@ class VnstockFetcher:
             if not values:
                 raise MarketDataError(f"{call}: column {column!r} has no numbers")
             points[column] = values
+        return Fetched(f"vnstock:{call}", "application/json", payload, points)
+
+    def _median_today(
+        self, df: Any, call: str, value_fields: Sequence[str], today: dt.date
+    ) -> Fetched:
+        """A current snapshot across rows (deposit rates by bank): the whole table is the
+        payload; each field's median across rows is today's value."""
+        missing = [c for c in value_fields if c not in df.columns]
+        if missing:
+            raise MarketDataError(f"{call} has no column(s) {missing}; got {list(df.columns)}")
+        attrs = {
+            str(k): str(v) for k, v in dict(getattr(df, "attrs", {})).items() if k in STABLE_ATTRS
+        }
+        table = json.loads(df.to_json(orient="split", date_format="iso", index=False))
+        payload = canonical_json({"call": call, "attrs": attrs, "table": table})
+        points: dict[str, list[Point]] = {}
+        for column in value_fields:
+            numbers = sorted(v for v in (to_decimal(x) for x in df[column]) if v is not None)
+            if not numbers:
+                raise MarketDataError(f"{call}: column {column!r} has no numbers")
+            mid = len(numbers) // 2
+            median = numbers[mid] if len(numbers) % 2 else (numbers[mid - 1] + numbers[mid]) / 2
+            points[column] = [Point(today, median)]
         return Fetched(f"vnstock:{call}", "application/json", payload, points)
 
 
@@ -255,11 +280,45 @@ def parse_hnx(page: str) -> dict[str, Decimal] | None:
 
 
 @dataclass
-class HnxFetcher:
+class PerDateFetcher:
+    """A provider asked one date at a time for month-end values (HNX, SJC).
+
+    For each closed month not yet stored, ask the month end, then step back a day at a
+    time (up to `max_back_days`) until the provider has data. Works in chunks of
+    `months_per_fetch` months (Fetched.more), and never asks a month twice in one run.
+    """
+
     http: Http
     months_per_fetch: int = HNX_MONTHS_PER_FETCH
-    # Months asked for in this run, found or not; a month with no curve is not asked twice.
     _tried: set[dt.date] = field(default_factory=set)
+
+    endpoint: ClassVar[str]
+    name: ClassVar[str]
+    skip_weekends: ClassVar[bool]
+    max_back_days: ClassVar[int] = HNX_MAX_BACK_DAYS
+
+    def lookup(
+        self, request: dict[str, Any], day: dt.date
+    ) -> tuple[str, dict[str, Decimal] | None]:
+        """(raw response text, values by field) for one date; None when the date has no data."""
+        raise NotImplementedError
+
+    def lookup_month(
+        self, request: dict[str, Any], end: dt.date
+    ) -> tuple[dt.date, str, dict[str, Decimal]] | None:
+        """(date used, raw text, values) for the month ending `end`: the month end, or the
+        last earlier day with data within `max_back_days`. None if there is none."""
+        for back in range(self.max_back_days + 1):
+            day = end - dt.timedelta(days=back)
+            if self.skip_weekends and day.weekday() >= 5:
+                continue
+            try:
+                raw, values = self.lookup(request, day)
+            except FetchError as exc:
+                raise MarketDataError(f"{self.name} {day}: {exc}") from exc
+            if values is not None:
+                return day, raw, values
+        return None
 
     def fetch(
         self,
@@ -276,31 +335,171 @@ class HnxFetcher:
         pages: dict[str, str] = {}
         points: dict[str, list[Point]] = {f: [] for f in value_fields}
         for end in wanted:
-            for back in range(HNX_MAX_BACK_DAYS + 1):
-                day = end - dt.timedelta(days=back)
-                if day.weekday() >= 5:  # no curve on weekends
-                    continue
-                try:
-                    response = self.http.get(
-                        HNX_ENDPOINT, "POST", {"pDate": day.strftime("%d/%m/%Y")}
-                    )
-                except FetchError as exc:
-                    raise MarketDataError(f"HNX yield curve {day}: {exc}") from exc
-                curve = parse_hnx(response.text)
-                if curve is None:
-                    continue
-                missing = [f for f in value_fields if f not in curve]
-                if missing:
-                    raise MarketDataError(f"HNX yield curve {day}: no {missing}")
-                pages[day.isoformat()] = response.text
-                for f in value_fields:
-                    points[f].append(Point(day, curve[f]))
-                break
+            try:
+                found = self.lookup_month(request, end)
+            except FetchError as exc:
+                raise MarketDataError(f"{self.name} {end:%Y-%m}: {exc}") from exc
+            if found is None:
+                continue
+            day, raw, values = found
+            missing = [f for f in value_fields if f not in values]
+            if missing:
+                raise MarketDataError(f"{self.name} {day}: no {missing}")
+            pages[day.isoformat()] = raw
+            for f in value_fields:
+                points[f].append(Point(day, values[f]))
         more = bool(rest)
         if not pages:
-            return Fetched(HNX_ENDPOINT, "application/json", None, {}, more=more)
-        payload = canonical_json({"endpoint": HNX_ENDPOINT, "pages": pages})
-        return Fetched(HNX_ENDPOINT, "application/json", payload, points, more=more)
+            return Fetched(self.endpoint, "application/json", None, {}, more=more)
+        payload = canonical_json({"endpoint": self.endpoint, "pages": pages})
+        return Fetched(self.endpoint, "application/json", payload, points, more=more)
+
+
+@dataclass
+class HnxFetcher(PerDateFetcher):
+    endpoint: ClassVar[str] = HNX_ENDPOINT
+    name: ClassVar[str] = "HNX yield curve"
+    skip_weekends: ClassVar[bool] = True  # no curve on weekends
+
+    def lookup(
+        self, request: dict[str, Any], day: dt.date
+    ) -> tuple[str, dict[str, Decimal] | None]:
+        response = self.http.get(HNX_ENDPOINT, "POST", {"pDate": day.strftime("%d/%m/%Y")})
+        return response.text, parse_hnx(response.text)
+
+
+# --------------------------------------------------------------------------- SJC
+
+SJC_ENDPOINT = "https://sjc.com.vn/GoldPrice/Services/PriceService.ashx"
+VN_TZ = dt.timezone(dt.timedelta(hours=7))
+# SJC's by-date method (GetSJCGoldPriceByDate) returns only the first 10 rows, so a branch
+# can be missing; the history method for one branch has every update with its time.
+
+
+def _sjc_time(value: Any) -> dt.datetime:
+    m = re.fullmatch(r"/Date\((-?\d+)\)/", str(value))
+    if not m:
+        raise MarketDataError(f"SJC: unexpected GroupDate {value!r}")
+    return dt.datetime.fromtimestamp(int(m.group(1)) / 1000, dt.UTC).astimezone(VN_TZ)
+
+
+def parse_sjc_history(
+    text: str, end: dt.date, gold_type: str
+) -> tuple[dt.date, dict[str, Decimal]] | None:
+    """The last price update on or before `end` (Vietnam time): (its date, {"buy", "sell"})
+    in VND per lượng. None when the window has no update."""
+    try:
+        doc = json.loads(text)
+    except ValueError as exc:
+        raise MarketDataError(f"SJC {end:%Y-%m}: response is not JSON") from exc
+    if not isinstance(doc, dict) or doc.get("success") is not True or "data" not in doc:
+        raise MarketDataError(f"SJC {end:%Y-%m}: unexpected response {str(doc)[:200]}")
+    rows = [
+        (_sjc_time(r.get("GroupDate")), r)
+        for r in doc["data"] or []
+        if r.get("TypeName") == gold_type
+    ]
+    rows = [(t, r) for t, r in rows if t.date() <= end]
+    if not rows:
+        return None
+    when, row = max(rows, key=lambda x: x[0])
+    buy, sell = to_decimal(row.get("BuyValue")), to_decimal(row.get("SellValue"))
+    if buy is None or sell is None or buy <= 0 or sell <= 0:
+        raise MarketDataError(f"SJC {when:%Y-%m-%d}: no buy/sell price in {row}")
+    return when.date(), {"buy": buy, "sell": sell}
+
+
+@dataclass
+class SjcFetcher(PerDateFetcher):
+    """SJC gold bar prices (VND per lượng), one request per month: the price history of one
+    branch (`gold_price_id`, 1 = Hồ Chí Minh) over the last days of the month; the last
+    update on or before the month end is the month's value. robots.txt allows /GoldPrice/
+    but sets ai-input=no: this content is parsed by code and must never be sent to an LLM."""
+
+    endpoint: ClassVar[str] = SJC_ENDPOINT
+    name: ClassVar[str] = "SJC gold price"
+    skip_weekends: ClassVar[bool] = False  # SJC trades on weekends
+    max_back_days: ClassVar[int] = 10  # the window asked for
+
+    def lookup_month(
+        self, request: dict[str, Any], end: dt.date
+    ) -> tuple[dt.date, str, dict[str, Decimal]] | None:
+        data = {
+            "method": "GetGoldPriceHistory",
+            "goldPriceId": str(request["gold_price_id"]),
+            "fromDate": (end - dt.timedelta(days=self.max_back_days)).strftime("%d/%m/%Y"),
+            "toDate": end.strftime("%d/%m/%Y"),
+        }
+        response = self.http.get(SJC_ENDPOINT, "POST", data)
+        found = parse_sjc_history(response.text, end, str(request["gold_type"]))
+        if found is None:
+            return None
+        day, values = found
+        return day, response.text, values
+
+
+# --------------------------------------------------------------------------- SBV
+
+SBV_RATE_PAGE = "https://sbv.gov.vn/t%E1%BB%B7-gi%C3%A1"
+SBV_RATE = re.compile(
+    r"(Ngân hàng Nhà nước Việt Nam công bố tỷ giá trung tâm.*?áp dụng cho ngày "
+    r"(\d{2}/\d{2}/\d{4}) như sau:.*?1 Đô la Mỹ\s*=\s*([\d.]+)\s*VND"
+    r".*?Số văn bản\s*(\S+))",
+    re.S,
+)
+
+
+@dataclass(frozen=True)
+class SbvRate:
+    day: dt.date
+    rate: Decimal  # VND per USD
+    document_no: str  # e.g. 463/TB-NHNN
+    statement: str  # the announcement as written on the page
+
+
+def parse_sbv_central_rate(page: str) -> SbvRate:
+    """Today's central rate from the SBV exchange-rate page (it shows today's only)."""
+    text = re.sub(r"<script.*?</script>|<style.*?</style>", " ", page, flags=re.S)
+    text = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", text)))
+    m = SBV_RATE.search(text)
+    if not m:
+        raise MarketDataError("SBV rate page: no 'áp dụng cho ngày … 1 Đô la Mỹ = … VND'")
+    d, mth, y = (int(x) for x in m.group(2).split("/"))
+    return SbvRate(dt.date(y, mth, d), Decimal(m.group(3).replace(".", "")), m.group(4), m.group(1))
+
+
+@dataclass
+class SbvFetcher:
+    """The payload is the announcement itself (date, rate, document number, statement as
+    written), not the whole page: the page's markup changes on every load."""
+
+    http: Http
+
+    def fetch(
+        self,
+        request: dict[str, Any],
+        value_fields: Sequence[str],
+        have: set[dt.date],
+        today: dt.date,
+    ) -> Fetched:
+        if list(value_fields) != ["central_rate"]:
+            raise MarketDataError(f"SBV rate page has only central_rate, not {list(value_fields)}")
+        try:
+            page = self.http.get(SBV_RATE_PAGE)
+        except FetchError as exc:
+            raise MarketDataError(f"SBV rate page: {exc}") from exc
+        found = parse_sbv_central_rate(page.text)
+        payload = canonical_json(
+            {
+                "url": SBV_RATE_PAGE,
+                "date": found.day.isoformat(),
+                "central_rate_vnd_per_usd": str(found.rate),
+                "document_no": found.document_no,
+                "statement": found.statement,
+            }
+        )
+        points = {"central_rate": [Point(found.day, found.rate)]}
+        return Fetched(SBV_RATE_PAGE, "application/json", payload, points)
 
 
 # --------------------------------------------------------------------------- World Bank

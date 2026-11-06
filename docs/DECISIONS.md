@@ -760,3 +760,39 @@ Docker; HNX and World Bank are part of Prompt 3.
 8. **Result (2026-11-06, Neon + S3):** 5,053 monthly observations in 36 request groups, 110 snapshots; HNX par
    yields 2013-03 → 2026-10. A second and third run added nothing (36/36 unchanged). Known provider holes: CafeF
    bond-fund NAVs 2026-04..06, vnstock (asean) yields 2026-01..06, CPI 2020-09, P/E 2024-03.
+
+---
+
+## 2026-11-06 — Monthly collectors: SJC gold, SBV central rate, deposit rates, manual entry (VNCMA Prompt 4)
+
+No separate `collect` command: each collector is a series in `data/seeds/market_series.yaml`, run by
+`market ingest` once a month.
+
+1. **SJC gold, from sjc.com.vn itself** (vnstock no longer has it). robots.txt allows our User-Agent and
+   `/GoldPrice/`, with `Content-Signal: search=yes, ai-input=no, ai-train=no`: SJC content is parsed by code and
+   **must never be sent to an LLM**. Series `sjc_buy_close_vnd_luong`, `sjc_sell_close_vnd_luong` (Hồ Chí Minh,
+   gold bars 1L–1KG, VND per lượng): one read-only POST per month to `GetGoldPriceHistory` for branch 1 over the
+   last 10 days of the month; the last update on or before the month end is the month's value. History from
+   2010-01.
+   - First attempt used `GetSJCGoldPriceByDate`; it returns only the first 10 rows, so Hồ Chí Minh dropped out
+     after 2023-10. Those two series (`sjc_buy_vnd_luong`, `sjc_sell_vnd_luong`, a mean of the day's updates) are
+     inactive and kept as stored history, not overwritten.
+2. **SBV central rate:** sbv.gov.vn shows only today's rate and the weekly posts carry no figures in the page,
+   so there is no SBV history to fetch. `sbv_central_rate` stores the rate of the day of each run (a daily
+   period) as the official cross-check for `usdvnd_central` (vnstock, from 2020). **USD/VND before 2020 is still
+   open** (IMF IFS proposed; needs the owner's decision).
+3. **Deposit rates:** `deposit_median_{1m,3m,6m,13m,36m}`, the median across ~30 banks of vnstock's current
+   table, dated the day of the run; the whole table is the snapshot. Comparing it with our approved
+   `savings_rate` is left for the VNCMA cash-class step.
+4. **Manual entry:** `python -m pipeline market manual` stores one value with its source URL, who entered it and
+   why, as a snapshot of the provider `manual` (`https://manual.invalid/`, a reserved placeholder). A later fetch
+   with a different value becomes the next revision.
+5. `PerDateFetcher` (HNX and SJC) asks one month at a time; daily-period series keep today and have no gaps.
+6. **SBV payload** is the announcement itself (date, rate, document number, statement as written), not the
+   page: the page's markup changes on every load, which made every run store a new snapshot.
+7. **IMF IFS for USD/VND 2016–2019:** approved by the owner as a stopgap (exchange rates matter little for VNCMA).
+   Blocked for now: `api.imf.org/robots.txt` answers 502, and our crawling rules treat an unreadable robots.txt as
+   "do not crawl". Options put to the owner: use USD/VND from 2020 only (recommended), import a CSV downloaded by
+   hand from data.imf.org, or wait for the IMF.
+8. **Result (2026-11-06):** SJC month-end prices 2010-01 → 2026-10 (200 months, 2 without an update in the last
+   10 days). After all collectors: 9,527 observations, 132 snapshots; a full re-run is 40/40 groups unchanged.

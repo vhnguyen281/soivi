@@ -283,11 +283,14 @@ SERIES_KEYS = {
     "active",
     "note",
 }
-REQUIRED_REQUEST_KEYS = {
-    "vnstock": {"call", "date_field"},
+REQUIRED_REQUEST_KEYS: dict[str, set[str]] = {
+    "vnstock": {"call"},  # plus date_field, unless "reduce" is set
     "hnx": {"curve", "start"},
     "worldbank": {"page", "link_contains", "sheet"},
     "shiller": {"page", "link_contains", "sheet"},
+    "sjc": {"start", "gold_type"},
+    "sbv": {"page"},
+    "manual": set(),  # entered by hand: `python -m pipeline market manual`
 }
 
 
@@ -339,6 +342,8 @@ def parse_market(path: Path) -> tuple[list[dict[str, Any]], list[dict[str, Any]]
         ):
             missing = sorted(REQUIRED_REQUEST_KEYS[provider] - set(request))
             errors.append(f"{where}: request needs {missing}")
+        elif provider == "vnstock" and "date_field" not in request and "reduce" not in request:
+            errors.append(f"{where}: a vnstock request needs date_field (or reduce)")
         for key, enum in (
             ("native_frequency", Frequency),
             ("period", Frequency),

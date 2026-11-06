@@ -18,6 +18,15 @@ providers:
   shiller:
     url: https://shillerdata.com/
     fetch_method: http
+  sjc:
+    url: https://sjc.com.vn/
+    fetch_method: http
+  sbv:
+    url: https://sbv.gov.vn/
+    fetch_method: http
+  manual:
+    url: https://manual.invalid/
+    fetch_method: http
 series:
 - code: vnindex_close
   provider: vnstock
@@ -978,7 +987,8 @@ series:
   max_gap_days: null
   grade: A
   active: true
-  note: S&P Composite, monthly average of daily closes (Shiller). The newest month can be a single close; Shiller's later update comes in as a revision.
+  note: S&P Composite, monthly average of daily closes (Shiller). The newest month can be a single close; Shiller's later
+    update comes in as a revision.
 - code: sp500_dividend
   provider: shiller
   asset_class: eq_global
@@ -992,3 +1002,163 @@ series:
   grade: A
   active: true
   note: Dividends per index point, annualised (Shiller).
+- code: sjc_buy_vnd_luong
+  provider: sjc
+  asset_class: gold
+  request: &id005
+    start: 2010-01
+    branch: Hồ Chí Minh
+    gold_type: Vàng SJC 1L, 10L, 1KG
+  value_field: buy
+  unit: vnd_per_luong
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 10
+  grade: B
+  active: false
+  note: 'Superseded 2026-11-06 by sjc_*_close_vnd_luong: SJC''s by-date method returns only the first 10 rows, so Ho Chi Minh
+    City was missing after 2023-10; values here are the mean of the day''s updates. Kept as stored history.'
+- code: sjc_sell_vnd_luong
+  provider: sjc
+  asset_class: gold
+  request: *id005
+  value_field: sell
+  unit: vnd_per_luong
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 10
+  grade: B
+  active: false
+  note: 'Superseded 2026-11-06 by sjc_*_close_vnd_luong: SJC''s by-date method returns only the first 10 rows, so Ho Chi Minh
+    City was missing after 2023-10; values here are the mean of the day''s updates. Kept as stored history.'
+- code: sbv_central_rate
+  provider: sbv
+  asset_class: usd
+  request:
+    page: https://sbv.gov.vn/t%E1%BB%B7-gi%C3%A1
+  value_field: central_rate
+  unit: vnd_per_usd
+  native_frequency: daily
+  period: daily
+  month_end_rule: period_value
+  max_gap_days: null
+  grade: A
+  active: true
+  note: SBV central rate of the day of the run (the page shows today only). Official cross-check for usdvnd_central (vnstock).
+- code: deposit_median_1m
+  provider: vnstock
+  asset_class: cash_vnd
+  request: &id006
+    call:
+    - - Macro
+      - []
+      - {}
+    - - currency
+      - []
+      - {}
+    - - deposit_rate
+      - []
+      - mode: term
+    reduce: median
+  value_field: interest_1m
+  unit: pct_pa
+  native_frequency: daily
+  period: daily
+  month_end_rule: period_value
+  max_gap_days: null
+  grade: B
+  active: true
+  note: Median across ~30 banks of vnstock's current deposit-rate table, on the day of the run. Cross-check for our approved
+    savings_rate.
+- code: deposit_median_3m
+  provider: vnstock
+  asset_class: cash_vnd
+  request: *id006
+  value_field: interest_3m
+  unit: pct_pa
+  native_frequency: daily
+  period: daily
+  month_end_rule: period_value
+  max_gap_days: null
+  grade: B
+  active: true
+  note: Median across ~30 banks of vnstock's current deposit-rate table, on the day of the run. Cross-check for our approved
+    savings_rate.
+- code: deposit_median_6m
+  provider: vnstock
+  asset_class: cash_vnd
+  request: *id006
+  value_field: interest_6m
+  unit: pct_pa
+  native_frequency: daily
+  period: daily
+  month_end_rule: period_value
+  max_gap_days: null
+  grade: B
+  active: true
+  note: Median across ~30 banks of vnstock's current deposit-rate table, on the day of the run. Cross-check for our approved
+    savings_rate.
+- code: deposit_median_13m
+  provider: vnstock
+  asset_class: cash_vnd
+  request: *id006
+  value_field: interest_13m
+  unit: pct_pa
+  native_frequency: daily
+  period: daily
+  month_end_rule: period_value
+  max_gap_days: null
+  grade: B
+  active: true
+  note: Median across ~30 banks of vnstock's current deposit-rate table, on the day of the run. Cross-check for our approved
+    savings_rate.
+- code: deposit_median_36m
+  provider: vnstock
+  asset_class: cash_vnd
+  request: *id006
+  value_field: interest_36m
+  unit: pct_pa
+  native_frequency: daily
+  period: daily
+  month_end_rule: period_value
+  max_gap_days: null
+  grade: B
+  active: true
+  note: Median across ~30 banks of vnstock's current deposit-rate table, on the day of the run. Cross-check for our approved
+    savings_rate.
+- code: sjc_buy_close_vnd_luong
+  provider: sjc
+  asset_class: gold
+  request:
+    start: 2010-01
+    gold_price_id: 1
+    gold_type: Vàng SJC 1L, 10L, 1KG
+  value_field: buy
+  unit: vnd_per_luong
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 10
+  grade: B
+  active: true
+  note: 'SJC gold bars 1L-1KG, Ho Chi Minh City (giá mua): the last price update on or before the month end. robots.txt: ai-input=no
+    (never send to an LLM).'
+- code: sjc_sell_close_vnd_luong
+  provider: sjc
+  asset_class: gold
+  request:
+    start: 2010-01
+    gold_price_id: 1
+    gold_type: Vàng SJC 1L, 10L, 1KG
+  value_field: sell
+  unit: vnd_per_luong
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 10
+  grade: B
+  active: true
+  note: 'SJC gold bars 1L-1KG, Ho Chi Minh City (giá bán): the last price update on or before the month end. robots.txt: ai-input=no
+    (never send to an LLM).'

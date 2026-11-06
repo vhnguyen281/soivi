@@ -70,3 +70,10 @@ def test_period_value_for_monthly_and_yearly() -> None:
     assert result.values[D(2026, 8, 31)].obs_date == D(2026, 8, 1)
     gdp = pts((D(2024, 12, 31), "7.09"), (D(2025, 12, 31), "8.02"))
     assert list(to_periods(gdp, P, Y, None, TODAY).values) == [D(2024, 12, 31), D(2025, 12, 31)]
+
+
+def test_daily_spot_values_keep_today_and_have_no_gaps() -> None:
+    points = pts((D(2026, 11, 2), "25600"), (D(2026, 11, 6), "25615"), (D(2026, 11, 7), "1"))
+    result = to_periods(points, P, Frequency.DAILY, None, TODAY)
+    assert list(result.values) == [D(2026, 11, 2), D(2026, 11, 6)]
+    assert result.gaps == []

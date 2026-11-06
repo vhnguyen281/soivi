@@ -59,6 +59,10 @@ raise-on-layout-change. Allow a manually entered monthly point with its source w
 ```
 Done when: one month of both is stored with provenance.
 
+Done 2026-11-06: no separate `collect` command; the collectors are series in `data/seeds/market_series.yaml`
+run by `market ingest` (SJC via its by-date price service with history from 2010, SBV central rate of the day,
+deposit-rate medians). Manual points: `market manual`. See DECISIONS 2026-11-06 (Prompt 4).
+
 ## Prompt 5 — Monthly total-return series
 ```
 Implement core/cma/series.py per spec §4.1 for every class with data. The cash class uses approved savings_rate

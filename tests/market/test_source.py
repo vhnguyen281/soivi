@@ -1,6 +1,7 @@
 """Market fetchers, offline: vnstock (fake client), HNX and World Bank (saved pages)."""
 
 import datetime as dt
+import json
 from collections.abc import Sequence
 from decimal import Decimal
 from pathlib import Path
@@ -14,13 +15,19 @@ from pipeline.market.client import MarketDataError, Step, describe
 from pipeline.market.monthend import Point
 from pipeline.market.source import (
     HNX_ENDPOINT,
+    SBV_RATE_PAGE,
+    SJC_ENDPOINT,
     HnxFetcher,
+    SbvFetcher,
+    SjcFetcher,
     VnstockFetcher,
     WorldBankFetcher,
     find_link,
     parse_hnx,
     parse_pink_sheet,
+    parse_sbv_central_rate,
     parse_shiller,
+    parse_sjc_history,
 )
 
 FIXTURES = Path(__file__).resolve().parent.parent / "fixtures"
@@ -259,3 +266,95 @@ def test_parse_shiller_reads_october_from_2026_1() -> None:
     assert out["D"][-1].date == dt.date(2026, 6, 30)  # dividends lag; blanks are skipped
     with pytest.raises(MarketDataError, match="no header row"):
         parse_shiller(data, "Data", ["CAPE"])
+
+
+# --------------------------------------------------------------------------- SJC
+
+SJC_REQUEST = {"start": "2018-11", "gold_price_id": 1, "gold_type": "Vàng SJC 1L, 10L, 1KG"}
+GOLD_TYPE = "Vàng SJC 1L, 10L, 1KG"
+
+
+def sjc_text(name: str) -> str:
+    return (FIXTURES / "sjc" / f"history-hcm-{name}.json").read_text("utf-8")
+
+
+def test_parse_sjc_history_takes_the_last_update_on_or_before_the_month_end() -> None:
+    day, prices = parse_sjc_history(sjc_text("2026-10"), dt.date(2026, 10, 31), GOLD_TYPE) or (
+        None,
+        {},
+    )
+    assert day == dt.date(2026, 10, 31)
+    assert prices == {"buy": Decimal("136000000"), "sell": Decimal("139000000")}
+    # Asked for an earlier end: later updates are ignored.
+    earlier = parse_sjc_history(sjc_text("2026-10"), dt.date(2026, 10, 29), GOLD_TYPE)
+    assert earlier is not None and earlier[0] <= dt.date(2026, 10, 29)
+
+
+def test_parse_sjc_history_empty_other_type_and_bad_replies() -> None:
+    empty = json.dumps({"success": True, "data": []})
+    assert parse_sjc_history(empty, dt.date(2026, 10, 31), GOLD_TYPE) is None
+    assert parse_sjc_history(sjc_text("2026-10"), dt.date(2026, 10, 31), "Nhẫn") is None
+    with pytest.raises(MarketDataError, match="unexpected response"):
+        parse_sjc_history('{"success": false}', dt.date(2026, 10, 31), GOLD_TYPE)
+    with pytest.raises(MarketDataError, match="not JSON"):
+        parse_sjc_history("<html>", dt.date(2026, 10, 31), GOLD_TYPE)
+
+
+def test_sjc_asks_one_window_per_month() -> None:
+    class Http(FakeHttp):
+        def get(self, url: str, method: str = "GET", data: dict[str, str] | None = None) -> Reply:
+            assert data is not None and data["method"] == "GetGoldPriceHistory"
+            assert data["goldPriceId"] == "1"
+            self.requests.append(f"{data['fromDate']}-{data['toDate']}")
+            if data["toDate"] == "31/12/2018":
+                return Reply(sjc_text("2018-12"))
+            return Reply(json.dumps({"success": True, "data": []}))  # November: no update
+
+    http = Http({})
+    got = SjcFetcher(http).fetch(SJC_REQUEST, ["buy", "sell"], set(), dt.date(2019, 1, 2))
+    assert http.requests == ["20/11/2018-30/11/2018", "21/12/2018-31/12/2018"]
+    assert got.points["sell"] == [Point(dt.date(2018, 12, 31), Decimal("36570000"))]
+    assert got.url == SJC_ENDPOINT
+
+
+# --------------------------------------------------------------------------- SBV and deposit rates
+
+
+def test_parse_sbv_central_rate() -> None:
+    page = (FIXTURES / "sbv" / "ty-gia.html").read_text("utf-8")
+    found = parse_sbv_central_rate(page)
+    assert (found.day, found.rate, found.document_no) == (
+        dt.date(2026, 11, 6),
+        Decimal("25615"),
+        "463/TB-NHNN",
+    )
+    assert found.statement.startswith("Ngân hàng Nhà nước Việt Nam công bố tỷ giá trung tâm")
+    with pytest.raises(MarketDataError, match="no 'áp dụng cho ngày"):
+        parse_sbv_central_rate("<html>Trang bảo trì</html>")
+
+
+def test_sbv_fetcher_returns_todays_point() -> None:
+    page = (FIXTURES / "sbv" / "ty-gia.html").read_text("utf-8")
+    got = SbvFetcher(FakeHttp({SBV_RATE_PAGE: page})).fetch({}, ["central_rate"], set(), TODAY)
+    assert got.points == {"central_rate": [Point(dt.date(2026, 11, 6), Decimal("25615"))]}
+    assert got.content_type == "application/json"
+    again = SbvFetcher(FakeHttp({SBV_RATE_PAGE: page + "<!-- token 2 -->"})).fetch(
+        {}, ["central_rate"], set(), TODAY
+    )
+    assert again.sha256 == got.sha256  # markup noise does not change the payload
+
+
+def test_deposit_rates_median_across_banks_on_the_day_of_the_run() -> None:
+    df = pd.DataFrame(
+        {
+            "bank_code": ["A", "B", "C", "D"],
+            "time": pd.to_datetime(["2026-10-02", "2026-09-01", "2025-06-05", "2026-10-02"]),
+            "interest_13m": [5.4, 6.05, None, 5.0],
+            "interest_6m": [4.5, 6.05, 4.0, 5.0],
+        }
+    )
+    request = {"call": [["Macro", [], {}]], "reduce": "median"}
+    got = fetcher(FakeClient(df)).fetch(request, ["interest_13m", "interest_6m"], set(), TODAY)
+    assert got.points["interest_13m"] == [Point(TODAY, Decimal("5.4"))]  # 3 numbers, blank skipped
+    assert got.points["interest_6m"] == [Point(TODAY, Decimal("4.75"))]  # mean of the middle two
+    assert b'"bank_code"' in (got.payload or b"")

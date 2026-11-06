@@ -5,7 +5,9 @@
 - period_value: the provider already gives one value per period; the last one in
   the period wins.
 
-Only closed periods are kept: a period whose end is before `today`.
+Only closed periods are kept: a period whose end is before `today`. Daily series
+(a spot value read once, such as today's SBV central rate) keep every day up to and
+including today, and have no gaps.
 """
 
 import calendar
@@ -37,6 +39,8 @@ class Periods:
 
 
 def period_end(day: dt.date, period: Frequency) -> dt.date:
+    if period is Frequency.DAILY:
+        return day
     if period is Frequency.MONTHLY:
         return day.replace(day=calendar.monthrange(day.year, day.month)[1])
     if period is Frequency.QUARTERLY:
@@ -71,8 +75,13 @@ def to_periods(
     last: dict[dt.date, Point] = {}
     for p in sorted(points, key=lambda p: p.date):
         last[period_end(p.date, period)] = p  # later points overwrite earlier ones
-    closed = sorted(end for end in last if end < today)
     result = Periods()
+    if period is Frequency.DAILY:
+        for end, p in sorted(last.items()):
+            if end <= today:
+                result.values[end] = PeriodValue(end, p.date, p.value)
+        return result
+    closed = sorted(end for end in last if end < today)
     if not closed:
         return result
     end = closed[0]
