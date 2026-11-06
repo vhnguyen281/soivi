@@ -821,3 +821,28 @@ returns in VND, one column per class; a month needs the value of that month and 
 
 Known-answer tests: a constant yield earns y/12; duration and convexity of a 10-year 5% par bond (7.7217, 74.998,
 checked by finite differences); FX compounding; equal weights; the splice.
+10. **Coverage table approved by the owner (2026-11-06).** Equity dividends (D/P) come in with the building blocks
+    (Prompt 7), from member dividend data.
+
+---
+
+## 2026-11-06 — Statistics and the unequal-history policy (VNCMA Prompt 6)
+
+`core/cma/stats.py`; `python -m pipeline market stats`.
+
+1. **Unequal histories (66–176 months).** Volatility per class on its **own full history**. Correlation per
+   **pair on the months both have**, at least 36; fewer → 0. No back-filling or common-window truncation (the
+   window all classes share is only 66 months, from 2021, set by USD).
+2. **Blend:** 0.5 full sample + 0.5 EWMA (half-life 36 months), for variances and covariances alike.
+3. **Geltner de-smoothing** for `corp_bond`, `gold`, `eq_global` (NAVs, monthly averages); φ = lag-1
+   autocorrelation clipped to [0, 0.9]. Result: gold φ 0.31, eq_global 0.08, corp_bond ≈ 0 (no de-smoothing;
+   its autocorrelation is −0.005 across 2013–2026).
+4. **Ledoit–Wolf (2004) toward the identity**, intensity δ estimated on standardised returns over the common
+   window, then **scaled per pair: δ_ij = δ · T_common / T_ij**. Estimation noise falls with sample size, and
+   applying the 66-month δ (0.35) to pairs with 137–176 months cut the VN30–VNMID/VNSML correlation from 0.77 to
+   0.49. With equal histories this is plain LW (tested).
+5. **Validation** after every computation and every manual change (`validate()`): symmetric, unit diagonal,
+   |ρ| ≤ 1, min eigenvalue > 1e-8; otherwise Higham (2002) nearest correlation (tested on Higham's example).
+6. **Volatility floors (proposed, for the owner's review before a release):** cash 0.5%, gov_bond 3%, corp_bond
+   3%, eq_large 18%, eq_midsmall 20%, gold 12%, usd 2%, eq_global 14%. Today they bind for corp_bond (2.2% → 3%)
+   and usd (1.6% → 2%).

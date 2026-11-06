@@ -6,7 +6,7 @@ import sys
 from collections.abc import Callable
 from decimal import Decimal
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from pipeline.market.client import MarketClient, MarketDataError, VnstockClient
 
@@ -27,6 +27,7 @@ def add_parser(sub: "argparse._SubParsersAction[argparse.ArgumentParser]") -> No
     ingest.add_argument("--series", help="comma-separated series codes (default: all active)")
     returns = msub.add_parser("returns", help="monthly total returns by asset class + coverage")
     returns.add_argument("--csv", type=Path, help="also write the monthly log returns here")
+    msub.add_parser("stats", help="volatilities and the correlation matrix (VNCMA Prompt 6)")
     manual = msub.add_parser("manual", help="enter one value by hand (with its source)")
     manual.add_argument("--series", required=True)
     manual.add_argument("--period", required=True, help="YYYY-MM (daily: YYYY-MM-DD, yearly: YYYY)")
@@ -48,6 +49,8 @@ def run(args: argparse.Namespace, client_factory: Callable[[], MarketClient] | N
         return _manual(args)
     if args.market_command == "returns":
         return _returns(args)
+    if args.market_command == "stats":
+        return _stats()
     raise AssertionError(args.market_command)
 
 
@@ -195,12 +198,11 @@ def _manual(args: argparse.Namespace) -> int:
     return 0
 
 
-def _returns(args: argparse.Namespace) -> int:
+def _load_returns() -> tuple[Any, Any]:
     from core.cma.series import (
         Inputs,
         SeriesConfig,
         build_returns,
-        coverage_table,
         load_observations,
         load_savings_12m,
         month_index,
@@ -215,7 +217,13 @@ def _returns(args: argparse.Namespace) -> int:
         starts = [s.index.min() for s in observations.values() if not s.empty]
         months = month_index(min(starts), max(ends)) if ends else []
         savings = load_savings_12m(session, config.big_banks, months)
-    frame, coverage = build_returns(Inputs(observations, savings), config)
+    return build_returns(Inputs(observations, savings), config)
+
+
+def _returns(args: argparse.Namespace) -> int:
+    from core.cma.series import coverage_table
+
+    frame, coverage = _load_returns()
     rows = coverage_table(coverage)
     widths = {k: max(len(k), *(len(str(r[k])) for r in rows)) for k in rows[0] if k != "notes"}
     print("  ".join(k.ljust(w) for k, w in widths.items()) + "  notes")
@@ -224,4 +232,24 @@ def _returns(args: argparse.Namespace) -> int:
     if args.csv:
         frame.to_csv(args.csv, index_label="month_end", float_format="%.8f")
         print(f"monthly log returns: {args.csv}")
+    return 0
+
+
+def _stats() -> int:
+    from core.cma.stats import compute_stats, summary_rows
+
+    frame, _ = _load_returns()
+    stats = compute_stats(frame)
+    print(f"{'class':12} {'vol':>7} {'raw':>7} {'phi':>5} {'months':>6}")
+    for r in summary_rows(stats):
+        print(
+            f"{r['class']:12} {r['vol']:7.2%} {r['vol_raw']:7.2%} {r['phi']:5.2f} {r['months']:6d}"
+        )
+    print(
+        f"\nLedoit-Wolf shrinkage {stats.shrinkage:.3f} over {stats.common_months} common months; "
+        f"repaired: {stats.repaired}"
+    )
+    print(stats.corr.round(2).to_string())
+    for note in stats.notes:
+        print(f"note: {note}")
     return 0

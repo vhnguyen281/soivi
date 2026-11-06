@@ -72,7 +72,7 @@ data with known answers (constant yield → y/12, etc.).
 ```
 Done when: the coverage table looks right to me.
 
-Built 2026-11-06 (`python -m pipeline market returns`); waiting for the owner's review. See DECISIONS 2026-11-06 (Prompt 5).
+Built 2026-11-06 (`python -m pipeline market returns`); approved by the owner the same day.
 
 ## Prompt 6 — Statistics
 ```
