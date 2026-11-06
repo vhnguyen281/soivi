@@ -671,3 +671,21 @@ statistics are monthly, so an always-on server is not needed yet.
    tier and the latest VN30 close.
 4. vnstock attaches provenance to every result (`df.attrs`: source, route, organisation, terms URL, robots.txt
    note, requested_at). The ingest step (Prompt 3) stores it with each snapshot.
+
+---
+
+## 2026-11-06 — Cloud mode: Neon and S3, with the Phase 1 history moved over
+
+1. **`CLOUD=1` on the make targets** (`docker-compose.cloud.yml`) points the pipeline, scheduler, review app and
+   API at `DATABASE_URL` (Neon) and `S3_*` (AWS) from `.env`. Without it they use the local Docker Postgres and
+   MinIO, whatever `.env` says; the local services keep running because the tests use them.
+   - Local mode now also takes the MinIO keys from `MINIO_ROOT_*`, so the AWS keys in `S3_*` never reach MinIO.
+   - Tests never use the cloud (`tests/conftest.py`, commit d15009c).
+2. **History moved, not restarted.** The local database (1,012 savings rates, 42 cards, 141 snapshots, 67 review
+   tasks, 88 named approvals) was restored with `pg_dump`/`pg_restore` into a new database **`soivi`** on Neon;
+   row counts and the 8 append-only triggers match. The 107 snapshot files were copied to S3 with the same keys,
+   each checked against its SHA-256 in the `snapshot` table. Nothing was overwritten or deleted.
+   - Backup of the local database: `~/soivi-backups/local-soivi-2026-11-06.dump`.
+   - The default `neondb` database on Neon only holds seed data from the first test; it can be dropped.
+3. **Neon runs PostgreSQL 18**, while the tests and local Docker run 16. Migrations and the restore work on 18.
+   Revisit if a difference appears; recreating the Neon project on 16 is cheap while traffic is zero.

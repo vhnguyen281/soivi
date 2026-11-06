@@ -68,6 +68,19 @@ make shell
 alembic revision --autogenerate -m "describe the change"
 ```
 
+## Cloud mode (Neon + S3)
+
+Add `CLOUD=1` to point the pipeline, scheduler, review app and API at `DATABASE_URL` (Neon) and `S3_*` (AWS S3) from `.env` instead of the local Postgres and MinIO:
+
+```bash
+make migrate CLOUD=1                       # migrations on Neon
+make review CLOUD=1                        # review app reading Neon and S3
+make scheduler CLOUD=1                     # monthly runs write to Neon and S3
+make pipeline CLOUD=1 ARGS="run --institution ACB"
+```
+
+Without `CLOUD=1` everything stays local. Tests always use the local Docker Postgres and MinIO, whatever `.env` says.
+
 ## Running the pipeline
 
 ```bash

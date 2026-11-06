@@ -1,3 +1,6 @@
+# Default (local) mode: every service uses the Postgres and MinIO below, whatever
+# DATABASE_URL and S3_* say in .env. Cloud mode (`make ... CLOUD=1`) adds
+# docker-compose.cloud.yml, which points them at Neon and S3 from .env instead.
 services:
   postgres:
     image: postgres:16
@@ -61,6 +64,9 @@ services:
       # Inside the compose network, reach services by name.
       DATABASE_URL: postgresql+psycopg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
       S3_ENDPOINT: minio:9000
+      S3_ACCESS_KEY: ${MINIO_ROOT_USER}
+      S3_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
+      S3_SECURE: "false"
     depends_on:
       postgres:
         condition: service_healthy
@@ -70,8 +76,8 @@ services:
       - ./:/app
       - /app/.venv
 
-  # Scheduler: runs due sources (07:00/15:00 Vietnam time for savings, weekly cards,
-  # monthly official), alerts on broken adapters and sends the daily summary.
+  # Scheduler: runs due sources (every bank source on the 1st at 07:00 Vietnam time),
+  # alerts on broken adapters and sends the daily summary.
   # Not started by `make up`: start it explicitly with `make scheduler`.
   scheduler:
     build: .
@@ -82,6 +88,9 @@ services:
     environment:
       DATABASE_URL: postgresql+psycopg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
       S3_ENDPOINT: minio:9000
+      S3_ACCESS_KEY: ${MINIO_ROOT_USER}
+      S3_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
+      S3_SECURE: "false"
       PIPELINE_LOCK_FILE: /tmp/soivi-pipeline.lock
     depends_on:
       postgres:
@@ -133,6 +142,9 @@ services:
     environment:
       DATABASE_URL: postgresql+psycopg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
       S3_ENDPOINT: minio:9000
+      S3_ACCESS_KEY: ${MINIO_ROOT_USER}
+      S3_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
+      S3_SECURE: "false"
       REVIEW_HOST: 0.0.0.0
       REVIEW_PORT: "8001"
     ports:

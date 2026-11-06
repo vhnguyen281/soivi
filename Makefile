@@ -1,5 +1,7 @@
 .DEFAULT_GOAL := help
-COMPOSE := docker compose
+# CLOUD=1: the pipeline, scheduler, review app and API use Neon and S3 from .env
+# (docker-compose.cloud.yml). Without it they use the local Postgres and MinIO.
+COMPOSE := docker compose$(if $(CLOUD), -f docker-compose.yml -f docker-compose.cloud.yml)
 RUN := $(COMPOSE) run --rm pipeline
 
 .PHONY: help up down api web web-test review scheduler scheduler-logs test test-ocr lint fmt migrate seed check-seeds pipeline shell
@@ -21,11 +23,11 @@ web: ## Start the public site on http://127.0.0.1:$${WEB_PORT:-3000} (builds fro
 web-test: ## Site checks: unit tests, types, lint
 	cd web && npm test && npm run typecheck && npm run lint
 
-review: ## Start the review app on http://127.0.0.1:$${REVIEW_PORT:-8001} (login from .env)
+review: ## (CLOUD=1 for Neon and S3) Start the review app on http://127.0.0.1:$${REVIEW_PORT:-8001} (login from .env)
 	$(COMPOSE) up -d --build review
 	@echo "Review app: http://127.0.0.1:$${REVIEW_PORT:-8001}"
 
-scheduler: ## Start the scheduler (runs due sources, Telegram alerts, daily summary)
+scheduler: ## Start the scheduler (CLOUD=1 to write to Neon and S3)
 	$(COMPOSE) --profile scheduler up -d --build scheduler
 
 scheduler-logs: ## Follow the scheduler's output
@@ -49,10 +51,10 @@ fmt: ## Auto-fix lint issues and format code
 	uv run ruff check --fix .
 	uv run ruff format .
 
-migrate: ## Apply database migrations (inside Docker)
+migrate: ## Apply database migrations (inside Docker; CLOUD=1 for Neon)
 	$(RUN) alembic upgrade head
 
-seed: ## Load seed data from data/seeds/ (inside Docker; safe to re-run)
+seed: ## Load seed data from data/seeds/ (inside Docker; safe to re-run; CLOUD=1 for Neon)
 	$(RUN) python -m core.seed
 
 pipeline: ## Run the pipeline in Docker, e.g. make pipeline ARGS="run --all-due"
