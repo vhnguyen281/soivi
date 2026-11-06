@@ -149,9 +149,17 @@ def run_model(loaded: dict[str, Any], cfg: CmaConfig) -> dict[str, Any]:
 
 
 def create_run(
-    session: Session, cfg: CmaConfig, created_by: str, as_of: pd.Timestamp | None = None
+    session: Session,
+    cfg: CmaConfig,
+    created_by: str,
+    as_of: pd.Timestamp | None = None,
+    *,
+    reuse_same: bool = False,
 ) -> CmaRun:
-    """Compute and store one run with its adjustments. The caller commits."""
+    """Compute and store one run with its adjustments. The caller commits.
+
+    `reuse_same`: if the latest run has the same inputs, config and code version, return
+    it instead of storing a copy (the monthly job re-run on the same day adds nothing)."""
     loaded = load_inputs(session, as_of)
     output = run_model(loaded, cfg)
     inputs = {
@@ -167,13 +175,22 @@ def create_run(
             ),
         },
     }
+    inputs_sha256, version = _sha(inputs), code_version()
+    if reuse_same:
+        latest = session.scalar(select(CmaRun).order_by(CmaRun.id.desc()))
+        if latest is not None and (
+            latest.inputs_sha256,
+            latest.config_sha256,
+            latest.code_version,
+        ) == (inputs_sha256, cfg.sha256, version):
+            return latest
     run = CmaRun(
         created_by=created_by,
         as_of=loaded["as_of"].date() if hasattr(loaded["as_of"], "date") else loaded["as_of"],
         methodology_version=cfg.methodology_version,
-        code_version=code_version(),
+        code_version=version,
         config_sha256=cfg.sha256,
-        inputs_sha256=_sha(inputs),
+        inputs_sha256=inputs_sha256,
         config=cfg.raw,
         inputs=inputs,
         output=to_json(output),

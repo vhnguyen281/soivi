@@ -32,6 +32,11 @@ def add_parser(sub: "argparse._SubParsersAction[argparse.ArgumentParser]") -> No
     compute.add_argument("--by", required=True, help="your name (stored with the run)")
     compute.add_argument("--config", type=Path, default=Path("data/cma/config.yaml"))
     compute.add_argument("--as-of", type=dt.date.fromisoformat, help="month end (default: latest)")
+    monthly = msub.add_parser(
+        "monthly", help="ingest + compute a draft + notify (the Mac's monthly job)"
+    )
+    monthly.add_argument("--by", default="monthly job (Mac)", help="stored as the run's author")
+    monthly.add_argument("--review-url", default="http://127.0.0.1:8001")
     report = msub.add_parser("report", help="write the draft (xlsx, json, md) of a run (Prompt 8)")
     report.add_argument("--run", type=int, help="cma_run id (default: the latest)")
     report.add_argument("--out", type=Path, default=Path("reports/vncma"))
@@ -62,6 +67,8 @@ def run(args: argparse.Namespace, client_factory: Callable[[], MarketClient] | N
         return _compute(args)
     if args.market_command == "report":
         return _report(args)
+    if args.market_command == "monthly":
+        return _monthly(args, client_factory or VnstockClient)
     raise AssertionError(args.market_command)
 
 
@@ -331,3 +338,55 @@ def _report(args: argparse.Namespace) -> int:
         for path in write_all(run, doc, args.out, previous):
             print(path)
     return 0
+
+
+def _monthly(args: argparse.Namespace, client_factory: Callable[[], MarketClient]) -> int:
+    from core.cma.config import ConfigError, load_config
+    from core.cma.run import create_run
+    from core.config import get_settings
+    from core.db import SessionLocal
+    from pipeline.fetch.storage import MinioStore
+    from pipeline.market.ingest import ingest
+    from pipeline.market.monthly import MonthlyReport, due_deadlines, message
+    from pipeline.notify import make_notifier, notify
+
+    report = MonthlyReport(deadlines=due_deadlines(dt.datetime.now(dt.UTC).date()))
+    fetchers = _LazyFetchers(client_factory)
+    try:
+        results = ingest(SessionLocal, MinioStore(), fetchers)
+        report.groups = len(results)
+        report.new = sum(r.new for r in results)
+        report.revised = sum(r.revised for r in results)
+        report.failed = [f"{r.label}: {r.error}" for r in results if r.status == "failed"]
+    except MarketDataError as exc:
+        report.failed = [str(exc)]
+    finally:
+        for close in fetchers.closers:
+            close()
+    try:
+        cfg = load_config()
+        with SessionLocal() as session, session.begin():
+            latest_before = session.scalar(_latest_run_id_query())
+            run = create_run(session, cfg, args.by, reuse_same=True)
+            report.run_id, report.as_of = run.id, run.output["as_of"]
+            report.run_is_new = run.id != latest_before
+            classes = run.output["classes"]
+            report.headline = {
+                k: classes[k]["final"] for k in ("cash_vnd", "gov_bond", "eq_large", "gold")
+            }
+            report.failed_checks = [c for c in run.output["checks"] if c.startswith("FAIL")]
+    except (ConfigError, ValueError) as exc:  # BlockError is a ValueError
+        report.compute_error = str(exc)[:500]
+    text = message(report, args.review_url)
+    print(text)
+    with SessionLocal() as session, session.begin():
+        notify(session, make_notifier(get_settings()), "vncma_monthly", text)
+    return 0 if report.ok else 1
+
+
+def _latest_run_id_query() -> Any:
+    from sqlalchemy import select
+
+    from core.models import CmaRun
+
+    return select(CmaRun.id).order_by(CmaRun.id.desc()).limit(1)

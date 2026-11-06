@@ -30,3 +30,4 @@ web/content/
 *.tsbuildinfo
 .env*.local
 reports/
+logs/

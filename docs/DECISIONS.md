@@ -979,3 +979,29 @@ database has no VNCMA tables, so the API failed and the site build stopped. The 
 `SOIVI_CLOUD=1` in `.env`, so every target starts in the same mode, and `CLOUD=0/1` still overrides it for one
 command. `make help` and the `api`, `web` and `review` targets print the mode. Tests are unaffected
 (`tests/conftest.py` pins local services).
+
+---
+
+## 2026-11-06 — The Mac's monthly VNCMA job (launchd)
+
+1. **`python -m pipeline market monthly`** works in three steps:
+   1. It ingests every active market series.
+   2. It computes a draft run. If the latest run has the same inputs, config and code version, it reuses that run
+      instead of storing a copy.
+   3. It notifies the owner by Telegram (or prints, with no bot configured), and the message is recorded in
+      `notification`. The message covers:
+      - the draft's link in the review app;
+      - headline values;
+      - failed ingest groups;
+      - failed sanity checks;
+      - deadlines within 75 days.
+
+   It never approves: a release still needs a named reviewer. The exit code is 1 on any ingest or compute failure.
+2. **Scheduling:** it runs on the Mac by launchd (`scripts/install-vncma-launchd.sh`), not in the Docker scheduler,
+   because vnstock is registered to this device.
+   - When: day 3 of each month at 09:00, after month-end data settle.
+   - Log: `logs/vncma-monthly.log` (gitignored).
+   - launchd runs a missed job on wake, but not if the Mac was off.
+3. **Known deadlines are in code** (`pipeline/market/monthly.py`) so the message raises them:
+   - vnstock `ratio()` stops working on 2027-01-15 (move `pe_bu_*` to `vnstock_quant`);
+   - the HNX intermediate certificate expires on 2027-07-16.
