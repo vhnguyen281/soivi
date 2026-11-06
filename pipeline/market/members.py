@@ -39,6 +39,8 @@ RATIO_IDS = {"RT_VALUE_PE": "pe", "RT_VALUE_MARKET_CAP": "market_cap"}
 QUARTER = re.compile(r"(\d{4})-Q([1-4])")
 
 Call = Callable[[Sequence[Step]], Any]
+QuantRatios = Callable[[Sequence[str]], Any]  # symbols -> long table: symbol, period, id, value
+QUANT_CHUNK = 50
 
 
 def members_chain(index: str) -> list[Step]:
@@ -150,19 +152,56 @@ def summary(
     return payload, points
 
 
-def ratio(call: Call, index: str, today: dt.date) -> tuple[dict[str, Any], dict[str, list[Point]]]:
+def quant_tables(quant: QuantRatios, symbols: Sequence[str]) -> dict[str, Any]:
+    """symbol -> long ratio table from vnstock_quant, loaded QUANT_CHUNK symbols at a time.
+    A chunk that fails is retried one symbol at a time, so one bad symbol is only "missing"."""
+    out: dict[str, Any] = {}
+    for i in range(0, len(symbols), QUANT_CHUNK):
+        chunk = list(symbols[i : i + QUANT_CHUNK])
+        try:
+            frames = [quant(chunk)]
+        except MarketDataError as exc:
+            if exc.transient:
+                raise
+            frames = []
+            for one in chunk:
+                try:
+                    frames.append(quant([one]))
+                except MarketDataError as exc2:
+                    if exc2.transient:
+                        raise
+                    out[one] = exc2
+        for df in frames:
+            for symbol, part in df.groupby("symbol"):
+                out[str(symbol)] = part
+    return out
+
+
+def ratio(
+    call: Call, index: str, today: dt.date, quant: QuantRatios | None = None
+) -> tuple[dict[str, Any], dict[str, list[Point]]]:
+    """Quarterly bottom-up P/E. With `quant`, ratios come from vnstock_quant.fa.ratios
+    (computed from filed statements, TTM); without it, from vnstock's ratio() per symbol
+    (stops working after 2027-01-15)."""
     symbols = read_members(call, index)
     closed = last_closed_quarter(today)
     rows: dict[str, dict[str, dict[str, float]]] = {}
     missing: dict[str, str] = {}
+    tables = quant_tables(quant, symbols) if quant is not None else {}
     for s in symbols:
-        try:
-            df = call(ratio_chain(s))
-        except MarketDataError as exc:
-            if exc.transient:  # still failing after retries: stop, do not skip the member
-                raise
-            missing[s] = str(exc)[:200]
-            continue
+        if quant is not None:
+            df = tables.get(s)
+            if isinstance(df, MarketDataError):
+                missing[s] = str(df)[:200]
+                continue
+        else:
+            try:
+                df = call(ratio_chain(s))
+            except MarketDataError as exc:
+                if exc.transient:  # still failing after retries: stop, do not skip the member
+                    raise
+                missing[s] = str(exc)[:200]
+                continue
         if df is None or len(df) == 0 or not {"period", "id", "value"} <= set(df.columns):
             missing[s] = "no ratio table"
             continue
@@ -198,6 +237,7 @@ def ratio(call: Call, index: str, today: dt.date) -> tuple[dict[str, Any], dict[
     payload = {
         "index": index,
         "report": "ratio",
+        "source": "vnstock_quant.fa.ratios" if quant is not None else "vnstock ratio()",
         "closed_through": closed.isoformat(),
         "members": symbols,
         "missing": missing,

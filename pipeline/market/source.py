@@ -138,12 +138,15 @@ class VnstockFetcher:
     _calls: int = 0
 
     def _call(self, chain: Sequence[Step]) -> Any:
+        return self._retry(lambda: self.client.call(chain))
+
+    def _retry(self, fn: Callable[[], Any]) -> Any:
         for attempt in range(1, self.attempts + 1):
             if self._calls:
                 self.sleep(self.pause)
             self._calls += 1
             try:
-                return self.client.call(chain)
+                return fn()
             except MarketDataError as exc:
                 cause = type(exc.__cause__).__name__ if exc.__cause__ else ""
                 if cause not in TRANSIENT or attempt == self.attempts:
@@ -210,8 +213,17 @@ class VnstockFetcher:
         url = f"vnstock:members({index!r}).{report}"
         if report == "ratio" and members.last_closed_quarter(today) in have:
             return Fetched(url, "application/json", None)  # quarterly: nothing new yet
-        build = members.summary if report == "summary" else members.ratio
-        payload, points = build(self._call, index, today)
+        if report == "summary":
+            payload, points = members.summary(self._call, index, today)
+        else:
+            quant = getattr(self.client, "quant_ratios", None)
+            use_quant = request.get("source", "quant") == "quant" and quant is not None
+
+            def ratios(symbols: Sequence[str]) -> Any:
+                assert quant is not None
+                return self._retry(lambda: quant(symbols, list(members.RATIO_IDS)))
+
+            payload, points = members.ratio(self._call, index, today, ratios if use_quant else None)
         missing = [f for f in value_fields if f not in points]
         if missing:
             raise MarketDataError(f"{url} has no field(s) {missing}; got {sorted(points)}")

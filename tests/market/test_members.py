@@ -108,3 +108,41 @@ def test_fetcher_skips_ratio_when_the_last_quarter_is_stored() -> None:
     )
     assert summary.payload is not None and b'"report":"summary"' in summary.payload
     assert fake.calls == 4
+
+
+def quant_table(rows: dict[str, dict[str, tuple[float, float]]]) -> pd.DataFrame:
+    out = []
+    for symbol, quarters in rows.items():
+        for period, (pe, cap) in quarters.items():
+            out.append({"symbol": symbol, "period": period, "id": "RT_VALUE_PE", "value": pe})
+            out.append(
+                {"symbol": symbol, "period": period, "id": "RT_VALUE_MARKET_CAP", "value": cap}
+            )
+    return pd.DataFrame(out)
+
+
+def test_ratio_from_vnstock_quant_in_chunks_with_a_bad_symbol(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(members, "QUANT_CHUNK", 2)
+    data = {
+        "AAA": {"2026-Q2": (10.0, 300.0)},
+        "BBB": {"2026-Q2": (20.0, 100.0)},
+        "CCC": {"2026-Q2": (25.0, 100.0)},
+        "EEE": {"2026-Q2": (10.0, 0.0)},  # no market cap: left out of the quarter
+        "FFF": {"2026-Q2": (10.0, 0.0)},
+    }
+    calls: list[list[str]] = []
+
+    def quant(symbols: Sequence[str]) -> pd.DataFrame:
+        calls.append(list(symbols))
+        if "DDD" in symbols:
+            raise MarketDataError("load failed")  # the chunk is retried one by one
+        return quant_table({s: data[s] for s in symbols})
+
+    summaries = {**SUMMARIES, "DDD": {}, "EEE": {}, "FFF": {}}
+    payload, points = members.ratio(FakeVnstock(summaries, {}), "VNX", TODAY, quant)
+    assert float(points["pe"][0].value) == pytest.approx(500 / (30 + 5 + 4))
+    assert payload["source"] == "vnstock_quant.fa.ratios"
+    assert list(payload["missing"]) == ["DDD"]  # only the bad symbol is lost
+    assert calls == [["AAA", "BBB"], ["CCC", "DDD"], ["CCC"], ["DDD"], ["EEE", "FFF"]]

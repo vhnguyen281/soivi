@@ -1005,3 +1005,26 @@ command. `make help` and the `api`, `web` and `review` targets print the mode. T
 3. **Known deadlines are in code** (`pipeline/market/monthly.py`) so the message raises them:
    - vnstock `ratio()` stops working on 2027-01-15 (move `pe_bu_*` to `vnstock_quant`);
    - the HNX intermediate certificate expires on 2027-07-16.
+
+---
+
+## 2026-11-06 — Bottom-up P/E from vnstock_quant (replacing vnstock `ratio()`)
+
+1. **New dependency `vnstock-quant==0.5.0`** (owner's OK 2026-11-06), from the same vnstocks.com index as
+   vnstock. Its `fa.ratios` computes quarterly TTM P/E and market cap from filed statements and prices.
+   - `pe_bu_vnmid` and `pe_bu_vnsml` now use it by default. `source: vnstock` in a request selects the old
+     `ratio()` path until it stops working on 2027-01-15.
+   - Members are loaded 50 at a time. A chunk that fails is retried one symbol at a time, so one bad symbol only
+     lands in "missing".
+   - The release expires 2027-10-27; it needs upgrading before then. The monthly job's reminder now names this date
+     instead of the `ratio()` one.
+2. **Check against the stored series (2026-11-06):**
+   - **Missing members:** VNMIDCAP has none. VNSMALLCAP has 4 of 212 (DHM, DLG, DPG, DPR).
+   - **Level:** P/E comes out about 4–6% higher than vnstock's `ratio()`, e.g. VNMID Q2 2026 10.15 → 10.62 and
+     VNSML 9.02 → 9.41. The largest gap in any quarter is 2.5.
+   - **Effect on VNCMA:** P/E_0 and P/E_target come from the same series, so a level shift mostly cancels in
+     ln(P/E_target/P/E_0).
+   - **History:** it starts at 2018-Q4 instead of 2018-Q1, because TTM needs four quarters.
+   - **How the change lands:** when the next quarter closes, the stored values change as new revisions; nothing
+     is overwritten.
+   - **Run time:** about 17 minutes for both indices. It runs only when a new quarter has closed.

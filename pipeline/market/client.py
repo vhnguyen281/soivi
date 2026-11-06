@@ -78,6 +78,19 @@ def describe(chain: Sequence[Step]) -> str:
 
 class MarketClient(Protocol):
     def status(self) -> AccountStatus: ...
+    def quant_ratios(self, symbols: Sequence[str], ids: Sequence[str]) -> Any:
+        """Quarterly (TTM) ratios computed by vnstock_quant from filed statements and prices:
+        a long table with symbol, period, id, value, unit, reason."""
+        call = f"vnstock_quant.fa.ratios(Dataset.load({len(symbols)} symbols), ids={list(ids)})"
+        try:
+            import importlib
+
+            quant: Any = importlib.import_module("vnstock_quant")
+            data = quant.Dataset.load(list(symbols), period="quarter")
+            return quant.fa.ratios(data, ids=list(ids), period="quarter")
+        except Exception as exc:
+            raise MarketDataError(f"{call} failed: {type(exc).__name__}: {exc}") from exc
+
     def latest_index_close(self, symbol: str) -> IndexClose: ...
     def call(self, chain: Sequence[Step]) -> Any: ...
 
@@ -124,6 +137,19 @@ class VnstockClient:
         except Exception as exc:
             raise MarketDataError(f"{describe(chain)} failed: {type(exc).__name__}: {exc}") from exc
         return obj
+
+    def quant_ratios(self, symbols: Sequence[str], ids: Sequence[str]) -> Any:
+        """Quarterly (TTM) ratios computed by vnstock_quant from filed statements and prices:
+        a long table with symbol, period, id, value, unit, reason."""
+        call = f"vnstock_quant.fa.ratios(Dataset.load({len(symbols)} symbols), ids={list(ids)})"
+        try:
+            import importlib
+
+            quant: Any = importlib.import_module("vnstock_quant")
+            data = quant.Dataset.load(list(symbols), period="quarter")
+            return quant.fa.ratios(data, ids=list(ids), period="quarter")
+        except Exception as exc:
+            raise MarketDataError(f"{call} failed: {type(exc).__name__}: {exc}") from exc
 
     def latest_index_close(self, symbol: str) -> IndexClose:
         call = f'Market().index("{symbol}").ohlcv(length=5)'

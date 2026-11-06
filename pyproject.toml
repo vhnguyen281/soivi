@@ -40,6 +40,9 @@ dependencies = [
     # pinned to the vnstocks.com index below. The API key comes from VNSTOCK_API_KEY
     # or `vnstock register`; never commit it.
     "vnstock==5.2.1",
+    # Financial ratios computed locally from filed statements; replaces vnstock's
+    # Fundamental().equity().ratio(), which stops working on 2027-01-15. Same index.
+    "vnstock-quant==0.5.0",
     "xlrd>=2.0",
 ]
 
@@ -66,6 +69,7 @@ explicit = true
 
 [tool.uv.sources]
 vnstock = { index = "vnstocks" }
+vnstock-quant = { index = "vnstocks" }
 
 [tool.ruff]
 line-length = 100

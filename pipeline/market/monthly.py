@@ -20,12 +20,12 @@ from dataclasses import dataclass, field
 # Dates by which something in the market pipeline must be changed (DECISIONS 2026-11-06).
 DEADLINES: tuple[tuple[dt.date, str], ...] = (
     (
-        dt.date(2027, 1, 15),
-        "vnstock Fundamental().equity().ratio() stops working: move pe_bu_* to vnstock_quant",
-    ),
-    (
         dt.date(2027, 7, 16),
         "HNX intermediate certificate (pipeline/market/certs) expires: fetch the new one",
+    ),
+    (
+        dt.date(2027, 10, 27),
+        "vnstock-quant 0.5.0 release expires: upgrade it (pe_bu_* depend on it)",
     ),
 )
 WARN_DAYS = 75

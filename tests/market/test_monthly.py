@@ -15,10 +15,11 @@ from tests.cma.test_run import market_data, store
 
 
 def test_deadlines_show_up_75_days_ahead() -> None:
-    assert due_deadlines(dt.date(2026, 10, 1)) == []
-    (soon,) = due_deadlines(dt.date(2026, 11, 6))
-    assert "in 70 days" in soon and "vnstock_quant" in soon
-    assert "overdue" in due_deadlines(dt.date(2027, 2, 1))[0]
+    assert due_deadlines(dt.date(2026, 11, 6)) == []
+    (soon,) = due_deadlines(dt.date(2027, 5, 7))
+    assert "in 70 days" in soon and "HNX" in soon
+    late = due_deadlines(dt.date(2027, 11, 1))
+    assert len(late) == 2 and "overdue" in late[1] and "vnstock-quant" in late[1]
 
 
 def test_message_names_the_draft_failures_and_checks() -> None:

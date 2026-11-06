@@ -1286,6 +1286,7 @@ dependencies = [
     { name = "tzdata" },
     { name = "uvicorn", extra = ["standard"] },
     { name = "vnstock" },
+    { name = "vnstock-quant" },
     { name = "xlrd" },
 ]
 
@@ -1325,6 +1326,7 @@ requires-dist = [
     { name = "tzdata", specifier = ">=2024.1" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.30" },
     { name = "vnstock", specifier = "==5.2.1", index = "https://vnstocks.com/api/packages" },
+    { name = "vnstock-quant", specifier = "==0.5.0", index = "https://vnstocks.com/api/packages" },
     { name = "xlrd", specifier = ">=2.0" },
 ]
 
@@ -1516,6 +1518,22 @@ wheels = [
     { url = "https://vnstocks.com/api/packages/files/vnstock/5.2.1/vnstock-5.2.1-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:12cbc32083cae37c9a3dd1a2b81a6d3bc507aee191525cd39e3c44b65ea2e90f", size = 4451080, upload-time = "2026-10-27T15:19:08.939Z" },
     { url = "https://vnstocks.com/api/packages/files/vnstock/5.2.1/vnstock-5.2.1-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7ed7016a8aef823a20f4f8847196a4072cb97cb19801ce08a6981ac628200fc5", size = 4824979, upload-time = "2026-10-27T15:19:09.089Z" },
     { url = "https://vnstocks.com/api/packages/files/vnstock/5.2.1/vnstock-5.2.1-cp310-abi3-win_amd64.whl", hash = "sha256:dfc021041a87d86dbb161179e04f36bb9596355e37e3ba7816cb673054174539", size = 4830885, upload-time = "2026-10-27T15:19:09.157Z" },
+]
+
+[[package]]
+name = "vnstock-quant"
+version = "0.5.0"
+source = { registry = "https://vnstocks.com/api/packages" }
+dependencies = [
+    { name = "numpy" },
+    { name = "pandas" },
+]
+wheels = [
+    { url = "https://vnstocks.com/api/packages/files/vnstock-quant/0.5.0/vnstock_quant-0.5.0-cp310-abi3-macosx_10_12_x86_64.whl", hash = "sha256:51bbecf999812e0c07be261b6413561fc163d24362089f18a5a5d61d679d187b", size = 3558319, upload-time = "2026-10-27T14:03:56.428Z" },
+    { url = "https://vnstocks.com/api/packages/files/vnstock-quant/0.5.0/vnstock_quant-0.5.0-cp310-abi3-macosx_11_0_arm64.whl", hash = "sha256:e635c2e8a5a3c33d6032db4da218215283e341edeba18c37bc1a7e73c4b0eb39", size = 3339308, upload-time = "2026-10-27T14:03:56.542Z" },
+    { url = "https://vnstocks.com/api/packages/files/vnstock-quant/0.5.0/vnstock_quant-0.5.0-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:88168c2e87e5ea86712f843819f092069ef79775e06bc862e1e04ea561b6881f", size = 3442432, upload-time = "2026-10-27T14:03:56.649Z" },
+    { url = "https://vnstocks.com/api/packages/files/vnstock-quant/0.5.0/vnstock_quant-0.5.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9a92d4018899a4cf1ef5d59e1ccdc723ced19b7c9658c4cfcf7440b8fd673921", size = 3720118, upload-time = "2026-10-27T14:03:56.81Z" },
+    { url = "https://vnstocks.com/api/packages/files/vnstock-quant/0.5.0/vnstock_quant-0.5.0-cp310-abi3-win_amd64.whl", hash = "sha256:56862d7acaf4ffd3999b3c278aa9cb19a7b84f2b47afd4a43a331df2de2dadc6", size = 3767773, upload-time = "2026-10-27T14:03:56.924Z" },
 ]
 
 [[package]]
