@@ -11,6 +11,7 @@ import pytest
 
 from pipeline.fetch.polite import FetchError
 from pipeline.market.client import MarketDataError, Step, describe
+from pipeline.market.monthend import Point
 from pipeline.market.source import (
     HNX_ENDPOINT,
     HnxFetcher,
@@ -19,6 +20,7 @@ from pipeline.market.source import (
     find_link,
     parse_hnx,
     parse_pink_sheet,
+    parse_shiller,
 )
 
 FIXTURES = Path(__file__).resolve().parent.parent / "fixtures"
@@ -238,3 +240,22 @@ def test_hnx_fetches_in_chunks_and_never_asks_a_month_twice() -> None:
     second = fetcher.fetch(request, ["par_10y"], {dt.date(2025, 10, 31)}, dt.date(2026, 1, 5))
     assert not second.more and [p.date for p in second.points["par_10y"]] == [dt.date(2025, 12, 30)]
     assert all(r.endswith("/12/2025") for r in http.requests[asked:])  # November not asked again
+
+
+# --------------------------------------------------------------------------- Shiller
+
+
+def test_shiller_link_is_protocol_relative_and_made_absolute() -> None:
+    page = (FIXTURES / "shiller" / "page.html").read_text("utf-8")
+    link = find_link(page, "ie_data.xls", "https://shillerdata.com/")
+    assert link.startswith("https://img1.wsimg.com/") and "ie_data.xls" in link
+
+
+def test_parse_shiller_reads_october_from_2026_1() -> None:
+    data = (FIXTURES / "shiller" / "data-sample.xlsx").read_bytes()
+    out = parse_shiller(data, "Data", ["P", "D"])
+    assert out["P"][0] == Point(dt.date(1871, 1, 31), Decimal("4.44"))
+    assert out["P"][-1].date == dt.date(2026, 10, 31)  # written 2026.1
+    assert out["D"][-1].date == dt.date(2026, 6, 30)  # dividends lag; blanks are skipped
+    with pytest.raises(MarketDataError, match="no header row"):
+        parse_shiller(data, "Data", ["CAPE"])

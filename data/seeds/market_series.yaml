@@ -977,8 +977,8 @@ series:
   month_end_rule: period_value
   max_gap_days: null
   grade: A
-  active: false
-  note: S&P Composite, monthly average of daily closes (Shiller). Needs xlrd (not yet approved).
+  active: true
+  note: S&P Composite, monthly average of daily closes (Shiller). The newest month can be a single close; Shiller's later update comes in as a revision.
 - code: sp500_dividend
   provider: shiller
   asset_class: eq_global
@@ -990,5 +990,5 @@ series:
   month_end_rule: period_value
   max_gap_days: null
   grade: A
-  active: false
-  note: Dividends per index point, annualised (Shiller). Needs xlrd.
+  active: true
+  note: Dividends per index point, annualised (Shiller).

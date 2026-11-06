@@ -28,6 +28,7 @@ from dataclasses import dataclass, field
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
 from typing import Any, Protocol
+from urllib.parse import urljoin
 
 from pipeline.fetch.polite import FetchError
 from pipeline.market.client import MarketClient, MarketDataError, Step, describe
@@ -305,8 +306,15 @@ class HnxFetcher:
 # --------------------------------------------------------------------------- World Bank
 
 
-def find_link(page: str, contains: str) -> str:
-    links = sorted({html.unescape(h) for h in re.findall(r'href="([^"]+)"', page) if contains in h})
+def find_link(page: str, contains: str, base: str = "") -> str:
+    """The one link on `page` containing `contains`, made absolute against `base`."""
+    links = sorted(
+        {
+            urljoin(base, html.unescape(h))
+            for h in re.findall(r'href="([^"]+)"', page)
+            if contains in h
+        }
+    )
     if len(links) != 1:
         raise MarketDataError(f"expected one link containing {contains!r}, found {links}")
     return links[0]
@@ -354,9 +362,57 @@ def parse_pink_sheet(data: bytes, sheet: str, columns: Iterable[str]) -> dict[st
     return out
 
 
+def parse_shiller(data: bytes, sheet: str, columns: Iterable[str]) -> dict[str, list[Point]]:
+    """Monthly S&P Composite data (Shiller): a header row starting with "Date", then rows
+    dated like 1871.01 (2026.1 is October). Each value is dated at its month end."""
+    pd = _pandas()
+    try:
+        frame = pd.read_excel(io.BytesIO(data), sheet_name=sheet, header=None)
+    except Exception as exc:
+        raise MarketDataError(f"Shiller workbook: cannot read sheet {sheet!r}: {exc}") from exc
+    wanted = list(columns)
+    header_row = next(
+        (
+            i
+            for i in range(min(len(frame), 50))
+            if str(frame.iat[i, 0]).strip() == "Date"
+            and all(c in frame.iloc[i].astype(str).str.strip().tolist() for c in wanted)
+        ),
+        None,
+    )
+    if header_row is None:
+        raise MarketDataError(f"Shiller workbook: no header row with Date and {wanted}")
+    header = frame.iloc[header_row].astype(str).str.strip().tolist()
+    out: dict[str, list[Point]] = {}
+    for name in wanted:
+        col = header.index(name)
+        values = []
+        for r in range(header_row + 1, len(frame)):
+            stamp = to_decimal(frame.iat[r, 0])
+            number = to_decimal(frame.iat[r, col])
+            if stamp is None or number is None:
+                continue
+            year = int(stamp)
+            month = int(((stamp - year) * 100).to_integral_value())
+            if not 1 <= month <= 12:
+                raise MarketDataError(f"Shiller workbook: bad date {frame.iat[r, 0]!r}")
+            values.append(Point(dt.date(year, month, calendar.monthrange(year, month)[1]), number))
+        if not values:
+            raise MarketDataError(f"Shiller workbook: column {name!r} has no numbers")
+        out[name] = values
+    return out
+
+
+Parser = Callable[[bytes, str, Iterable[str]], dict[str, list[Point]]]
+
+
 @dataclass
-class WorldBankFetcher:
+class LinkedWorkbookFetcher:
+    """A workbook whose link is found on a page each time (World Bank, Shiller)."""
+
     http: Http
+    parse: Parser
+    name: str
 
     def fetch(
         self,
@@ -367,9 +423,18 @@ class WorldBankFetcher:
     ) -> Fetched:
         try:
             page = self.http.get(str(request["page"]))
-            url = find_link(page.text, str(request["link_contains"]))
+            url = find_link(page.text, str(request["link_contains"]), str(request["page"]))
             workbook = self.http.get(url)
         except FetchError as exc:
-            raise MarketDataError(f"World Bank Pink Sheet: {exc}") from exc
-        points = parse_pink_sheet(workbook.content, str(request["sheet"]), value_fields)
-        return Fetched(url, XLSX, workbook.content, points)
+            raise MarketDataError(f"{self.name}: {exc}") from exc
+        content_type = str(getattr(workbook, "headers", {}).get("content-type", XLSX)).split(";")[0]
+        points = self.parse(workbook.content, str(request["sheet"]), value_fields)
+        return Fetched(url, content_type, workbook.content, points)
+
+
+def WorldBankFetcher(http: Http) -> LinkedWorkbookFetcher:
+    return LinkedWorkbookFetcher(http, parse_pink_sheet, "World Bank Pink Sheet")
+
+
+def ShillerFetcher(http: Http) -> LinkedWorkbookFetcher:
+    return LinkedWorkbookFetcher(http, parse_shiller, "Shiller data")

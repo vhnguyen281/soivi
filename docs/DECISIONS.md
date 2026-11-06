@@ -750,8 +750,9 @@ Docker; HNX and World Bank are part of Prompt 3.
    not rewritten. Each request group is one transaction; a failing group writes nothing and the others continue.
 5. **HNX TLS:** `PoliteHttp` takes an `SSLContext` (`verify=False` is refused); HNX uses certifi plus GlobalSign's
    intermediate in `pipeline/market/certs/`.
-6. **Shiller (S&P 500)** needs `xlrd` to read `.xls`; the two series stay inactive until the owner approves the
-   dependency.
+6. **Shiller (S&P 500)** needs `xlrd` to read `.xls`: approved by the owner on 2026-11-06 and added. The workbook
+   link on shillerdata.com is protocol-relative and changes; it is found on the page each run. Dates like `2026.1`
+   mean October. 3,736 monthly values (price and dividends, 1871 →) ingested.
 7. **Learned on the first live run:** (a) fetch outside any DB transaction: the HNX history took ~20 minutes and
    Neon ended the idle transaction; ingest now reads, fetches, then writes in short transactions, and HNX works in
    24-month chunks stored one by one. (b) vnstock `df.attrs` holds per-call values (`latency_ms`, `end`, `length`,

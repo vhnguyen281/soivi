@@ -18,6 +18,7 @@ EXTENSIONS = {
     "text/plain": "txt",
     "text/csv": "csv",
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": "xlsx",
+    "application/vnd.ms-excel": "xls",
     "image/png": "png",
     "image/jpeg": "jpg",
 }

@@ -110,6 +110,7 @@ class _LazyFetchers(dict[str, "Fetcher"]):
         from pipeline.fetch.polite import PoliteHttp
         from pipeline.market.source import (
             HnxFetcher,
+            ShillerFetcher,
             VnstockFetcher,
             WorldBankFetcher,
             hnx_ssl_context,
@@ -121,10 +122,10 @@ class _LazyFetchers(dict[str, "Fetcher"]):
             http = PoliteHttp(verify=hnx_ssl_context())
             self.closers.append(http.close)
             return HnxFetcher(http)
-        if provider == "worldbank":
+        if provider in ("worldbank", "shiller"):
             http = PoliteHttp()
             self.closers.append(http.close)
-            return WorldBankFetcher(http)
+            return WorldBankFetcher(http) if provider == "worldbank" else ShillerFetcher(http)
         return None
 
 

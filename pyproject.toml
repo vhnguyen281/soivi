@@ -40,6 +40,7 @@ dependencies = [
     # pinned to the vnstocks.com index below. The API key comes from VNSTOCK_API_KEY
     # or `vnstock register`; never commit it.
     "vnstock==5.2.1",
+    "xlrd>=2.0",
 ]
 
 [dependency-groups]
