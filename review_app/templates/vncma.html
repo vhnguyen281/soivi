@@ -17,7 +17,7 @@ Mở một lần chạy để xem, tải bản nháp và duyệt phát hành.</p
     <td class="num">{{ "%.2f"|format(r.eq_large) if r.eq_large is not none else "—" }}</td>
     <td class="num">{{ "%.2f"|format(r.cash) if r.cash is not none else "—" }}</td>
     <td class="num">{{ r.adjusted }}</td>
-    <td>{% if r.release %}<span class="status s-approved">{{ r.release.version }}</span> {{ r.release.approved_by }}{% else %}<span class="muted">nháp</span>{% endif %}</td>
+    <td>{% if r.release %}<span class="status s-approved">{{ r.release.version }}</span> {{ r.release.approved_by }} · <a href="/vncma/portfolios/{{ r.release.version }}">danh mục mẫu</a>{% else %}<span class="muted">nháp</span>{% endif %}</td>
   </tr>
   {% else %}
   <tr><td colspan="9" class="empty">Chưa có lần chạy nào.</td></tr>

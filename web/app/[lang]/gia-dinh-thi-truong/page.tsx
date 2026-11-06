@@ -297,6 +297,7 @@ export default async function VncmaPage({ params }: PageProps<"/[lang]/gia-dinh-
                   {x.methodLink}
                 </a>
                 <Link href={href(lang, "/phuong-phap")}>{d.nav.method}</Link>
+                <Link href={href(lang, "/danh-muc-mau")}>{lang === "vi" ? "Danh mục mẫu" : "Model portfolios"}</Link>
               </p>
             </div>
             <div className="sv-panel space-y-3">

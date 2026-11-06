@@ -89,7 +89,7 @@ packages = ["core", "pipeline", "review_app", "api"]
 exclude = ["^migrations/", "^web/"]
 
 [[tool.mypy.overrides]]
-module = ["camelot.*", "pytesseract.*", "pdfplumber.*", "pandas.*", "openpyxl.*"]
+module = ["camelot.*", "pytesseract.*", "pdfplumber.*", "pandas.*", "openpyxl.*", "scipy.*"]
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]

@@ -1,0 +1,29 @@
+# VNCMA model portfolios (asset-class level, not personal advice). Read by core/cma/portfolios.py.
+# Approved by the owner on 2026-11-06 (DECISIONS "Model portfolios"). Weights are fractions.
+# Classes not listed are not used (eq_global and real_estate are reference only, spec §3).
+
+methodology_version: "1.0.0"
+
+bounds:
+  cash_vnd: [0.05, 1.00]     # always some liquidity
+  gov_bond: [0.05, 0.40]
+  corp_bond: [0.05, 0.15]    # grade C data: low cap
+  eq_large: [0.00, 0.60]
+  eq_midsmall: [0.00, 0.20]  # higher volatility, thinner liquidity
+  gold: [0.05, 0.15]
+  usd: [0.00, 0.10]
+
+# Maximise the arithmetic expected return with volatility at most the target.
+portfolios:
+  - {id: conservative, vol: 0.03, name_vi: "Thận trọng", name_en: "Conservative"}
+  - {id: moderate_conservative, vol: 0.06, name_vi: "Cân bằng thận trọng", name_en: "Moderately conservative"}
+  - {id: balanced, vol: 0.09, name_vi: "Cân bằng", name_en: "Balanced"}
+  - {id: growth, vol: 0.12, name_vi: "Tăng trưởng", name_en: "Growth"}
+  - {id: high_growth, vol: 0.15, name_vi: "Tăng trưởng cao", name_en: "High growth"}
+
+# Resampled efficient frontier (Michaud 1998): optimise on `draws` simulated histories of
+# `months` monthly returns drawn from the release's means and covariance, then average the weights.
+resampling:
+  draws: 500
+  months: 120
+  seed: 20270101  # fixed, so the same release always gives the same portfolios

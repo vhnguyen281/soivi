@@ -16,10 +16,10 @@ from sqlalchemy import select
 
 from api.common import send
 from api.deps import DB, Cache
-from api.schemas import VncmaOut, VncmaReleaseRef, VncmaReleasesOut
+from api.schemas import ModelPortfoliosOut, VncmaOut, VncmaReleaseRef, VncmaReleasesOut
 from core.cma.release import previous_payload
 from core.cma.report import markdown_vi, write_xlsx
-from core.models import CmaRelease, CmaRun
+from core.models import CmaPortfolioSet, CmaRelease, CmaRun
 
 router = APIRouter(tags=["vncma"])
 HEADER = "X-VNCMA-Methodology-Version"
@@ -84,6 +84,34 @@ def latest(request: Request, session: DB, cache: Cache) -> Response:
     percent per year), volatilities, correlations and scenarios. Planning assumptions,
     not investment advice."""
     return _send(request, cache, _release(session, "latest"))
+
+
+@router.get(
+    "/vncma/{version}/portfolios",
+    response_model=ModelPortfoliosOut,
+    summary="Model portfolios of a release",
+)
+def portfolios(request: Request, version: str, session: DB, cache: Cache) -> Response:
+    """Asset-class model portfolios built on a release (`latest` works too), once a
+    named reviewer approved them. Not personal investment advice."""
+    release = _release(session, version)
+    approved = session.scalar(
+        select(CmaPortfolioSet).where(CmaPortfolioSet.release_id == release.id)
+    )
+    if approved is None:
+        raise HTTPException(404, f"no approved model portfolios for {release.version}")
+
+    def build() -> ModelPortfoliosOut:
+        doc = {
+            **approved.payload,
+            "approved_at": approved.approved_at,
+            "payload_sha256": approved.payload_sha256,
+        }
+        return ModelPortfoliosOut.model_validate(doc)
+
+    response = send(request, cache, build)
+    response.headers[HEADER] = release.methodology_version
+    return response
 
 
 @router.get("/vncma/{version}", response_model=VncmaOut, summary="One VNCMA release")

@@ -775,6 +775,24 @@ class CmaReleaseValue(Base):
     grade: Mapped[str] = mapped_column(String(1))
 
 
+class CmaPortfolioSet(Base):
+    """Model portfolios approved for one VNCMA release (asset-class level). Immutable:
+    a named reviewer approved this exact payload. Append-only."""
+
+    __tablename__ = "cma_portfolio_set"
+    __table_args__ = (CheckConstraint("length(trim(approved_by)) > 0", name="reviewer_required"),)
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    release_id: Mapped[int] = mapped_column(ForeignKey("cma_release.id"), unique=True)
+    methodology_version: Mapped[str] = mapped_column(String(32))
+    config_sha256: Mapped[str] = mapped_column(String(64))
+    code_version: Mapped[str] = mapped_column(String(64))
+    approved_by: Mapped[str] = mapped_column(String(128))
+    approved_at: Mapped[dt.datetime] = mapped_column(TZDateTime, server_default=func.now())
+    payload: Mapped[dict[str, Any]] = mapped_column(JSONB)
+    payload_sha256: Mapped[str] = mapped_column(String(64))
+
+
 VERSIONED_MODELS: tuple[type[Versioned], ...] = (
     SavingsRate,
     CardTerms,
@@ -791,6 +809,7 @@ APPEND_ONLY_TABLES = (
     "cma_adjustment",
     "cma_release",
     "cma_release_value",
+    "cma_portfolio_set",
 )
 
 __all__ = [
@@ -806,6 +825,7 @@ __all__ = [
     "CardTerms",
     "ChangeEvent",
     "CmaAdjustment",
+    "CmaPortfolioSet",
     "CmaRelease",
     "CmaReleaseValue",
     "CmaRun",

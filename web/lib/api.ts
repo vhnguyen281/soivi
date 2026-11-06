@@ -12,6 +12,7 @@ import type {
   Persona,
   SavingsRank,
   SavingsRate,
+  ModelPortfolios,
   Vncma,
 } from "./types";
 
@@ -135,4 +136,17 @@ export async function getVncma(): Promise<Vncma | null> {
   if (res.status === 404) return null;
   if (!res.ok) throw new Error(`Soivi API vncma answered HTTP ${res.status}`);
   return (await res.json()) as Vncma;
+}
+
+/** Model portfolios approved for the latest VNCMA release, or null if none yet. */
+export async function getModelPortfolios(): Promise<ModelPortfolios | null> {
+  "use cache";
+  cacheLife("soivi");
+  cacheTag(TAG);
+  const res = await fetch(`${API_URL}/vncma/latest/portfolios`, {
+    headers: { "Cache-Control": "no-cache" },
+  });
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error(`Soivi API portfolios answered HTTP ${res.status}`);
+  return (await res.json()) as ModelPortfolios;
 }

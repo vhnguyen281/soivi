@@ -1028,3 +1028,48 @@ command. `make help` and the `api`, `web` and `review` targets print the mode. T
    - **How the change lands:** when the next quarter closes, the stored values change as new revisions; nothing
      is overwritten.
    - **Run time:** about 17 minutes for both indices. It runs only when a new quarter has closed.
+
+---
+
+## 2026-11-07 — Model portfolios (goals-based planning, Phase A)
+
+Approved by the owner on 2026-11-06 ("cả 3 đi"): the bounds, the five risk levels and resampling.
+Code: `core/cma/portfolios.py`; config `data/cma/portfolios.yaml`.
+
+1. **Five asset-class portfolios per VNCMA release:**
+   - Thận trọng (target volatility 3%), Cân bằng thận trọng (6%), Cân bằng (9%), Tăng trưởng (12%), Tăng trưởng
+     cao (15%).
+   - Each one maximises the arithmetic expected return with volatility ≤ its target, using the release's
+     arithmetic returns, volatilities and correlations.
+   - No short sales. Classes: the 7 that an optimiser may use; eq_global and real_estate are reference only.
+2. **Bounds:**
+
+   | Class | Min | Max |
+   |---|---:|---:|
+   | cash | 5% | 100% |
+   | gov_bond | 5% | 40% |
+   | corp_bond | 5% | 15% |
+   | eq_large | 0% | 60% |
+   | eq_midsmall | 0% | 20% |
+   | gold | 5% | 15% |
+   | usd | 0% | 10% |
+
+   *Why:* without minimums a plain optimisation holds only deposits and equities. The minimums cost about
+   0.1 pp of expected return.
+3. **Resampling (Michaud):**
+   - Method: 500 simulated 120-month histories from the release's inputs, a fixed seed, one optimisation per
+     history, weights averaged.
+   - Result: more diversified portfolios that move less between releases.
+   - Side effect: realised volatility sits under the target (for 2027.1, 2.6% to 13.0% for targets of 3% to
+     15%). The page shows the realised value.
+4. **Published values:**
+   - Weights in whole percent, by largest-remainder rounding that sums to 100.
+   - Expected return: geometric ≈ arithmetic − σ²/2.
+   - Asset-class level only, never products or tickers, with a "not personal advice" disclaimer.
+5. **Approval and storage:**
+   - Model portfolios are approved per release by a named reviewer in the review app (`/vncma/portfolios/{version}`).
+   - The approved set is stored immutable in `cma_portfolio_set`, one per release, append-only by DB trigger. The
+     row holds the payload, its SHA-256, the config hash and the code version.
+   - API: `GET /vncma/{version|latest}/portfolios`, approved sets only.
+   - Site: `/danh-muc-mau`, with one stacked bar per portfolio (the validated 7-hue categorical palette, colour
+     fixed per class) plus a legend and a full table view.

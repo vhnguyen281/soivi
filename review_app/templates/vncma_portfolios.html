@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Danh mục mẫu {{ view.release.version }}{% endblock %}
+{% block content %}
+{% set doc = view.doc %}
+<h1>Danh mục mẫu {{ view.release.version }} <small>dựa trên VNCMA {{ view.release.version }} · dữ liệu đến {{ doc.as_of }}</small></h1>
+<p class="meta">
+  {% if view.approved %}
+  <span class="status s-approved">Đã duyệt</span> bởi <b>{{ view.approved.approved_by }}</b> lúc {{ view.approved.approved_at.strftime("%d/%m/%Y %H:%M") }}
+  {% else %}
+  <span class="status">Bản nháp</span> · tính lúc mở trang
+  {% endif %}
+  <br><span class="muted">resampling {{ doc.resampling.draws }} lần × {{ doc.resampling.months }} tháng, seed {{ doc.resampling.seed }} · config {{ doc.config_sha256[:12] }}</span>
+</p>
+
+<table class="grid">
+  <thead><tr><th>Danh mục</th>{% for w in doc.portfolios[0].weights %}<th class="num">{{ w.asset_class }}<br><span class="muted">{{ doc.bounds[w.asset_class][0] }}–{{ doc.bounds[w.asset_class][1] }}</span></th>{% endfor %}<th class="num">Kỳ vọng</th><th class="num">Số học</th><th class="num">Biến động</th><th class="num">Mục tiêu</th></tr></thead>
+  <tbody>
+  {% for p in doc.portfolios %}
+  <tr>
+    <td>{{ p.name }}</td>
+    {% for w in p.weights %}<td class="num">{{ w.percent }}%</td>{% endfor %}
+    <td class="num"><b>{{ p.expected_return }}</b></td>
+    <td class="num">{{ p.expected_return_arithmetic }}</td>
+    <td class="num">{{ p.volatility }}</td>
+    <td class="num">{{ p.target_volatility }}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+<p class="muted">{{ doc.disclaimer.vi }}</p>
+
+{% if not view.approved %}
+<h2 style="margin-top:1rem">Duyệt danh mục mẫu</h2>
+<p class="muted">Bất biến sau khi duyệt. Trang công khai sẽ tự cập nhật.</p>
+<form class="actions" hx-post="/vncma/portfolios/{{ view.release.version }}/approve"
+      hx-confirm="Duyệt danh mục mẫu {{ view.release.version }}? Không thể hoàn tác.">
+  <label>Họ tên người duyệt <input name="reviewer_name" required style="width:14rem"></label>
+  <button class="ok">Duyệt danh mục mẫu</button>
+</form>
+{% endif %}
+{% endblock %}

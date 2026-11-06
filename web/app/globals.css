@@ -10,6 +10,14 @@
   /* Diverging pair for the VNCMA correlation heatmap (blue = +, red = -). */
   --div-pos: #2a78d6;
   --div-neg: #e34948;
+  /* Asset-class series for the model portfolio bars (dataviz reference order, validated). */
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --series-4: #eda100;
+  --series-5: #e87ba4;
+  --series-6: #008300;
+  --series-7: #6250d6;
   --surface: #ffffff;
   --surface-alt: #f2f6f4;
   --surface-raised: #ffffff;
@@ -37,6 +45,13 @@
     color-scheme: dark;
     --div-pos: #3987e5;
     --div-neg: #e66767;
+    --series-1: #3987e5;
+    --series-2: #d95926;
+    --series-3: #199e70;
+    --series-4: #c98500;
+    --series-5: #d55181;
+    --series-6: #008300;
+    --series-7: #9085e9;
     --surface: #0e1613;
     --surface-alt: #15201c;
     --surface-raised: #1a2622;
@@ -858,6 +873,39 @@ a.sv-btn--secondary:hover {
 }
 @media (forced-colors: active) {
   .vncma-heat td {
+    border: 1px solid CanvasText;
+  }
+}
+
+/* Model portfolio bars: one stacked bar per portfolio, 2px surface gaps between segments. */
+.mp-bar {
+  display: flex;
+  gap: 2px;
+  height: 1.25rem;
+}
+.mp-bar > span {
+  display: block;
+  height: 100%;
+}
+.mp-bar > span:first-child {
+  border-radius: 4px 0 0 4px;
+}
+.mp-bar > span:last-child {
+  border-radius: 0 4px 4px 0;
+}
+.mp-bar > span:hover {
+  outline: 2px solid var(--ink);
+  outline-offset: 1px;
+}
+.mp-swatch {
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 2px;
+  vertical-align: -1px;
+}
+@media (forced-colors: active) {
+  .mp-bar > span {
     border: 1px solid CanvasText;
   }
 }

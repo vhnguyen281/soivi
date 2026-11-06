@@ -197,3 +197,24 @@ export type Vncma = {
   methodology_url: string;
   downloads: Record<"xlsx" | "json" | "md", string>;
 };
+
+// GET /vncma/latest/portfolios: asset-class model portfolios (approved), percents are integers.
+export type ModelPortfolio = {
+  id: string;
+  name: string;
+  name_en: string;
+  target_volatility: string;
+  weights: { asset_class: string; name: string; percent: number }[];
+  expected_return: string;
+  expected_return_arithmetic: string;
+  volatility: string;
+};
+
+export type ModelPortfolios = {
+  release: string;
+  as_of: string;
+  approved_by: string;
+  approved_at: string;
+  portfolios: ModelPortfolio[];
+  disclaimer: { vi: string; en: string };
+};

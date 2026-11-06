@@ -326,3 +326,37 @@ class VncmaReleaseRef(Model):
 
 class VncmaReleasesOut(Envelope):
     releases: list[VncmaReleaseRef]
+
+
+class ModelWeight(Model):
+    asset_class: str
+    name: str
+    percent: int
+
+
+class ModelPortfolio(Model):
+    id: str
+    name: str
+    name_en: str
+    target_volatility: Decimal
+    weights: list[ModelWeight]
+    expected_return: Decimal = Field(description="Geometric, VND, percent per year")
+    expected_return_arithmetic: Decimal
+    volatility: Decimal
+
+
+class ModelPortfoliosOut(Model):
+    """Model portfolios approved for one VNCMA release (asset-class level, not advice)."""
+
+    release: str
+    as_of: dt.date
+    methodology_version: str
+    vncma_methodology_version: str
+    approved_by: str
+    approved_at: dt.datetime
+    bounds: dict[str, list[Decimal]]
+    resampling: dict[str, int]
+    config_sha256: str
+    payload_sha256: str
+    portfolios: list[ModelPortfolio]
+    disclaimer: dict[str, str]

@@ -235,6 +235,32 @@ def create_app(
         background.add_task(notify_site, settings)  # the public VNCMA page rebuilds
         return Response(status_code=204, headers={"HX-Redirect": f"/vncma/runs/{run_id}"})
 
+    @app.get("/vncma/portfolios/{version}", response_class=HTMLResponse)
+    def vncma_portfolios(
+        request: Request, version: str, user: Reviewer, session: DB
+    ) -> HTMLResponse:
+        view = vncma_view.portfolio_view(session, version)
+        if view is None:
+            raise HTTPException(404, "no such release")
+        return render(request, "vncma_portfolios.html", view=view, user=user)
+
+    @app.post("/vncma/portfolios/{version}/approve", dependencies=[Write])
+    def vncma_portfolios_approve(
+        version: str,
+        user: Reviewer,
+        session: DB,
+        background: BackgroundTasks,
+        reviewer_name: Annotated[str, Form()] = "",
+    ) -> Response:
+        from core.cma.portfolios import PortfolioError, approve
+
+        try:
+            approve(session, version, reviewer_name)
+        except PortfolioError as exc:
+            raise HTTPException(409, str(exc)) from exc
+        background.add_task(notify_site, settings)
+        return Response(status_code=204, headers={"HX-Redirect": f"/vncma/portfolios/{version}"})
+
     # ------------------------------------------------------------------ health
 
     @app.get("/health")

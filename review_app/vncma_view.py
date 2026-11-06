@@ -78,3 +78,18 @@ def download(session: Session, run_id: int, fmt: str) -> tuple[str, bytes, str] 
     with tempfile.TemporaryDirectory() as tmp:
         path = write_xlsx(run, doc, Path(tmp) / name, previous)
         return name, path.read_bytes(), FORMATS[fmt]
+
+
+def portfolio_view(session: Session, version: str) -> dict[str, Any] | None:
+    """Approved model portfolios of a release, or a draft computed now."""
+    from core.cma.portfolios import build, load_config
+    from core.models import CmaPortfolioSet
+
+    release = session.scalar(select(CmaRelease).where(CmaRelease.version == version))
+    if release is None:
+        return None
+    approved = session.scalar(
+        select(CmaPortfolioSet).where(CmaPortfolioSet.release_id == release.id)
+    )
+    doc = approved.payload if approved else build(release.payload, load_config())
+    return {"release": release, "approved": approved, "doc": doc}
