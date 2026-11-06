@@ -653,3 +653,21 @@ statistics are monthly, so an always-on server is not needed yet.
 **Revisit** when updates need to be more frequent than monthly: a small VPS (about USD 5/month) or a scheduled CI job.
 
 ---
+
+## 2026-11-05 — vnstock 5 in the project environment (VNCMA Prompt 1)
+
+1. **`vnstock==5.2.1` from vnstocks.com's own index**, declared in `pyproject.toml` as an `explicit` uv index:
+   only `vnstock` may come from it, everything else stays on PyPI (no dependency confusion). Pinned exactly;
+   6.0 is only a release candidate (Linux only) as of today.
+   - vnstock 5 merged the sponsor package: `vnstock_data`, `vnstock_installer`, `vnai` are no longer used.
+   - The paid tier is unlocked by the API key stored on the machine (`vnstock register`, in `~/.vnstock`,
+     or `VNSTOCK_API_KEY`). It is never committed. This Mac is registered (Golden, plan until 2027-04-09).
+   - **Each vnstock release stops working after a date** (5.2.1: 2027-10-27). `market check` prints the days
+     left; upgrade before then.
+   - In a container, mount a volume at `VNSTOCK_HOME`, or every rebuild counts as a new device (limit 13).
+2. **Added `pandas`, `numpy`, `scipy`, `openpyxl`** for `core/cma` and the xlsx report.
+3. **One wrapper:** `pipeline/market/client.py` is the only module that imports vnstock (lazily). Calls that fail
+   or return nothing raise `MarketDataError` naming the call. `python -m pipeline market check` prints the version,
+   tier and the latest VN30 close.
+4. vnstock attaches provenance to every result (`df.attrs`: source, route, organisation, terms URL, robots.txt
+   note, requested_at). The ingest step (Prompt 3) stores it with each snapshot.

@@ -39,3 +39,30 @@ Macro, Analytics, Fund functions need Bronze+ (Golden ok). Check with `vnstock p
 
 ## Licensing
 Read vnstocks.com/policies/license and /terms before publishing. Publish derived statistics only; never raw series.
+
+## Confirmed from the vnstocks.com docs (read 2026-11-05; still to verify in the probe)
+Pages: /docs/vnstock/quy-mo-fund, /vi-mo-macro, /dinh-gia-analytics, /thi-truong-market, /policies/license.
+
+- **No ready-made asset-class returns or total-return indices.** Index `ohlcv()` is price only; we build TR ourselves.
+- **Funds** (Bronze+; sources CafeF default, DigiInvest; Fmarket removed):
+  - `Reference().fund.list("bond_fund")` → ticker, organ_short_name, fund_type, management_fee, inception_date, nav.
+    CafeF: 43 funds (24 equity, 15 bond, 4 balanced).
+  - `Market().fund(s).history()` → time, nav. No start/end. DCDS goes back to 2004–2005.
+  - `Market().fund(s).performance()` (CafeF) → only ytd, 3y, 5y (annualised). Other periods: compute from NAV.
+  - `holdings()`, `asset_allocation()`, `fee_structure()` (CafeF); `dividends()` (DigiInvest).
+- **Macro** (Bronze+, source `asean`, `start`/`end` as "YYYY[-MM[-DD]]"; default window 3 years — pass `start`):
+  - `eco.cpi(period="month")` → cpi_total, cpi_core as **% y/y, not an index level**.
+  - `eco.gdp(period="quarter"|"year")` → gdp as % y/y.
+  - `cur.policy_rate()` → refinance, discount; `cur.interbank_rate(period="ON"|"1W"|"1M"|"3M")` → interest.
+  - `cur.deposit_rate(mode="term")` → current table only; tenors 1m, 3m, 6m, **13m**, 36m (no 12m).
+  - `cur.exchange_rate()` → center_rate, vcb_rate, market_rate (daily).
+  - `glb.bond_yield(market="VN", tenor="10Y", resolution="1M")` → VN 1Y/2Y/3Y/5Y/10Y; US 1Y/2Y/5Y/10Y/30Y.
+    Unknown tenor returns an empty table without an error — the wrapper must raise.
+  - `Macro().commodity()` removed. Gold: `Market().commodity("XAUUSD").ohlcv()` (dukascopy, UTC). No SJC.
+- **Valuation:** `Analytics().valuation("VNINDEX").pe(duration="20Y")` (source vnd). Docs confirm only VNINDEX and
+  HNXINDEX; VN30 is unconfirmed.
+- **Indices:** VNINDEX, VN30, HNXINDEX, UPCOMINDEX named; VNMID/VNSML not mentioned — check `Reference().index.list()`.
+  Global: `Market().index("USA30", scope="global")`; S&P 500 symbol not documented.
+- **Licence** (effective 30/11/2026): one user per Bronze/Silver/Golden, **up to 13 registered devices** per package;
+  no right to resell or distribute source data; users must check each source's terms (CafeF, DigiInvest, vnd,
+  dukascopy, asean). Publishing derived statistics is not addressed directly — confirm before publishing.

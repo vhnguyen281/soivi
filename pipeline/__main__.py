@@ -9,6 +9,7 @@
     python -m pipeline summary [--send]           # the daily summary, now
     python -m pipeline news [--feed NAME] [--no-recheck]   # read news feeds now
     python -m pipeline save URL FILE [--method browser]   # save a page for test fixtures
+    python -m pipeline market check               # vnstock version, tier, one VN30 close
 
 Add --reparse to parse even when the page has not changed (e.g. after fixing an
 adapter). Each source is committed on its own, so one failure keeps the others.
@@ -27,6 +28,7 @@ from sqlalchemy.orm import Session
 
 if TYPE_CHECKING:
     from core.config import Settings
+    from pipeline.market.client import MarketClient
     from pipeline.scheduler import NewsJob
 
 from core.enums import FetchMethod
@@ -35,6 +37,7 @@ from pipeline.adapters.base import AdapterContext
 from pipeline.fetch.fetchers import Fetchers
 from pipeline.fetch.polite import FetchError, PoliteHttp
 from pipeline.fetch.storage import MinioStore, SnapshotStore
+from pipeline.market import cli as market_cli
 from pipeline.registry import all_adapters, load_adapters
 from pipeline.runner import RunResult, due_sources, institution_sources, run_source
 
@@ -81,6 +84,7 @@ def build_parser() -> argparse.ArgumentParser:
     save.add_argument(
         "--post", action="store_true", help="send an (empty) form POST instead of GET"
     )
+    market_cli.add_parser(sub)
     return parser
 
 
@@ -90,8 +94,11 @@ def main(
     session_factory: Callable[[], Session] | None = None,
     fetchers_factory: Callable[[], Fetchers] | None = None,
     store_factory: Callable[[], SnapshotStore] | None = None,
+    market_client_factory: "Callable[[], MarketClient] | None" = None,
 ) -> int:
     args = build_parser().parse_args(argv)
+    if args.command == "market":
+        return market_cli.run(args, market_client_factory)
     load_adapters()
 
     if args.command == "adapters":

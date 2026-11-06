@@ -31,6 +31,15 @@ dependencies = [
     "python-multipart>=0.0.9",
     "tzdata>=2024.1",
     "defusedxml>=0.7",
+    # VNCMA (docs/vncma/spec.md): numeric work in core/cma, xlsx report
+    "pandas>=2.2",
+    "numpy>=2.0",
+    "scipy>=1.14",
+    "openpyxl>=3.1",
+    # Market/macro data for VNCMA, only through pipeline/market. Not on PyPI:
+    # pinned to the vnstocks.com index below. The API key comes from VNSTOCK_API_KEY
+    # or `vnstock register`; never commit it.
+    "vnstock==5.2.1",
 ]
 
 [dependency-groups]
@@ -46,6 +55,16 @@ dev = [
 
 [tool.uv]
 package = false
+
+# vnstocks.com's own index. `explicit` means only packages named in
+# [tool.uv.sources] come from it; everything else stays on PyPI.
+[[tool.uv.index]]
+name = "vnstocks"
+url = "https://vnstocks.com/api/packages"
+explicit = true
+
+[tool.uv.sources]
+vnstock = { index = "vnstocks" }
 
 [tool.ruff]
 line-length = 100
