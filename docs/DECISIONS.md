@@ -1108,3 +1108,54 @@ Page `/muc-tieu` (vi and `/en`); logic `web/lib/goals.ts` with unit tests; compo
    - The tool is only shown once model portfolios are approved.
 6. **Cost in the browser:** about 0.3 s for 10 years and 0.9 s for 40 years (5 portfolios × 3 scenarios × 4,000
    paths). The button shows "Đang tính…" while it runs.
+
+---
+
+## 2026-11-07 — Legal position: personal project
+
+The owner reports (2026-11-07) that legal counsel confirmed the following:
+- VNCMA, the model portfolios, the goal tool and a risk-profile questionnaire that suggests a model portfolio are
+  acceptable **while Soivi is a personal, non-commercial project**.
+- They are not a licensed securities investment advisory service under the Law on Securities 2019.
+
+Conditions that stay in force:
+- Asset-class level only, never products or tickers.
+- The "not personal advice" disclaimer on every page and file.
+- No fees, no paid placement.
+- No storing of visitors' answers. The tools run in the browser.
+
+**Revisit before** any of these:
+- monetisation or a company structure;
+- naming specific funds, ETFs or stocks;
+- storing user profiles (personal-data rules then apply too);
+- a wide public launch.
+
+The vnstock licence (license-2026.11, effective 2026-11-30) allows personal, study and research use for the
+community version. The licence does not address publishing derived statistics, but it forbids redistributing source
+data. Soivi publishes derived statistics only. Contact for a written answer: support@vnstocks.com.
+
+---
+
+## 2026-11-07 — Risk profile questionnaire (goals-based planning, Phase C)
+
+Page `/ho-so-rui-ro` (vi and `/en`); logic `web/lib/riskProfile.ts` with unit tests; component
+`web/components/RiskQuiz.tsx`. Allowed under the personal-project legal position (2026-11-07).
+
+1. **Nine questions in two scores, as in the CFA private-wealth workflow:**
+   - **ability to take risk:** horizon, emergency fund, income stability, share of wealth, debt;
+   - **willingness to take risk:** reaction to a 20% fall, a choice between return ranges, self-view, experience.
+
+   Each answer scores 1..5, and each score is the rounded mean of its answers.
+2. **Suggested level** = the lower of the two scores. A horizon under 2 years caps the level at 1, and 2–4 years
+   caps it at 2. Levels 1..5 map to the five model portfolios in order of risk.
+3. **Behavioural notes**, shown as reminders, never as a judgement:
+   - **Loss aversion:** would sell after a 20% fall, yet chose a high-return/high-loss option.
+   - **Overconfidence:** high self-rated risk appetite with under a year of experience.
+   - **Ability below willingness:** advice to build a six-month emergency fund first.
+   - **Short horizon.**
+4. **Flow:** the result links to `/muc-tieu?p=<portfolio>`. When the goal tool runs, it marks the suggested
+   portfolio, then compares all five.
+5. **Privacy:** answers stay in the browser and nothing is sent or stored. The page carries the "not personal
+   advice" disclaimer, plus a note to talk to a professional in complex situations.
+6. **The wording and thresholds are a first version** for the owner's review, and are not validated against
+   outcomes.

@@ -26,6 +26,7 @@ const TEXT = {
     p10: "Trường hợp xấu (10%)",
     needed: `Cần góp/tháng để có ${Math.round(TARGET_PROBABILITY * 100)}% khả năng`,
     none: "đã đủ",
+    picked: "gợi ý cho bạn",
     note: "Kết quả mô phỏng 4.000 kịch bản thị trường cho mỗi danh mục, dựa trên giả định VNCMA, trước thuế và phí. Mọi tính toán chạy trên máy của bạn; SoiVí không lưu các con số bạn nhập.",
   },
   en: {
@@ -48,6 +49,7 @@ const TEXT = {
     p10: "Bad case (10%)",
     needed: `Monthly amount for a ${Math.round(TARGET_PROBABILITY * 100)}% chance`,
     none: "already met",
+    picked: "suggested for you",
     note: "4,000 simulated market paths per portfolio on the VNCMA assumptions, before tax and fees. Everything runs on your device; SoiVí stores nothing you type.",
   },
 };
@@ -84,6 +86,7 @@ export function GoalPlanner({ lang, portfolios, inflation }: { lang: Lang; portf
   const [results, setResults] = useState<PortfolioResult[] | null>(null);
   const [input, setInput] = useState<GoalInput | null>(null);
   const [busy, setBusy] = useState(false);
+  const [picked, setPicked] = useState<string | null>(null); // ?p= from the risk questionnaire
 
   function run(event: React.FormEvent) {
     event.preventDefault();
@@ -96,6 +99,7 @@ export function GoalPlanner({ lang, portfolios, inflation }: { lang: Lang; portf
       inTodaysMoney: today,
       inflation,
     };
+    setPicked(new URLSearchParams(window.location.search).get("p"));
     setBusy(true);
     // Let the button show "busy" before the simulation (up to about a second) blocks the page.
     setTimeout(() => {
@@ -138,7 +142,10 @@ export function GoalPlanner({ lang, portfolios, inflation }: { lang: Lang; portf
           <ul className="space-y-3">
             {results.map((r) => (
               <li key={r.id} className="grid grid-cols-[10rem_1fr_3.5rem] items-center gap-3 max-sm:grid-cols-[1fr_3.5rem]">
-                <span className="t-small font-semibold max-sm:col-span-2">{r.name}</span>
+                <span className="t-small font-semibold max-sm:col-span-2">
+                  {r.name}
+                  {r.id === picked ? <span className="sv-badge sv-badge--jade ml-2">{x.picked}</span> : null}
+                </span>
                 <span className="goal-track" aria-hidden="true">
                   <span className="goal-fill" style={{ width: `${Math.round(r.base.probability * 100)}%` }} />
                 </span>
@@ -162,7 +169,10 @@ export function GoalPlanner({ lang, portfolios, inflation }: { lang: Lang; portf
               <tbody>
                 {results.map((r) => (
                   <tr key={r.id}>
-                    <th scope="row">{r.name}</th>
+                    <th scope="row">
+                      {r.name}
+                      {r.id === picked ? <span className="sv-badge sv-badge--jade ml-2">{x.picked}</span> : null}
+                    </th>
                     <td className="text-right tabular-nums">{percent(r.adverse.probability, lang)}</td>
                     <td className="text-right font-semibold tabular-nums">{percent(r.base.probability, lang)}</td>
                     <td className="text-right tabular-nums">{percent(r.favourable.probability, lang)}</td>

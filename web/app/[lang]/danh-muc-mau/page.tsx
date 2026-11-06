@@ -186,6 +186,9 @@ export default async function ModelPortfoliosPage({ params }: PageProps<"/[lang]
             <h2 className="t-h3">{x.how}</h2>
             <p className="text-muted">{x.howText}</p>
             <p className="flex flex-wrap gap-4">
+              <Link href={href(lang, "/ho-so-rui-ro")}>
+                {lang === "vi" ? "Danh mục nào hợp với bạn? Làm bảng hỏi" : "Which one fits you? Take the questionnaire"}
+              </Link>
               <Link href={href(lang, "/muc-tieu")}>
                 {lang === "vi" ? "Tính khả năng đạt mục tiêu của bạn" : "Check the chance of reaching your goal"}
               </Link>

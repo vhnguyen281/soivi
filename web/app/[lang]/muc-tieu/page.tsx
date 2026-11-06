@@ -20,7 +20,7 @@ const TEXT = {
     none: "Chưa có danh mục mẫu được duyệt, nên chưa tính được.",
     disclaimer:
       "Đây là công cụ học tập dựa trên giả định dài hạn, không phải lời khuyên đầu tư cho cá nhân bạn. Khả năng thực tế có thể khác; hãy xem lại kế hoạch mỗi năm.",
-    links: ["Danh mục mẫu", "Giả định thị trường (VNCMA)"],
+    links: ["Danh mục mẫu", "Giả định thị trường (VNCMA)", "Chưa biết chọn danh mục nào? Làm bảng hỏi hồ sơ rủi ro"],
   },
   en: {
     title: "Chance of reaching a financial goal",
@@ -29,7 +29,7 @@ const TEXT = {
     none: "No model portfolios have been approved yet, so nothing can be calculated.",
     disclaimer:
       "A learning tool built on long-term assumptions, not personal investment advice. Real chances can differ; review your plan every year.",
-    links: ["Model portfolios", "Market assumptions (VNCMA)"],
+    links: ["Model portfolios", "Market assumptions (VNCMA)", "Not sure which portfolio? Take the risk questionnaire"],
   },
 };
 
@@ -72,6 +72,7 @@ export default async function GoalPage({ params }: PageProps<"/[lang]/muc-tieu">
       <p className="flex flex-wrap gap-4">
         <Link href={href(lang, "/danh-muc-mau")}>{x.links[0]}</Link>
         <Link href={href(lang, "/gia-dinh-thi-truong")}>{x.links[1]}</Link>
+        <Link href={href(lang, "/ho-so-rui-ro")}>{x.links[2]}</Link>
       </p>
     </article>
   );

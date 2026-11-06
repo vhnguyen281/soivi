@@ -24,6 +24,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: "/gia-dinh-thi-truong", priority: 0.6 },
     { path: "/danh-muc-mau", priority: 0.6 },
     { path: "/muc-tieu", priority: 0.6 },
+    { path: "/ho-so-rui-ro", priority: 0.6 },
     { path: "/phuong-phap", priority: 0.5 },
     { path: "/doc-lap", priority: 0.3 },
     ...[...banks.entries()].map(([slug, checked]) => ({
