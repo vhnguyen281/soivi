@@ -23,6 +23,7 @@ const TEXT = {
     why: "Gợi ý theo mức thấp hơn trong hai điểm số: không nên chịu rủi ro nhiều hơn mức hoàn cảnh cho phép, cũng không nhiều hơn mức bạn có thể kiên nhẫn giữ.",
     goal: "Tính khả năng đạt mục tiêu với danh mục này",
     all: "Xem cả 5 danh mục mẫu",
+    split: "Chia tài sản theo mục tiêu",
     notes: {
       loss_aversion:
         "Bạn chọn phương án lợi nhuận cao nhưng sẽ bán khi giảm 20%. Danh mục nhiều cổ phiếu thường giảm như vậy vài lần trong 10 năm, và bán lúc giảm là cách mất tiền phổ biến nhất. Hãy chọn mức mà bạn chắc chắn sẽ giữ được.",
@@ -47,6 +48,7 @@ const TEXT = {
     why: "The suggestion follows the lower of the two scores: take no more risk than your situation can carry, and no more than you can sit through.",
     goal: "Check the chance of reaching your goal with it",
     all: "See all five model portfolios",
+    split: "Split your money by goal",
     notes: {
       loss_aversion:
         "You chose a high-return option but would sell after a 20% fall. Equity-heavy portfolios fall that much a few times in ten years, and selling in a fall is the most common way to lose money. Choose a level you are sure you will hold.",
@@ -153,6 +155,7 @@ export function RiskQuiz({ lang, portfolios }: { lang: Lang; portfolios: QuizPor
           ) : null}
           <p className="flex flex-wrap gap-4">
             {suggested ? <Link href={`${href(lang, "/muc-tieu")}?p=${suggested.id}`}>{x.goal}</Link> : null}
+            <Link href={`${href(lang, "/phan-bo-theo-muc-tieu")}?level=${result.level}`}>{x.split}</Link>
             <Link href={href(lang, "/danh-muc-mau")}>{x.all}</Link>
           </p>
         </section>

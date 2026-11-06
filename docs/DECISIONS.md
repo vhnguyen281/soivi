@@ -1159,3 +1159,35 @@ Page `/ho-so-rui-ro` (vi and `/en`); logic `web/lib/riskProfile.ts` with unit te
    advice" disclaimer, plus a note to talk to a professional in complex situations.
 6. **The wording and thresholds are a first version** for the owner's review, and are not validated against
    outcomes.
+
+---
+
+## 2026-11-07 — Goals-based allocation in three parts (goals-based planning, Phase D)
+
+Page `/phan-bo-theo-muc-tieu` (vi and `/en`); logic `web/lib/buckets.ts` with unit tests; component
+`web/components/BucketPlanner.tsx`. After Brunel's goals-based approach (the method only, rewritten in our own
+words).
+
+1. **Three parts, funded in this order:**
+   1. **Liquidity:** 6/12/18/24 months of spending (default 12), in deposits. The page suggests the three highest
+      approved 12-month savings rates for that amount, through `/api/savings/rank`. This is where Phase 1 data
+      meets planning.
+   2. **Goals**, in today's money, inflated by VNCMA `pi`. Each goal gets the amount it needs today to reach the
+      target with its required confidence.
+      - **Confidence:** essential goals need **90%**, aspirational goals **60%**. The amount is the confidence
+        quantile of goal ÷ growth over 2,000 simulated paths of the goal's model portfolio, with no further
+        contributions.
+      - **Portfolio by horizon and priority:** under 3 years → level 1. From 3 to 7 years → level 2 if essential, 3
+        if aspirational. Over 7 years → level 3 if essential, 5 if aspirational.
+      - **Risk cap:** never above the visitor's risk level.
+      - **Funding order:** essential goals first, soonest first, then aspirational goals.
+   3. **Growth:** whatever is left, in the visitor's model portfolio. `?level=` from the risk questionnaire
+      preselects it.
+2. **Short money:** when the total is short, the liquidity shortfall is shown first. Then aspirational goals give
+   way, and each goal shows "short by X".
+3. **Output:** the three parts with amounts and shares, a per-goal table (portfolio, confidence, needed, set aside),
+   and the whole by asset class (the same stacked bar and colours as `/danh-muc-mau`).
+4. **Privacy:** everything runs in the browser apart from the savings-rate lookup. That lookup sends only the
+   liquidity amount and term to our own API, the same call the savings calculator makes.
+5. `web/tsconfig.json` now allows `.ts` import paths, so `lib/` modules can import each other under the Node test
+   runner.
