@@ -1,0 +1,994 @@
+# VNCMA market and macro series (docs/vncma/design-market-data.md). Loaded by `make seed`.
+# Each provider becomes one `source` row (kind market_data, variant = provider name).
+# Series with an equal `request` share one fetch. `month_end_rule`:
+#   last_on_or_before: last value on or before the period end, at most max_gap_days earlier
+#                      (10 for trading-day series: Tết can close the market for 9-10 days)
+#   period_value:      the provider gives one value per period (the last one wins if several)
+# Only closed periods are stored. Change a series by editing it here and re-running `make seed`.
+providers:
+  vnstock:
+    url: https://vnstocks.com/
+    fetch_method: api
+  hnx:
+    url: https://www.hnx.vn/
+    fetch_method: http
+  worldbank:
+    url: https://www.worldbank.org/en/research/commodity-markets
+    fetch_method: http
+  shiller:
+    url: https://shillerdata.com/
+    fetch_method: http
+series:
+- code: vnindex_close
+  provider: vnstock
+  asset_class: eq_large
+  request:
+    call:
+    - - Market
+      - []
+      - {}
+    - - index
+      - - VNINDEX
+      - {}
+    - - ohlcv
+      - []
+      - start: '2000-01-01'
+        interval: 1D
+        limit: 10000
+        source: vci
+    date_field: time
+  value_field: close
+  unit: index_points
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 10
+  grade: A
+  active: true
+  note: Price index (no dividends). From 2004-01.
+- code: vn30_close
+  provider: vnstock
+  asset_class: eq_large
+  request:
+    call:
+    - - Market
+      - []
+      - {}
+    - - index
+      - - VN30
+      - {}
+    - - ohlcv
+      - []
+      - start: '2000-01-01'
+        interval: 1D
+        limit: 10000
+        source: vci
+    date_field: time
+  value_field: close
+  unit: index_points
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 10
+  grade: A
+  active: true
+  note: Price index. From 2012-02.
+- code: vnmid_close
+  provider: vnstock
+  asset_class: eq_midsmall
+  request:
+    call:
+    - - Market
+      - []
+      - {}
+    - - index
+      - - VNMID
+      - {}
+    - - ohlcv
+      - []
+      - start: '2000-01-01'
+        interval: 1D
+        limit: 10000
+        source: vci
+    date_field: time
+  value_field: close
+  unit: index_points
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 10
+  grade: B
+  active: true
+  note: Only source vci has it. From 2015-05.
+- code: vnsml_close
+  provider: vnstock
+  asset_class: eq_midsmall
+  request:
+    call:
+    - - Market
+      - []
+      - {}
+    - - index
+      - - VNSML
+      - {}
+    - - ohlcv
+      - []
+      - start: '2000-01-01'
+        interval: 1D
+        limit: 10000
+        source: vci
+    date_field: time
+  value_field: close
+  unit: index_points
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 10
+  grade: B
+  active: true
+  note: Only source vci has it. From 2015-05.
+- code: hnxindex_close
+  provider: vnstock
+  asset_class: null
+  request:
+    call:
+    - - Market
+      - []
+      - {}
+    - - index
+      - - HNXINDEX
+      - {}
+    - - ohlcv
+      - []
+      - start: '2000-01-01'
+        interval: 1D
+        limit: 10000
+        source: vci
+    date_field: time
+  value_field: close
+  unit: index_points
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 10
+  grade: B
+  active: true
+  note: From 2005-07.
+- code: pe_vnindex
+  provider: vnstock
+  asset_class: eq_large
+  request:
+    call:
+    - - Analytics
+      - []
+      - {}
+    - - valuation
+      - - VNINDEX
+      - {}
+    - - pe
+      - []
+      - duration: 20Y
+    date_field: report_date
+  value_field: pe
+  unit: ratio
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 10
+  grade: B
+  active: true
+  note: VNDIRECT. From 2017-12.
+- code: pe_vn30
+  provider: vnstock
+  asset_class: eq_large
+  request:
+    call:
+    - - Analytics
+      - []
+      - {}
+    - - valuation
+      - - VN30
+      - {}
+    - - pe
+      - []
+      - duration: 20Y
+    date_field: report_date
+  value_field: pe
+  unit: ratio
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 10
+  grade: B
+  active: true
+  note: VNDIRECT. From 2017-12.
+- code: pe_hnx
+  provider: vnstock
+  asset_class: null
+  request:
+    call:
+    - - Analytics
+      - []
+      - {}
+    - - valuation
+      - - HNXINDEX
+      - {}
+    - - pe
+      - []
+      - duration: 20Y
+    date_field: report_date
+  value_field: pe
+  unit: ratio
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 10
+  grade: B
+  active: true
+  note: VNDIRECT. From 2017-12.
+- code: cpi_total_yoy
+  provider: vnstock
+  asset_class: null
+  request: &id001
+    call:
+    - - Macro
+      - []
+      - {}
+    - - economy
+      - []
+      - {}
+    - - cpi
+      - []
+      - start: '1990'
+    date_field: time
+  value_field: cpi_total
+  unit: pct_yoy
+  native_frequency: monthly
+  period: monthly
+  month_end_rule: period_value
+  max_gap_days: null
+  grade: B
+  active: true
+  note: Headline CPI, % y/y. From 2016-01.
+- code: cpi_core_yoy
+  provider: vnstock
+  asset_class: null
+  request: *id001
+  value_field: cpi_core
+  unit: pct_yoy
+  native_frequency: monthly
+  period: monthly
+  month_end_rule: period_value
+  max_gap_days: null
+  grade: B
+  active: true
+  note: Core CPI, % y/y.
+- code: gdp_growth_yoy
+  provider: vnstock
+  asset_class: null
+  request:
+    call:
+    - - Macro
+      - []
+      - {}
+    - - economy
+      - []
+      - {}
+    - - gdp
+      - []
+      - start: '1990'
+        period: year
+    date_field: time
+  value_field: gdp
+  unit: pct_yoy
+  native_frequency: yearly
+  period: yearly
+  month_end_rule: period_value
+  max_gap_days: null
+  grade: B
+  active: true
+  note: Real GDP growth. From 2015.
+- code: interbank_on
+  provider: vnstock
+  asset_class: cash_vnd
+  request:
+    call:
+    - - Macro
+      - []
+      - {}
+    - - currency
+      - []
+      - {}
+    - - interbank_rate
+      - []
+      - period: 'ON'
+        start: '2000'
+    date_field: time
+  value_field: interest
+  unit: pct_pa
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 10
+  grade: B
+  active: true
+  note: From 2016-01.
+- code: interbank_1m
+  provider: vnstock
+  asset_class: cash_vnd
+  request:
+    call:
+    - - Macro
+      - []
+      - {}
+    - - currency
+      - []
+      - {}
+    - - interbank_rate
+      - []
+      - period: 1M
+        start: '2000'
+    date_field: time
+  value_field: interest
+  unit: pct_pa
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 10
+  grade: B
+  active: true
+  note: From 2016-01.
+- code: interbank_3m
+  provider: vnstock
+  asset_class: cash_vnd
+  request:
+    call:
+    - - Macro
+      - []
+      - {}
+    - - currency
+      - []
+      - {}
+    - - interbank_rate
+      - []
+      - period: 3M
+        start: '2000'
+    date_field: time
+  value_field: interest
+  unit: pct_pa
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 10
+  grade: B
+  active: true
+  note: From 2016-01.
+- code: refinance_rate
+  provider: vnstock
+  asset_class: cash_vnd
+  request:
+    call:
+    - - Macro
+      - []
+      - {}
+    - - currency
+      - []
+      - {}
+    - - policy_rate
+      - []
+      - start: '2000'
+    date_field: time
+  value_field: refinance
+  unit: pct_pa
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 10
+  grade: B
+  active: true
+  note: SBV refinancing rate. From 2021-01.
+- code: usdvnd_central
+  provider: vnstock
+  asset_class: usd
+  request: &id002
+    call:
+    - - Macro
+      - []
+      - {}
+    - - currency
+      - []
+      - {}
+    - - exchange_rate
+      - []
+      - start: '2000'
+    date_field: time
+  value_field: center_rate
+  unit: vnd_per_usd
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 10
+  grade: B
+  active: true
+  note: SBV central rate via vnstock. From 2020-01; earlier from the SBV (Prompt 4).
+- code: usdvnd_market
+  provider: vnstock
+  asset_class: usd
+  request: *id002
+  value_field: market_rate
+  unit: vnd_per_usd
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 10
+  grade: B
+  active: true
+  note: From 2020-01.
+- code: vn_yield_1y_vnstock
+  provider: vnstock
+  asset_class: gov_bond
+  request:
+    call:
+    - - Macro
+      - []
+      - {}
+    - - global_macro
+      - null
+      - {}
+    - - bond_yield
+      - []
+      - market: VN
+        tenor: 1Y
+        start: '2000'
+    date_field: time
+  value_field: close
+  unit: pct_pa
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 10
+  grade: C
+  active: true
+  note: Cross-check for HNX. From 2020-08.
+- code: vn_yield_2y_vnstock
+  provider: vnstock
+  asset_class: gov_bond
+  request:
+    call:
+    - - Macro
+      - []
+      - {}
+    - - global_macro
+      - null
+      - {}
+    - - bond_yield
+      - []
+      - market: VN
+        tenor: 2Y
+        start: '2000'
+    date_field: time
+  value_field: close
+  unit: pct_pa
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 10
+  grade: C
+  active: true
+  note: Cross-check for HNX. From 2020-08.
+- code: vn_yield_5y_vnstock
+  provider: vnstock
+  asset_class: gov_bond
+  request:
+    call:
+    - - Macro
+      - []
+      - {}
+    - - global_macro
+      - null
+      - {}
+    - - bond_yield
+      - []
+      - market: VN
+        tenor: 5Y
+        start: '2000'
+    date_field: time
+  value_field: close
+  unit: pct_pa
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 10
+  grade: C
+  active: true
+  note: Cross-check for HNX. From 2020-08.
+- code: vn_yield_10y_vnstock
+  provider: vnstock
+  asset_class: gov_bond
+  request:
+    call:
+    - - Macro
+      - []
+      - {}
+    - - global_macro
+      - null
+      - {}
+    - - bond_yield
+      - []
+      - market: VN
+        tenor: 10Y
+        start: '2000'
+    date_field: time
+  value_field: close
+  unit: pct_pa
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 10
+  grade: C
+  active: true
+  note: Cross-check for HNX. From 2020-08.
+- code: us_yield_10y
+  provider: vnstock
+  asset_class: null
+  request:
+    call:
+    - - Macro
+      - []
+      - {}
+    - - global_macro
+      - null
+      - {}
+    - - bond_yield
+      - []
+      - market: US
+        tenor: 10Y
+        start: '2000'
+    date_field: time
+  value_field: close
+  unit: pct_pa
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 10
+  grade: B
+  active: true
+  note: From 2020-08.
+- code: fed_rate
+  provider: vnstock
+  asset_class: usd
+  request:
+    call:
+    - - Macro
+      - []
+      - {}
+    - - global_macro
+      - null
+      - {}
+    - - fed_rate
+      - []
+      - start: '2000'
+        resolution: 1M
+    date_field: time
+  value_field: close
+  unit: pct_pa
+  native_frequency: monthly
+  period: monthly
+  month_end_rule: period_value
+  max_gap_days: null
+  grade: B
+  active: true
+  note: Monthly, dated the 1st. From 2021-01.
+- code: xauusd_close_dukascopy
+  provider: vnstock
+  asset_class: gold
+  request:
+    call:
+    - - Market
+      - []
+      - {}
+    - - commodity
+      - - XAUUSD
+      - {}
+    - - ohlcv
+      - []
+      - start: '2000-01-01'
+        interval: 1D
+        limit: 10000
+    date_field: time
+  value_field: close
+  unit: usd_per_oz
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 10
+  grade: C
+  active: true
+  note: Current calendar year only (Dukascopy). Cross-check for the World Bank series.
+- code: fund_nav_dcbf
+  provider: vnstock
+  asset_class: corp_bond
+  request:
+    call:
+    - - Market
+      - []
+      - {}
+    - - fund
+      - - DCBF
+      - {}
+    - - history
+      - []
+      - {}
+    date_field: time
+  value_field: nav
+  unit: nav_vnd
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 14
+  grade: C
+  active: true
+  note: Bond fund NAV per unit (CafeF); some funds report weekly.
+- code: fund_nav_vff
+  provider: vnstock
+  asset_class: corp_bond
+  request:
+    call:
+    - - Market
+      - []
+      - {}
+    - - fund
+      - - VFF
+      - {}
+    - - history
+      - []
+      - {}
+    date_field: time
+  value_field: nav
+  unit: nav_vnd
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 14
+  grade: C
+  active: true
+  note: Bond fund NAV per unit (CafeF); some funds report weekly.
+- code: fund_nav_dcip
+  provider: vnstock
+  asset_class: corp_bond
+  request:
+    call:
+    - - Market
+      - []
+      - {}
+    - - fund
+      - - DCIP
+      - {}
+    - - history
+      - []
+      - {}
+    date_field: time
+  value_field: nav
+  unit: nav_vnd
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 14
+  grade: C
+  active: true
+  note: Bond fund NAV per unit (CafeF); some funds report weekly.
+- code: fund_nav_vndbf
+  provider: vnstock
+  asset_class: corp_bond
+  request:
+    call:
+    - - Market
+      - []
+      - {}
+    - - fund
+      - - VNDBF
+      - {}
+    - - history
+      - []
+      - {}
+    date_field: time
+  value_field: nav
+  unit: nav_vnd
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 14
+  grade: C
+  active: true
+  note: Bond fund NAV per unit (CafeF); some funds report weekly.
+- code: fund_nav_vcbf_fif
+  provider: vnstock
+  asset_class: corp_bond
+  request:
+    call:
+    - - Market
+      - []
+      - {}
+    - - fund
+      - - VCBF-FIF
+      - {}
+    - - history
+      - []
+      - {}
+    date_field: time
+  value_field: nav
+  unit: nav_vnd
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 14
+  grade: C
+  active: true
+  note: Bond fund NAV per unit (CafeF); some funds report weekly.
+- code: fund_nav_pvbf
+  provider: vnstock
+  asset_class: corp_bond
+  request:
+    call:
+    - - Market
+      - []
+      - {}
+    - - fund
+      - - PVBF
+      - {}
+    - - history
+      - []
+      - {}
+    date_field: time
+  value_field: nav
+  unit: nav_vnd
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 14
+  grade: C
+  active: true
+  note: Bond fund NAV per unit (CafeF); some funds report weekly.
+- code: fund_nav_dfix
+  provider: vnstock
+  asset_class: corp_bond
+  request:
+    call:
+    - - Market
+      - []
+      - {}
+    - - fund
+      - - DFIX
+      - {}
+    - - history
+      - []
+      - {}
+    date_field: time
+  value_field: nav
+  unit: nav_vnd
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 14
+  grade: C
+  active: true
+  note: Bond fund NAV per unit (CafeF); some funds report weekly.
+- code: fund_nav_vlbf
+  provider: vnstock
+  asset_class: corp_bond
+  request:
+    call:
+    - - Market
+      - []
+      - {}
+    - - fund
+      - - VLBF
+      - {}
+    - - history
+      - []
+      - {}
+    date_field: time
+  value_field: nav
+  unit: nav_vnd
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 14
+  grade: C
+  active: true
+  note: Bond fund NAV per unit (CafeF); some funds report weekly.
+- code: fund_nav_maff
+  provider: vnstock
+  asset_class: corp_bond
+  request:
+    call:
+    - - Market
+      - []
+      - {}
+    - - fund
+      - - MAFF
+      - {}
+    - - history
+      - []
+      - {}
+    date_field: time
+  value_field: nav
+  unit: nav_vnd
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 14
+  grade: C
+  active: true
+  note: Bond fund NAV per unit (CafeF); some funds report weekly.
+- code: fund_nav_bvbf
+  provider: vnstock
+  asset_class: corp_bond
+  request:
+    call:
+    - - Market
+      - []
+      - {}
+    - - fund
+      - - BVBF
+      - {}
+    - - history
+      - []
+      - {}
+    date_field: time
+  value_field: nav
+  unit: nav_vnd
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 14
+  grade: C
+  active: true
+  note: Bond fund NAV per unit (CafeF); some funds report weekly.
+- code: fund_nav_lhbf
+  provider: vnstock
+  asset_class: corp_bond
+  request:
+    call:
+    - - Market
+      - []
+      - {}
+    - - fund
+      - - LHBF
+      - {}
+    - - history
+      - []
+      - {}
+    date_field: time
+  value_field: nav
+  unit: nav_vnd
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 14
+  grade: C
+  active: true
+  note: Bond fund NAV per unit (CafeF); some funds report weekly.
+- code: fund_nav_hdbond
+  provider: vnstock
+  asset_class: corp_bond
+  request:
+    call:
+    - - Market
+      - []
+      - {}
+    - - fund
+      - - HDBOND
+      - {}
+    - - history
+      - []
+      - {}
+    date_field: time
+  value_field: nav
+  unit: nav_vnd
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 14
+  grade: C
+  active: true
+  note: Bond fund NAV per unit (CafeF); some funds report weekly.
+- code: hnx_par_1y
+  provider: hnx
+  asset_class: gov_bond
+  request: &id003
+    curve: government_bond_yield_curve
+    start: 2013-03
+  value_field: par_1y
+  unit: pct_pa
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 10
+  grade: B
+  active: true
+  note: HNX yield curve, par yield. From 2013-03 (no curve in Jan-Feb 2013).
+- code: hnx_par_2y
+  provider: hnx
+  asset_class: gov_bond
+  request: *id003
+  value_field: par_2y
+  unit: pct_pa
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 10
+  grade: B
+  active: true
+  note: HNX yield curve, par yield. From 2013-03 (no curve in Jan-Feb 2013).
+- code: hnx_par_5y
+  provider: hnx
+  asset_class: gov_bond
+  request: *id003
+  value_field: par_5y
+  unit: pct_pa
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 10
+  grade: B
+  active: true
+  note: HNX yield curve, par yield. From 2013-03 (no curve in Jan-Feb 2013).
+- code: hnx_par_10y
+  provider: hnx
+  asset_class: gov_bond
+  request: *id003
+  value_field: par_10y
+  unit: pct_pa
+  native_frequency: daily
+  period: monthly
+  month_end_rule: last_on_or_before
+  max_gap_days: 10
+  grade: B
+  active: true
+  note: HNX yield curve, par yield. From 2013-03 (no curve in Jan-Feb 2013).
+- code: wb_gold_usd_oz
+  provider: worldbank
+  asset_class: gold
+  request:
+    page: https://www.worldbank.org/en/research/commodity-markets
+    link_contains: CMO-Historical-Data-Monthly.xlsx
+    sheet: Monthly Prices
+  value_field: Gold
+  unit: usd_per_oz
+  native_frequency: monthly
+  period: monthly
+  month_end_rule: period_value
+  max_gap_days: null
+  grade: B
+  active: true
+  note: World Bank Pink Sheet, monthly average price. CC BY 4.0.
+- code: sp500_price
+  provider: shiller
+  asset_class: eq_global
+  request: &id004
+    page: https://shillerdata.com/
+    link_contains: ie_data.xls
+    sheet: Data
+  value_field: P
+  unit: index_points
+  native_frequency: monthly
+  period: monthly
+  month_end_rule: period_value
+  max_gap_days: null
+  grade: A
+  active: false
+  note: S&P Composite, monthly average of daily closes (Shiller). Needs xlrd (not yet approved).
+- code: sp500_dividend
+  provider: shiller
+  asset_class: eq_global
+  request: *id004
+  value_field: D
+  unit: usd_per_index_point
+  native_frequency: monthly
+  period: monthly
+  month_end_rule: period_value
+  max_gap_days: null
+  grade: A
+  active: false
+  note: Dividends per index point, annualised (Shiller). Needs xlrd.

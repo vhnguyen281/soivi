@@ -7,6 +7,8 @@ alone (never deleted).
 
 - institutions.csv: matched on short_name
 - sources.csv:      matched on (institution, kind, variant); `adapter` must be registered
+- market_series.yaml (VNCMA): providers become `source` rows of kind market_data
+                    (matched on variant = provider name); series matched on `code`
 
 Every row is validated before anything is written. Any problem aborts the whole
 load with a list of all errors, so the database never gets half a seed.
@@ -21,11 +23,12 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit
 
+import yaml
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from core.enums import FetchMethod, InstitutionType, SourceKind
-from core.models import Institution, Source
+from core.enums import DataGrade, FetchMethod, Frequency, InstitutionType, MonthEndRule, SourceKind
+from core.models import Institution, MarketSeries, Source
 
 SEEDS_DIR = Path(__file__).resolve().parent.parent / "data" / "seeds"
 
@@ -262,13 +265,161 @@ def load_sources(session: Session, rows: list[dict[str, Any]]) -> Counts:
     return counts
 
 
+# --------------------------------------------------------------------------- VNCMA market series
+
+MARKET_CADENCE_HOURS = 744  # monthly, like the bank sources
+SERIES_KEYS = {
+    "code",
+    "provider",
+    "asset_class",
+    "request",
+    "value_field",
+    "unit",
+    "native_frequency",
+    "period",
+    "month_end_rule",
+    "max_gap_days",
+    "grade",
+    "active",
+    "note",
+}
+REQUIRED_REQUEST_KEYS = {
+    "vnstock": {"call", "date_field"},
+    "hnx": {"curve", "start"},
+    "worldbank": {"page", "link_contains", "sheet"},
+    "shiller": {"page", "link_contains", "sheet"},
+}
+
+
+def parse_market(path: Path) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """(providers, series) from market_series.yaml, validated."""
+    doc = yaml.safe_load(path.read_text("utf-8")) or {}
+    errors: list[str] = []
+    providers: list[dict[str, Any]] = []
+    for name, p in (doc.get("providers") or {}).items():
+        if name not in REQUIRED_REQUEST_KEYS:
+            errors.append(f"{path.name}: provider {name!r} has no fetcher")
+        if not _is_http_url(str(p.get("url", ""))):
+            errors.append(f"{path.name}: provider {name!r} needs an http(s) url")
+        if p.get("fetch_method") not in {m.value for m in FetchMethod}:
+            errors.append(f"{path.name}: provider {name!r} has a bad fetch_method")
+        providers.append(
+            {
+                "kind": SourceKind.MARKET_DATA.value,
+                "variant": name,
+                "url": p.get("url"),
+                "fetch_method": p.get("fetch_method"),
+                "cadence_hours": MARKET_CADENCE_HOURS,
+                "adapter_name": None,
+                "needs_check": False,
+            }
+        )
+    known = {p["variant"] for p in providers}
+    series: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for i, r in enumerate(doc.get("series") or [], 1):
+        where = f"{path.name} series #{i} ({r.get('code', '?')})"
+        extra = set(r) - SERIES_KEYS
+        if extra:
+            errors.append(f"{where}: unknown keys {sorted(extra)}")
+        code = str(r.get("code", ""))
+        if not re.fullmatch(r"[a-z0-9_]{2,64}", code):
+            errors.append(f"{where}: code must be lower_snake_case")
+        if code in seen:
+            errors.append(f"{where}: duplicate code")
+        seen.add(code)
+        provider = r.get("provider")
+        if provider not in known:
+            errors.append(f"{where}: unknown provider {provider!r}")
+        request = r.get("request")
+        if not isinstance(request, dict):
+            errors.append(f"{where}: request must be a mapping")
+        elif provider in REQUIRED_REQUEST_KEYS and not REQUIRED_REQUEST_KEYS[provider] <= set(
+            request
+        ):
+            missing = sorted(REQUIRED_REQUEST_KEYS[provider] - set(request))
+            errors.append(f"{where}: request needs {missing}")
+        for key, enum in (
+            ("native_frequency", Frequency),
+            ("period", Frequency),
+            ("month_end_rule", MonthEndRule),
+            ("grade", DataGrade),
+        ):
+            if r.get(key) not in {e.value for e in enum}:
+                errors.append(f"{where}: {key} must be one of {[e.value for e in enum]}")
+        gap = r.get("max_gap_days")
+        if r.get("month_end_rule") == MonthEndRule.LAST_ON_OR_BEFORE.value and not (
+            isinstance(gap, int) and gap > 0
+        ):
+            errors.append(f"{where}: last_on_or_before needs a positive max_gap_days")
+        if not r.get("value_field") or not r.get("unit"):
+            errors.append(f"{where}: value_field and unit are required")
+        series.append(
+            {
+                "code": code,
+                "provider": provider,
+                "asset_class": r.get("asset_class"),
+                "request": request,
+                "value_field": r.get("value_field"),
+                "unit": r.get("unit"),
+                "native_frequency": r.get("native_frequency"),
+                "period": r.get("period"),
+                "month_end_rule": r.get("month_end_rule"),
+                "max_gap_days": gap,
+                "grade": r.get("grade"),
+                "active": bool(r.get("active", True)),
+                "note": r.get("note"),
+            }
+        )
+    if errors:
+        raise SeedError(errors)
+    return providers, series
+
+
+def load_market(
+    session: Session, providers: list[dict[str, Any]], series: list[dict[str, Any]]
+) -> Counts:
+    counts = Counts()
+    existing = {
+        s.variant: s
+        for s in session.scalars(select(Source).where(Source.kind == SourceKind.MARKET_DATA))
+    }
+    for row in providers:
+        src = existing.get(row["variant"])
+        if src is None:
+            src = Source(institution_id=None, **row)
+            session.add(src)
+            existing[row["variant"]] = src
+            counts.inserted += 1
+        else:
+            _apply(src, row, f"provider/{row['variant']}", counts)
+    session.flush()
+    by_code = {m.code: m for m in session.scalars(select(MarketSeries))}
+    for row in series:
+        values = {k: v for k, v in row.items() if k != "provider"}
+        values["source_id"] = existing[row["provider"]].id
+        current = by_code.get(row["code"])
+        if current is None:
+            session.add(MarketSeries(**values))
+            counts.inserted += 1
+        else:
+            _apply(current, values, f"series/{row['code']}", counts)
+    session.flush()
+    return counts
+
+
 def load_all(session: Session, seeds_dir: Path = SEEDS_DIR) -> dict[str, Counts]:
     institutions = parse_institutions(seeds_dir / "institutions.csv")
     sources = parse_sources(seeds_dir / "sources.csv", (r["short_name"] for r in institutions))
-    return {
+    market = seeds_dir / "market_series.yaml"
+    market_rows = parse_market(market) if market.exists() else None
+    results = {
         "institutions": load_institutions(session, institutions),
         "sources": load_sources(session, sources),
     }
+    if market_rows is not None:
+        results["market"] = load_market(session, *market_rows)
+    return results
 
 
 def main() -> None:

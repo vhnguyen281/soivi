@@ -728,3 +728,34 @@ statistics are monthly, so an always-on server is not needed yet.
    holidays return an empty table (step back a day). No robots.txt. The fetcher pins GlobalSign's intermediate
    "GCC R3 EV TLS CA 2025" on top of certifi (expires 2027-07-16). Use par yields; HNX replaces vnstock for `gov_bond`
    history, vnstock stays a cross-check for 2020+.
+
+---
+
+## 2026-11-06 — Market data schema and ingest (VNCMA Prompt 3)
+
+Design: [docs/vncma/design-market-data.md](vncma/design-market-data.md), approved by the owner today with three points:
+human approval happens at the VNCMA **release**, not per observation; ingest runs on the Mac (`uv run`), not in
+Docker; HNX and World Bank are part of Prompt 3.
+
+1. **Reuse `source` and `snapshot`.** New `SourceKind.MARKET_DATA` and `FetchMethod.API`; one `source` row per
+   provider (`vnstock`, `hnx`, `worldbank`, `shiller`), `variant` = provider name, no institution. The scheduler
+   skips them (`runner.runnable()`).
+2. **`market_series`** (config from `data/seeds/market_series.yaml`, loaded by `make seed`) and
+   **`market_observation`** (append-only trigger; a correction is `revision + 1`, the highest revision is current).
+   Migration `a7c3d2e1f9b8`.
+3. **Month-end rules:** `last_on_or_before` within `max_gap_days` (10 for trading-day series, because Tết can close
+   the market for 9–10 days; 14 for fund NAVs), or `period_value`. Only closed periods are stored.
+4. **Idempotent:** vnstock payloads drop open-month rows and volatile attrs before hashing; an identical payload
+   reuses the last snapshot (values are still recomputed, so a changed rule takes effect); unchanged values are
+   not rewritten. Each request group is one transaction; a failing group writes nothing and the others continue.
+5. **HNX TLS:** `PoliteHttp` takes an `SSLContext` (`verify=False` is refused); HNX uses certifi plus GlobalSign's
+   intermediate in `pipeline/market/certs/`.
+6. **Shiller (S&P 500)** needs `xlrd` to read `.xls`; the two series stay inactive until the owner approves the
+   dependency.
+7. **Learned on the first live run:** (a) fetch outside any DB transaction: the HNX history took ~20 minutes and
+   Neon ended the idle transaction; ingest now reads, fetches, then writes in short transactions, and HNX works in
+   24-month chunks stored one by one. (b) vnstock `df.attrs` holds per-call values (`latency_ms`, `end`, `length`,
+   `request_count`); payloads keep a whitelist of stable provenance attrs only.
+8. **Result (2026-11-06, Neon + S3):** 5,053 monthly observations in 36 request groups, 110 snapshots; HNX par
+   yields 2013-03 → 2026-10. A second and third run added nothing (36/36 unchanged). Known provider holes: CafeF
+   bond-fund NAVs 2026-04..06, vnstock (asean) yields 2026-01..06, CPI 2020-09, P/E 2024-03.

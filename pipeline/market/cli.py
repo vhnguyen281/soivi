@@ -5,8 +5,12 @@ import datetime as dt
 import sys
 from collections.abc import Callable
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from pipeline.market.client import MarketClient, MarketDataError, VnstockClient
+
+if TYPE_CHECKING:
+    from pipeline.market.source import Fetcher
 
 
 def add_parser(sub: "argparse._SubParsersAction[argparse.ArgumentParser]") -> None:
@@ -18,6 +22,8 @@ def add_parser(sub: "argparse._SubParsersAction[argparse.ArgumentParser]") -> No
     probe.add_argument("--pause", type=float, default=1.0, help="seconds between calls")
     probe.add_argument("--out", type=Path, default=Path("docs/vncma/probe-results.md"))
     probe.add_argument("--fixtures", type=Path, default=Path("tests/fixtures/vnstock"))
+    ingest = msub.add_parser("ingest", help="fetch every active series; store monthly values")
+    ingest.add_argument("--series", help="comma-separated series codes (default: all active)")
 
 
 def run(args: argparse.Namespace, client_factory: Callable[[], MarketClient] | None) -> int:
@@ -25,6 +31,8 @@ def run(args: argparse.Namespace, client_factory: Callable[[], MarketClient] | N
         return _check(client_factory or VnstockClient)
     if args.market_command == "probe":
         return _probe(args, client_factory or VnstockClient)
+    if args.market_command == "ingest":
+        return _ingest(args, client_factory or VnstockClient)
     raise AssertionError(args.market_command)
 
 
@@ -80,3 +88,63 @@ def _probe(args: argparse.Namespace, client_factory: Callable[[], MarketClient])
     ok = sum(r.ok for r in results)
     print(f"{ok}/{len(results)} calls work; report: {args.out}; fixtures: {args.fixtures}/")
     return 0
+
+
+class _LazyFetchers(dict[str, "Fetcher"]):
+    """Builds a provider's fetcher on first use, so a run of HNX series never imports vnstock."""
+
+    def __init__(self, client_factory: Callable[[], MarketClient]) -> None:
+        super().__init__()
+        self.client_factory = client_factory
+        self.closers: list[Callable[[], None]] = []
+
+    def get(self, key: str, default: "Fetcher | None" = None) -> "Fetcher | None":  # type: ignore[override]
+        if key not in self:
+            built = self._build(key)
+            if built is None:
+                return default
+            self[key] = built
+        return self[key]
+
+    def _build(self, provider: str) -> "Fetcher | None":
+        from pipeline.fetch.polite import PoliteHttp
+        from pipeline.market.source import (
+            HnxFetcher,
+            VnstockFetcher,
+            WorldBankFetcher,
+            hnx_ssl_context,
+        )
+
+        if provider == "vnstock":
+            return VnstockFetcher(self.client_factory())
+        if provider == "hnx":
+            http = PoliteHttp(verify=hnx_ssl_context())
+            self.closers.append(http.close)
+            return HnxFetcher(http)
+        if provider == "worldbank":
+            http = PoliteHttp()
+            self.closers.append(http.close)
+            return WorldBankFetcher(http)
+        return None
+
+
+def _ingest(args: argparse.Namespace, client_factory: Callable[[], MarketClient]) -> int:
+    from core.db import SessionLocal
+    from pipeline.fetch.storage import MinioStore
+    from pipeline.market.ingest import ingest
+
+    codes = [c.strip() for c in args.series.split(",") if c.strip()] if args.series else None
+    fetchers = _LazyFetchers(client_factory)
+    try:
+        results = ingest(SessionLocal, MinioStore(), fetchers, codes)
+    except MarketDataError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
+    finally:
+        for close in fetchers.closers:
+            close()
+    failed = [r for r in results if r.status == "failed"]
+    new = sum(r.new for r in results)
+    revised = sum(r.revised for r in results)
+    print(f"{len(results)} groups: {new} new values, {revised} revised, {len(failed)} failed")
+    return 1 if failed else 0

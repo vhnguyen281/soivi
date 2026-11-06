@@ -81,6 +81,18 @@ make pipeline CLOUD=1 ARGS="run --institution ACB"
 
 Without `CLOUD=1` everything stays local. Tests always use the local Docker Postgres and MinIO, whatever `.env` says.
 
+## VNCMA market data
+
+Market and macro series for VNCMA (docs/vncma/) are configured in `data/seeds/market_series.yaml` (loaded by `make seed`) and fetched on the Mac, where vnstock is registered:
+
+```bash
+uv run python -m pipeline market check     # vnstock version, tier, one live VN30 close
+uv run python -m pipeline market ingest    # every active series; --series a,b for some
+uv run python -m pipeline market probe     # re-run the vnstock probe (docs/vncma/probe-report.md)
+```
+
+`ingest` stores one value per closed month in `market_observation` (append-only; corrections are new revisions) with the raw payload in S3. Running it again adds nothing unless a provider has new or corrected data.
+
 ## Running the pipeline
 
 ```bash

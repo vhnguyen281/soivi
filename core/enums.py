@@ -20,6 +20,7 @@ class SourceKind(StrEnum):
     CARD_PRODUCT_PAGE = "card_product_page"
     NEWS_FEED = "news_feed"
     OFFICIAL = "official"
+    MARKET_DATA = "market_data"  # VNCMA: one source per data provider (vnstock, HNX, ...)
 
 
 class FetchMethod(StrEnum):
@@ -27,6 +28,7 @@ class FetchMethod(StrEnum):
     BROWSER = "browser"
     PDF = "pdf"
     OCR = "ocr"
+    API = "api"  # a library or JSON API (vnstock), not a page
 
 
 class ExtractionMethod(StrEnum):
@@ -132,3 +134,29 @@ class NewsDirection(StrEnum):
     UP = "up"
     DOWN = "down"
     UNKNOWN = "unknown"
+
+
+class Frequency(StrEnum):
+    DAILY = "daily"
+    WEEKLY = "weekly"
+    MONTHLY = "monthly"
+    QUARTERLY = "quarterly"
+    YEARLY = "yearly"
+
+
+class MonthEndRule(StrEnum):
+    """How one value per period is taken from a market series.
+
+    See docs/vncma/design-market-data.md §3.
+    """
+
+    # The last value on or before the period end, at most `max_gap_days` earlier.
+    LAST_ON_OR_BEFORE = "last_on_or_before"
+    # The provider already gives one value per period (CPI per month, GDP per year).
+    PERIOD_VALUE = "period_value"
+
+
+class DataGrade(StrEnum):
+    A = "A"
+    B = "B"
+    C = "C"

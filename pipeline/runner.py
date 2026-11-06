@@ -15,6 +15,7 @@ from sqlalchemy import Select, select
 from sqlalchemy.orm import Session
 
 from core.config import get_settings
+from core.enums import SourceKind
 from core.models import Institution, PipelineRun, Source
 from pipeline.adapters.base import AdapterBroken, AdapterContext
 from pipeline.diff import DiffResult, diff_snapshot
@@ -57,8 +58,12 @@ class RunResult:
 
 
 def runnable() -> Select[Source]:
-    """Sources the scheduler may run: active, confirmed, with a URL and an adapter."""
+    """Sources the scheduler may run: active, confirmed, with a URL and an adapter.
+
+    Market-data providers (VNCMA) have their own path: `python -m pipeline market ingest`.
+    """
     return select(Source).where(
+        Source.kind != SourceKind.MARKET_DATA,
         Source.active.is_(True),
         Source.needs_check.is_(False),
         Source.url.is_not(None),

@@ -40,10 +40,13 @@ from core.enums import (
     CardType,
     Channel,
     CommunityReportStatus,
+    DataGrade,
     ExtractionMethod,
     FetchMethod,
+    Frequency,
     InstitutionType,
     InterestPayment,
+    MonthEndRule,
     NewsClassification,
     NewsDirection,
     ReviewActionKind,
@@ -623,6 +626,70 @@ class NewsFetch(Base):
     error: Mapped[str | None] = mapped_column(Text)
 
 
+# --------------------------------------------------------------------------- VNCMA market data
+
+
+class MarketSeries(Base):
+    """One market or macro series VNCMA ingests (configuration, from data/seeds/market_series.yaml).
+
+    Like `source`, this is metadata, not a published value, so it may be updated.
+    The values live in `market_observation`.
+    """
+
+    __tablename__ = "market_series"
+    __table_args__ = (
+        CheckConstraint("max_gap_days IS NULL OR max_gap_days > 0", name="max_gap_days_positive"),
+        CheckConstraint(
+            "month_end_rule <> 'last_on_or_before' OR max_gap_days IS NOT NULL",
+            name="gap_for_last_on_or_before",
+        ),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    code: Mapped[str] = mapped_column(String(64), unique=True)
+    # The provider: a `source` row of kind market_data.
+    source_id: Mapped[int] = mapped_column(ForeignKey("source.id"), index=True)
+    asset_class: Mapped[str | None] = mapped_column(String(32))
+    # What to fetch, e.g. a vnstock call chain; series with an equal request share one fetch.
+    request: Mapped[dict[str, Any]] = mapped_column(JSONB)
+    value_field: Mapped[str] = mapped_column(String(64))
+    unit: Mapped[str] = mapped_column(String(32))
+    native_frequency: Mapped[Frequency] = mapped_column(str_enum(Frequency, "frequency"))
+    # The stored period: monthly for prices and rates, quarterly or yearly for GDP.
+    period: Mapped[Frequency] = mapped_column(str_enum(Frequency, "period_frequency"))
+    month_end_rule: Mapped[MonthEndRule] = mapped_column(str_enum(MonthEndRule, "month_end_rule"))
+    max_gap_days: Mapped[int | None] = mapped_column(Integer)
+    grade: Mapped[DataGrade] = mapped_column(str_enum(DataGrade, "data_grade"))
+    active: Mapped[bool] = mapped_column(Boolean, server_default=text("true"))
+    note: Mapped[str | None] = mapped_column(Text)
+    last_checked_at: Mapped[dt.datetime | None] = mapped_column(TZDateTime)
+    last_snapshot_id: Mapped[int | None] = mapped_column(ForeignKey("snapshot.id"))
+
+
+class MarketObservation(Base):
+    """One value per series and period. Append-only (DB trigger): a provider's
+    correction is a new row with revision + 1; the highest revision is current."""
+
+    __tablename__ = "market_observation"
+    __table_args__ = (
+        UniqueConstraint(
+            "series_id", "period_end", "revision", name="uq_market_observation_revision"
+        ),
+        CheckConstraint("revision >= 1", name="revision_positive"),
+        CheckConstraint("obs_date <= period_end", name="obs_date_in_period"),
+        Index("ix_market_observation_snapshot_id", "snapshot_id"),
+    )
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
+    series_id: Mapped[int] = mapped_column(ForeignKey("market_series.id"))
+    period_end: Mapped[dt.date] = mapped_column(Date)  # last day of the month, quarter or year
+    revision: Mapped[int] = mapped_column(Integer, server_default=text("1"))
+    obs_date: Mapped[dt.date] = mapped_column(Date)  # the date of the value actually used
+    value: Mapped[Decimal] = mapped_column(Numeric(20, 8))
+    snapshot_id: Mapped[int] = mapped_column(ForeignKey("snapshot.id"))
+    ingested_at: Mapped[dt.datetime] = mapped_column(TZDateTime, server_default=func.now())
+
+
 VERSIONED_MODELS: tuple[type[Versioned], ...] = (
     SavingsRate,
     CardTerms,
@@ -630,7 +697,7 @@ VERSIONED_MODELS: tuple[type[Versioned], ...] = (
     CardPerk,
     CardInterest,
 )
-APPEND_ONLY_TABLES = ("snapshot", "change_event", "review_action")
+APPEND_ONLY_TABLES = ("snapshot", "change_event", "review_action", "market_observation")
 
 __all__ = [
     "APPEND_ONLY_TABLES",
@@ -646,6 +713,8 @@ __all__ = [
     "ChangeEvent",
     "CommunityReport",
     "Institution",
+    "MarketObservation",
+    "MarketSeries",
     "NewsFetch",
     "NewsItem",
     "Notification",

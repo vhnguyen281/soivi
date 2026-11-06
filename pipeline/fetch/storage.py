@@ -17,6 +17,7 @@ EXTENSIONS = {
     "application/json": "json",
     "text/plain": "txt",
     "text/csv": "csv",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": "xlsx",
     "image/png": "png",
     "image/jpeg": "jpg",
 }

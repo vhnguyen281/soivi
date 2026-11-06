@@ -12,6 +12,7 @@
 The rate limit lives in one process. Run one pipeline process at a time.
 """
 
+import ssl
 import time
 from collections.abc import Callable
 from dataclasses import dataclass, field
@@ -84,8 +85,13 @@ class PoliteHttp:
     clock: Clock = time.monotonic
     sleep: Sleep = time.sleep
     transport: httpx.BaseTransport | None = None  # tests only
+    # TLS verification. Never False: for a server that omits an intermediate
+    # certificate, pass an SSLContext that trusts certifi plus that intermediate.
+    verify: ssl.SSLContext | bool = True
 
     def __post_init__(self) -> None:
+        if self.verify is False:
+            raise ValueError("TLS verification cannot be turned off")
         if "@" not in self.user_agent:
             raise ValueError("CRAWLER_USER_AGENT must include a contact email")
         self.limiter = RateLimiter(self.settings.crawler_min_delay_seconds, self.clock, self.sleep)
@@ -94,6 +100,7 @@ class PoliteHttp:
             timeout=self.timeout,
             follow_redirects=True,
             transport=self.transport,
+            verify=self.verify,
         )
         self._robots: dict[str, _Robots] = {}
 
