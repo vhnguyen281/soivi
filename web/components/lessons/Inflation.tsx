@@ -51,7 +51,8 @@ const TEXT = {
   },
 };
 
-const COLOURS = ["var(--series-2)", "var(--series-1)", "var(--series-3)"];
+const COLOURS = ["var(--series-3)", "var(--series-2)", "var(--series-1)"];
+const DASH = ["2 4", "6 4", undefined];
 
 export function InflationLesson({ lang, inflation, demand, deposit }: { lang: Lang; inflation: number; demand: Rate; deposit: Rate }) {
   const x = TEXT[lang];
@@ -143,7 +144,7 @@ function Lines({ rates, inflation, years, labels, lang }: { rates: number[]; inf
       <line x1={x(years)} x2={x(years)} y1={pad.t} y2={H - pad.b} stroke="var(--map-ink)" strokeDasharray="3 3" />
       {series.map((s, i) => (
         <g key={labels[i]}>
-          <path d={s.map((v, j) => `${j ? "L" : "M"}${x(j).toFixed(1)},${y(v).toFixed(1)}`).join("")} fill="none" stroke={COLOURS[i]} strokeWidth={2} />
+          <path d={s.map((v, j) => `${j ? "L" : "M"}${x(j).toFixed(1)},${y(v).toFixed(1)}`).join("")} fill="none" stroke={COLOURS[i]} strokeWidth={2} strokeDasharray={DASH[i]} />
           <circle cx={x(years)} cy={y(s[years])} r={5} fill={COLOURS[i]} stroke="var(--map-card)" strokeWidth={2} />
           <text x={W - pad.r + 8} y={(labelY.get(i) ?? 0) + 4} fontSize="12" fill="var(--map-ink)">
             {labels[i]}

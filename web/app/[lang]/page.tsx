@@ -9,7 +9,6 @@ import { getChanges, getModelPortfolios, getPersonas, getRank, getVncma } from "
 import { date, direction, pct, term, vnd, type Lang, localizeLabel } from "@/lib/format";
 import { absolute, href, t } from "@/lib/i18n";
 import { LESSONS } from "@/lib/learn";
-import { mapFonts } from "@/lib/fonts";
 import { HOME_TERMS } from "@/lib/rows";
 import { pageMetadata } from "@/lib/seo";
 
@@ -32,11 +31,12 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
     getVncma(),
     getModelPortfolios(),
   ]);
-  // Each bank's best 12-month rate for the journey's hero, highest first.
+  // Each bank's best 12-month equivalent rate for the journey's hero, highest first.
   const byBank = new Map<string, JourneyBank>();
   for (const r of year.results) {
     const name = r.rate.institution.short_name;
-    const rate = Number(r.rate.rate_pct);
+    // The equivalent rate (end-of-term basis), so the hero agrees with the ranked table below.
+    const rate = Number(r.equivalent_rate_pct);
     if (!byBank.has(name) || (byBank.get(name) as JourneyBank).rate < rate)
       byBank.set(name, { name, rate, product: r.rate.product_name });
   }
@@ -75,7 +75,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
     <>
       <JsonLd data={jsonLd} />
 
-      <div className={mapFonts}>
+      <div>
         <Journey lang={lang} banks={banks} inflation={Number(vncma?.macro.pi?.value ?? 4)} portfolios={portfolios} lessons={lessons} />
       </div>
 

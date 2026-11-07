@@ -12,7 +12,6 @@ import { RealRateLesson, type Demand, type Offer } from "@/components/lessons/Re
 import { VolatilityLesson } from "@/components/lessons/Volatility";
 import { getCard, getCards, getRank, getRates, getVncma } from "@/lib/api";
 import { CLASS_NAMES, type ClassStat } from "@/lib/classes";
-import { mapFonts } from "@/lib/fonts";
 import type { Lang } from "@/lib/format";
 import { href, t } from "@/lib/i18n";
 import { LESSONS, lessonBySlug } from "@/lib/learn";
@@ -135,7 +134,7 @@ export default async function LessonPage({ params }: PageProps<"/[lang]/hoc/[slu
   const body = await lessonBody(slug, lang);
 
   return (
-    <div className={`map ${mapFonts}`}>
+    <div className="map">
       <article className="sv-container max-w-4xl space-y-10 py-14">
         <JsonLd
           data={breadcrumbs(lang, [
@@ -149,7 +148,7 @@ export default async function LessonPage({ params }: PageProps<"/[lang]/hoc/[slu
             ← {lang === "vi" ? "Tất cả bài học" : "All lessons"}
           </Link>
           <h1 className="map-title text-[clamp(38px,5vw,64px)]">{lesson[lang].title}</h1>
-          <p className="map-hand -rotate-1 text-[24px] text-[var(--map-terra)]">
+          <p className="text-[18px] text-[var(--map-muted)]">
             {lesson.minutes} {lang === "vi" ? "phút · kéo, bấm, thử" : "min · drag, tap, try"}
           </p>
           <p>{lesson[lang].summary}</p>

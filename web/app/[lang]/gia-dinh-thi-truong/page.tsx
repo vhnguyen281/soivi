@@ -111,9 +111,14 @@ function num(value: string | null | undefined, lang: Lang, digits = 1): string {
 function cellStyle(rho: number, diagonal: boolean): React.CSSProperties {
   if (diagonal) return { background: "var(--surface-alt)", color: "var(--ink-muted)" };
   // At most 60% of the pole, so the ink text keeps its contrast in both themes.
-  const share = Math.round(Math.min(1, Math.abs(rho)) * 60);
-  const pole = rho >= 0 ? "var(--div-pos)" : "var(--div-neg)";
-  return { background: `color-mix(in oklab, ${pole} ${share}%, var(--surface-alt))`, color: "var(--ink)" };
+  // Monochrome: positive = solid grey fill, negative = diagonal hatch, so the sign never rests on tone alone.
+  const share = Math.round(Math.min(1, Math.abs(rho)) * 45);
+  const fill = `color-mix(in oklab, ${rho >= 0 ? "var(--div-pos)" : "var(--div-neg)"} ${share}%, var(--surface-alt))`;
+  if (rho >= 0) return { background: fill, color: "var(--ink)" };
+  return {
+    background: `repeating-linear-gradient(135deg, ${fill} 0 4px, var(--surface-alt) 4px 7px)`,
+    color: "var(--ink)",
+  };
 }
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/gia-dinh-thi-truong">): Promise<Metadata> {

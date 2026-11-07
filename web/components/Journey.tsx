@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 import { pct, vnd, vndShort, type Lang } from "@/lib/format";
 import { href } from "@/lib/i18n";
@@ -15,21 +15,21 @@ export type JourneyLesson = { slug: string; title: string; minutes: number; read
 
 const TEXT = {
   vi: {
-    title: ["Kho báu nằm", "ngay trong ví bạn."],
-    hand: "…chỉ cần đúng bản đồ",
+    title: ["Tiền của bạn xứng đáng", "được trả nhiều hơn."],
+    hand: "So sánh minh bạch. Lập kế hoạch rõ ràng. Miễn phí.",
     amount: "Bạn đang gửi bao nhiêu?",
     bank: "Ở ngân hàng nào?",
     pick: "Chọn ngân hàng",
-    lost: "Kho báu bị bỏ quên mỗi năm",
+    lost: "Bạn đang bỏ lỡ mỗi năm",
     vs: (b: string, r: string) => `so với ${b} (${r}), nơi trả cao nhất đã kiểm tra`,
     top: "Bạn đang ở nơi trả cao nhất đã kiểm tra. Tuyệt!",
     spread: (v: string) => `Chọn ngân hàng của bạn. Chênh lệch giữa nơi trả cao nhất và thấp nhất cho số tiền này: ${v} mỗi năm.`,
-    basis: "Lãi suất 12 tháng tốt nhất của mỗi ngân hàng cho khoản 100 triệu, mọi kênh, lấy từ trang của chính ngân hàng.",
+    basis: "Lãi 12 tháng tốt nhất của mỗi ngân hàng cho khoản 100 triệu, mọi kênh, đã quy đổi về lãi cuối kỳ. Lấy từ trang của chính ngân hàng.",
     compare: "So sánh mọi kỳ hạn",
-    scroll: "↓ Cuộn để đồng xu lên đường. Mỗi trạm có một thứ để bạn thử.",
-    stations: ["Làng Lạm Phát", "Đèo Rủi Ro", "Đỉnh Mục Tiêu", "Cảng Kế Hoạch"],
+    scroll: "Bốn điều nên biết về tiền của bạn. Mỗi phần có một thứ để bạn thử.",
+    stations: ["Lạm phát", "Rủi ro", "Mục tiêu", "Kế hoạch"],
     s1: {
-      h: "Đồng xu teo lại",
+      h: "Tiền để yên vẫn mất giá",
       p: (pi: string) => `Mỗi năm giá cả tăng khoảng ${pi} (giả định VNCMA). Kéo để đi tiếp bao nhiêu năm:`,
       years: "Số năm",
       r: (y: number) => `Sau ${y} năm, 100đ để yên chỉ còn mua được`,
@@ -38,14 +38,14 @@ const TEXT = {
       more: "Bài học: Lạm phát ăn ví",
     },
     s2: {
-      h: "Đường càng dốc, càng nhiều lối",
+      h: "Lợi nhuận cao đi kèm dao động lớn",
       p: "Chọn một danh mục mẫu. Mỗi nét là một hành trình 10 năm có thể xảy ra của 100đ.",
       r: (lo: string, hi: string, loss: string) => `Sau 10 năm, 8 trên 10 lối dẫn tới khoảng ${lo}–${hi}; ${loss} lối kết thúc dưới 100đ.`,
       none: "Chưa có danh mục mẫu được duyệt.",
       more: "Xem các danh mục mẫu",
     },
     s3: {
-      h: "Leo bao nhiêu mỗi tháng?",
+      h: "Mỗi tháng cần để dành bao nhiêu?",
       goal: "Mục tiêu",
       years: "Sau (năm)",
       safe: "Chỉ gửi tiết kiệm",
@@ -55,33 +55,33 @@ const TEXT = {
       more: "Tính khả năng đạt mục tiêu",
     },
     s4: {
-      h: "Ba rương cho ba việc",
+      h: "Ba phần cho ba việc",
       p: "Ví dụ 2 tỷ, chi tiêu 20 triệu mỗi tháng. Kéo số tháng dự phòng:",
       months: "Số tháng dự phòng",
       chests: ["Dự phòng", "Mục tiêu", "Tăng trưởng"],
-      more: "Vẽ bản đồ của riêng bạn",
+      more: "Lập bảng cân đối của bạn",
       hub: "Hành trình lập kế hoạch 5 bước",
     },
-    learn: "Mảnh bản đồ",
+    learn: "Học trong 5 phút",
     learnIntro: "Các bài học tương tác, mỗi bài vài phút. Tiến độ chỉ lưu trên trình duyệt này.",
     all: "Xem tất cả bài học",
   },
   en: {
-    title: ["The treasure is", "already in your wallet."],
-    hand: "…you just need the right map",
+    title: ["Your money deserves", "to be paid more."],
+    hand: "Transparent comparisons. Clear plans. Free.",
     amount: "How much do you have on deposit?",
     bank: "With which bank?",
     pick: "Choose a bank",
-    lost: "Treasure left behind each year",
+    lost: "You are missing out each year",
     vs: (b: string, r: string) => `compared with ${b} (${r}), the highest checked rate`,
     top: "You are already at the highest checked rate. Nice!",
     spread: (v: string) => `Choose your bank. The gap between the highest and lowest rate for this amount: ${v} a year.`,
-    basis: "Each bank's best 12-month rate for 100 million, any channel, from the bank's own pages.",
+    basis: "Each bank's best 12-month rate for 100 million, any channel, converted to end-of-term interest. From the bank's own pages.",
     compare: "Compare every term",
-    scroll: "↓ Scroll to send the coin on its way. Every stop has something to try.",
-    stations: ["Inflation Village", "Risk Pass", "Goal Peak", "Plan Harbour"],
+    scroll: "Four things worth knowing about your money. Each has something to try.",
+    stations: ["Inflation", "Risk", "Goals", "Plan"],
     s1: {
-      h: "The shrinking coin",
+      h: "Idle money still loses value",
       p: (pi: string) => `Prices rise about ${pi} a year (VNCMA assumption). Drag to travel the years:`,
       years: "Years",
       r: (y: number) => `After ${y} years, 100 left idle buys only`,
@@ -90,14 +90,14 @@ const TEXT = {
       more: "Lesson: Inflation eats your wallet",
     },
     s2: {
-      h: "The steeper the road, the more paths",
+      h: "Higher returns come with bigger swings",
       p: "Pick a model portfolio. Each line is one possible 10-year journey of 100.",
       r: (lo: string, hi: string, loss: string) => `After 10 years, 8 in 10 paths land between ${lo} and ${hi}; ${loss} end below 100.`,
       none: "No model portfolios are approved yet.",
       more: "See the model portfolios",
     },
     s3: {
-      h: "How much to climb each month?",
+      h: "How much to save each month?",
       goal: "Goal",
       years: "In (years)",
       safe: "Deposits only",
@@ -107,14 +107,14 @@ const TEXT = {
       more: "Check your chance of reaching it",
     },
     s4: {
-      h: "Three chests for three jobs",
+      h: "Three parts for three jobs",
       p: "Say 2 billion, spending 20 million a month. Drag the months of reserve:",
       months: "Months of reserve",
       chests: ["Reserve", "Goals", "Growth"],
-      more: "Draw your own map",
+      more: "Build your balance sheet",
       hub: "The 5-step planning journey",
     },
-    learn: "Map pieces",
+    learn: "Learn in 5 minutes",
     learnIntro: "Interactive lessons, a few minutes each. Progress stays in this browser.",
     all: "See all lessons",
   },
@@ -164,9 +164,9 @@ export function Journey({
           {x.title[0]}
           <br />
           {x.title[1]}
-          <span className="map-hand mt-3 block -rotate-2 text-[0.5em] text-[var(--map-terra)]">{x.hand}</span>
+          <span className="mt-6 block text-[18px] font-medium tracking-normal text-[var(--map-muted)]">{x.hand}</span>
         </h1>
-        <form className="map-card map-card--pinned rotate-1 space-y-3" onSubmit={(e) => e.preventDefault()}>
+        <form className="map-card map-card--pinned space-y-4" onSubmit={(e) => e.preventDefault()}>
           <label className="map-hand block text-[22px]">
             {x.amount}
             <input className="map-input" inputMode="numeric" value={nf(amount)} onChange={(e) => setAmount(digits(e.target.value))} />
@@ -187,7 +187,7 @@ export function Journey({
               missed > 0 ? (
                 <>
                   <p className="map-hand text-[22px]">{x.lost}</p>
-                  <p className="map-num map-num--warn text-[48px]">{vnd(Math.round(missed), lang)}</p>
+                  <p className="map-num text-[48px]">{vnd(Math.round(missed), lang)}</p>
                   <p className="text-sm">{x.vs(best.name, pct(best.rate, lang))}</p>
                 </>
               ) : (
@@ -204,10 +204,10 @@ export function Journey({
         </form>
       </section>
 
-      <p className="sv-container map-hand text-[22px]">{x.scroll}</p>
+      <p className="sv-container text-[18px] text-[var(--map-muted)]">{x.scroll}</p>
 
       <Trail labels={x.stations}>
-        <Station side="left" tag={`1 · ${x.stations[0]}`} title={x.s1.h}>
+        <Station side="left" tag={`01 · ${x.stations[0]}`} title={x.s1.h}>
           <p>{x.s1.p(pct(inflation, lang))}</p>
           <input type="range" min={1} max={30} value={years} onChange={(e) => setYears(+e.target.value)} aria-label={x.s1.years} />
           <p>
@@ -217,7 +217,7 @@ export function Journey({
           <Link href={href(lang, "/hoc/lam-phat")}>{x.s1.more} →</Link>
         </Station>
 
-        <Station side="right" tag={`2 · ${x.stations[1]}`} title={x.s2.h}>
+        <Station side="right" tag={`02 · ${x.stations[1]}`} title={x.s2.h}>
           {portfolio && fan ? (
             <>
               <p>{x.s2.p}</p>
@@ -234,7 +234,7 @@ export function Journey({
           )}
         </Station>
 
-        <Station side="left" tag={`3 · ${x.stations[2]}`} title={x.s3.h}>
+        <Station side="left" tag={`03 · ${x.stations[2]}`} title={x.s3.h}>
           <label className="map-hand block text-[20px]">
             {x.s3.goal}: <b>{vndShort(goal * 1e6, lang)}</b>
             <input type="range" min={100} max={5000} step={100} value={goal} onChange={(e) => setGoal(+e.target.value)} />
@@ -261,7 +261,7 @@ export function Journey({
           <Link href={href(lang, "/muc-tieu")}>{x.s3.more} →</Link>
         </Station>
 
-        <Station side="right" tag={`4 · ${x.stations[3]}`} title={x.s4.h}>
+        <Station side="right" tag={`04 · ${x.stations[3]}`} title={x.s4.h}>
           <p>{x.s4.p}</p>
           <input type="range" min={3} max={24} value={reserve} onChange={(e) => setReserve(+e.target.value)} aria-label={x.s4.months} />
           <div className="grid grid-cols-3 gap-2">
@@ -293,86 +293,19 @@ export function Journey({
   );
 }
 
-function Station({ side, tag, title, children }: { side: "left" | "right"; tag: string; title: string; children: React.ReactNode }) {
+function Station({ tag, title, children }: { side: "left" | "right"; tag: string; title: string; children: React.ReactNode }) {
   return (
-    <div className={`relative z-10 md:w-[46%] ${side === "right" ? "md:ml-auto" : ""}`}>
-      <div className="map-card space-y-3">
-        <p className="map-hand text-[20px] text-[var(--map-teal)]">{tag}</p>
-        <h3 className="map-title text-[30px]">{title}</h3>
-        {children}
-      </div>
+    <div className="map-card space-y-4">
+      <p className="map-hand">{tag}</p>
+      <h3 className="map-title text-[28px]">{title}</h3>
+      {children}
     </div>
   );
 }
 
-/** Stations on a dotted trail; a coin in a conical hat walks it as you scroll (wide screens). */
-function Trail({ labels, children }: { labels: string[]; children: React.ReactNode }) {
-  const box = useRef<HTMLDivElement>(null);
-  const path = useRef<SVGPathElement>(null);
-  const coin = useRef<SVGSVGElement>(null);
-
-  useEffect(() => {
-    const walk = () => {
-      const b = box.current;
-      const p = path.current;
-      const c = coin.current;
-      if (!b || !p || !c) return;
-      const r = b.getBoundingClientRect();
-      const k = Math.min(1, Math.max(0, (innerHeight * 0.55 - r.top) / r.height));
-      const L = p.getTotalLength();
-      const at = p.getPointAtLength(k * L);
-      const next = p.getPointAtLength(Math.min(L, k * L + 4));
-      c.style.left = `${(at.x / 1000) * r.width}px`;
-      c.style.top = `${(at.y / 1000) * r.height}px`;
-      c.style.transform = `scaleX(${next.x < at.x ? -1 : 1})`;
-    };
-    walk();
-    addEventListener("scroll", walk, { passive: true });
-    addEventListener("resize", walk);
-    return () => {
-      removeEventListener("scroll", walk);
-      removeEventListener("resize", walk);
-    };
-  }, []);
-
-  const spots = [
-    { left: "62%", top: "14%" },
-    { left: "18%", top: "38%" },
-    { left: "64%", top: "62%" },
-    { left: "16%", top: "86%" },
-  ];
-  const icons = ["🏘️", "⛰️", "🏔️", "⚓"];
-  return (
-    <div ref={box} className="sv-container relative space-y-16 py-10">
-      <svg className="pointer-events-none absolute inset-0 hidden h-full w-full md:block" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">
-        <path
-          ref={path}
-          d="M500 0 C 900 80, 900 200, 640 260 S 100 360, 220 500 S 900 620, 780 760 S 120 860, 300 1000"
-          fill="none"
-          className="map-trail"
-          strokeWidth="4"
-          strokeDasharray="2 14"
-          strokeLinecap="round"
-          vectorEffect="non-scaling-stroke"
-        />
-      </svg>
-      {spots.map((s, i) => (
-        <span key={labels[i]} className="pointer-events-none absolute hidden text-center md:block" style={{ left: s.left, top: s.top }} aria-hidden="true">
-          <span className="block text-[64px] leading-none">{icons[i]}</span>
-          <span className="map-label">{labels[i]}</span>
-        </span>
-      ))}
-      <svg ref={coin} viewBox="0 0 80 80" className="pointer-events-none absolute z-20 hidden h-16 w-16 md:block" style={{ marginLeft: -32, marginTop: -32 }} aria-hidden="true">
-        <path d="M8 34 L40 6 L72 34 Z" fill="#c9a24a" stroke="#3b2617" strokeWidth="3" />
-        <circle cx="40" cy="48" r="26" fill="#f2c14e" stroke="#3b2617" strokeWidth="3" />
-        <circle cx="40" cy="48" r="17" fill="none" stroke="#3b2617" strokeWidth="2" strokeDasharray="3 3" />
-        <text x="40" y="55" textAnchor="middle" fontWeight="900" fontSize="20" fill="#3b2617">
-          đ
-        </text>
-      </svg>
-      {children}
-    </div>
-  );
+/** The four parts, two per row on wide screens. */
+function Trail({ children }: { labels: string[]; children: React.ReactNode }) {
+  return <div className="sv-container grid gap-6 py-10 md:grid-cols-2">{children}</div>;
 }
 
 /** Ten-year paths of 100 VND: one series, thin lines, dashed start line. */

@@ -18,8 +18,8 @@ export function LessonScraps({ lang, lessons, showCount }: { lang: Lang; lessons
   return (
     <div className="space-y-4">
       {showCount ? (
-        <p className="map-hand text-[22px] text-[var(--map-terra)]">
-          {lang === "vi" ? `${learnt}/${lessons.length} mảnh đã nhặt` : `${learnt}/${lessons.length} pieces collected`}
+        <p className="map-hand">
+          {lang === "vi" ? `Đã học ${learnt}/${lessons.length} bài` : `${learnt}/${lessons.length} lessons done`}
         </p>
       ) : null}
       <ul className="grid gap-6 md:grid-cols-3">

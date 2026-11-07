@@ -16,10 +16,10 @@ export function PlanSteps({ lang, steps }: { lang: Lang; steps: PlanStep[] }) {
   const v = lang === "vi";
   return (
     <div className="space-y-6">
-      <p className="map-hand text-[24px] text-[var(--map-terra)]" aria-live="polite">
-        {v ? `Đã ghé ${count}/${steps.length} trạm` : `${count}/${steps.length} stops visited`}
+      <p className="map-hand" aria-live="polite">
+        {v ? `Đã mở ${count}/${steps.length} bước` : `${count}/${steps.length} steps opened`}
       </p>
-      <ol className="relative space-y-8 border-l-4 border-dotted border-[var(--map-ink)] pl-8">
+      <ol className="relative space-y-4 border-l-2 border-[var(--line)] pl-8">
         {steps.map((s, i) => {
           const visited = done.includes(s.id);
           return (
@@ -32,8 +32,8 @@ export function PlanSteps({ lang, steps }: { lang: Lang; steps: PlanStep[] }) {
               </span>
               <div className="map-card space-y-2">
                 <p className="map-hand text-[20px] text-[var(--map-teal)]">
-                  {v ? "Trạm" : "Stop"} {i + 1} · ~{s.minutes} {v ? "phút" : "min"}
-                  {visited ? (v ? " · đã ghé" : " · visited") : ""}
+                  {v ? "Bước" : "Step"} {i + 1} · ~{s.minutes} {v ? "phút" : "min"}
+                  {visited ? (v ? " · đã mở" : " · opened") : ""}
                 </p>
                 <h2 className="map-title text-[28px]">
                   <Link href={href(lang, s.path)} onClick={() => set(s.id, true)}>

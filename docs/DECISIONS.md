@@ -1386,3 +1386,38 @@ correlation for each asset class. Short class names are in `web/lib/classes.ts`.
 - Terms are used in the lessons so far; other pages can adopt them gradually.
 
 The new maths (`band80`, `gameReturns`, `playGame`, `mix2`) is in `web/lib/lessons.ts`, with tests.
+
+---
+
+## 2026-11-07 — Monochrome redesign (supersedes the treasure-map look)
+
+The owner asked for the whole app to look like Neo Financial: black, white and grey only, simple, calm and
+trustworthy. This replaces both the jade design system and the treasure-map story theme of earlier today. The page
+structure, storyline and interactions stay; only the look changes.
+
+**Tokens** (`app/globals.css`)
+- Surfaces: white and `#f4f4f4`. Ink: `#0a0a0a`. Muted text: `#5c5c5c`. Lines: `#e6e6e6`.
+- Dark mode is its own step set, not an automatic flip: background `#0a0a0a`, surface-alt `#161616`, ink `#f5f5f5`.
+- The primary action token (still named `jade`) is now black, or white in dark mode.
+- Status colours become greys too. Status and rate moves already carry icons and labels, so meaning never rests on
+  colour.
+- Buttons are pills (`--radius-md: 999px`). Cards and panels use radius 24, a light grey fill, no border and no shadow.
+- Headings are tighter: weight 800, negative letter-spacing.
+
+**Story pages** (home, `/lap-ke-hoach`, `/hoc`, lessons)
+- Removed: Fraunces, Patrick Hand, the paper texture, the dotted trail, the coin, the landmarks and emoji, rotations
+  and torn-paper cards.
+- The hero calculator is a black card with white text.
+- The four parts are a 2×2 grid of grey cards numbered 01–04.
+- Copy is plain instead of the treasure metaphor: "Tiền của bạn xứng đáng được trả nhiều hơn".
+- The `map-*` class names are kept but now draw the monochrome style.
+
+**Charts**
+- Asset-class series use a 7-step grey ramp with 2px gaps. Legends and tables were already present and stay
+  mandatory. Gov bonds and gold are close greys but never adjacent.
+- Line charts add dash patterns so series differ by more than tone.
+- In the correlation heatmap, positive cells are a solid grey fill and negative cells a diagonal hatch (texture), with
+  the value printed in every cell.
+
+**Hero rate.** The homepage hero now uses each bank's equivalent 12-month rate (end-of-term basis), so it agrees with
+the ranked table below it.

@@ -3,7 +3,6 @@ import Link from "next/link";
 
 import { JsonLd } from "@/components/Chrome";
 import { PlanSteps, type PlanStep } from "@/components/PlanSteps";
-import { mapFonts } from "@/lib/fonts";
 import type { Lang } from "@/lib/format";
 import { href, t } from "@/lib/i18n";
 import { breadcrumbs, pageMetadata } from "@/lib/seo";
@@ -13,7 +12,7 @@ const PATH = "/lap-ke-hoach";
 const TEXT = {
   vi: {
     title: "Hành trình lập kế hoạch",
-    hand: "năm trạm, theo quy trình của người tư vấn tài chính",
+    hand: "Năm bước, theo quy trình của người tư vấn tài chính.",
     intro:
       "Từ biết mình là ai đến theo dõi mỗi năm. Mọi công cụ chạy trên trình duyệt của bạn; SoiVí không lưu con số nào.",
     steps: [
@@ -33,7 +32,7 @@ const TEXT = {
   },
   en: {
     title: "The planning journey",
-    hand: "five stops, the way a financial planner works",
+    hand: "Five steps, the way a financial planner works.",
     intro: "From knowing yourself to a yearly check-up. Every tool runs in your browser; SoiVí stores nothing.",
     steps: [
       ["risk", "/ho-so-rui-ro", "Know how much risk you can take", "Nine questions about your situation and comfort; suggests a model portfolio.", "nothing", 3],
@@ -63,7 +62,7 @@ export default async function PlanHub({ params }: PageProps<"/[lang]/lap-ke-hoac
   const x = TEXT[lang];
   const steps: PlanStep[] = x.steps.map(([id, path, title, what, need, minutes]) => ({ id, path, title, what, need, minutes }));
   return (
-    <div className={`map ${mapFonts}`}>
+    <div className="map">
       <article className="sv-container space-y-10 py-14">
         <JsonLd
           data={breadcrumbs(lang, [
@@ -73,7 +72,7 @@ export default async function PlanHub({ params }: PageProps<"/[lang]/lap-ke-hoac
         />
         <header className="max-w-3xl space-y-3">
           <h1 className="map-title text-[clamp(40px,5vw,72px)]">{x.title}</h1>
-          <p className="map-hand -rotate-1 text-[26px] text-[var(--map-terra)]">{x.hand}</p>
+          <p className="text-[18px] text-[var(--map-muted)]">{x.hand}</p>
           <p>{x.intro}</p>
         </header>
         <div className="max-w-3xl">

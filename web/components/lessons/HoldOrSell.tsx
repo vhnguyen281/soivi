@@ -152,7 +152,7 @@ export function HoldOrSellLesson({ lang, asset, deposit }: { lang: Lang; asset: 
   );
 }
 
-const COLOURS = ["var(--series-2)", "var(--series-1)", "var(--series-3)"];
+const COLOURS = ["var(--series-1)", "var(--series-2)", "var(--series-3)"];
 
 /** Your path against "always hold" (and "always deposit" at the end): one axis, direct labels. */
 function GameChart({ mine, holder, saver, labels, axis }: { mine: number[]; holder: number[]; saver: number[] | null; labels: string[]; axis: string }) {
@@ -180,7 +180,7 @@ function GameChart({ mine, holder, saver, labels, axis }: { mine: number[]; hold
         </text>
       ))}
       {series.map(({ s, i }) => (
-        <path key={i} d={s.map((v, j) => `${j ? "L" : "M"}${x(j).toFixed(1)},${y(v).toFixed(1)}`).join("")} fill="none" stroke={COLOURS[i]} strokeWidth={i === 0 ? 3 : 2} strokeDasharray={i === 0 ? undefined : "6 4"} />
+        <path key={i} d={s.map((v, j) => `${j ? "L" : "M"}${x(j).toFixed(1)},${y(v).toFixed(1)}`).join("")} fill="none" stroke={COLOURS[i]} strokeWidth={i === 0 ? 3 : 2} strokeDasharray={i === 0 ? undefined : i === 1 ? "6 4" : "2 4"} />
       ))}
       {ends.map((e) => (
         <text key={e.i} x={e.x + 8} y={e.y + 4} fontSize="12" fill="var(--map-ink)">
