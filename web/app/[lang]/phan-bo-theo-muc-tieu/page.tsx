@@ -21,6 +21,7 @@ const TEXT = {
     disclaimer:
       "Công cụ học tập, không phải lời khuyên đầu tư cho cá nhân bạn. Hãy xem lại mỗi năm hoặc khi mục tiêu thay đổi.",
     quiz: "Chưa biết mức rủi ro của mình? Làm bảng hỏi hồ sơ rủi ro",
+    sheet: "Lập bảng cân đối kinh tế với tài sản, nợ và thu nhập thật của bạn",
   },
   en: {
     title: "Split your money by goal",
@@ -29,6 +30,7 @@ const TEXT = {
     none: "No model portfolios have been approved yet, so nothing can be calculated.",
     disclaimer: "A learning tool, not personal investment advice. Review it every year or when your goals change.",
     quiz: "Not sure of your risk level? Take the risk questionnaire",
+    sheet: "Build an economic balance sheet from your real assets, debts and income",
   },
 };
 
@@ -68,9 +70,14 @@ export default async function BucketsPage({ params }: PageProps<"/[lang]/phan-bo
       {mixes.length ? (
         <BucketPlanner lang={lang} mixes={mixes} inflation={inflation} initialLevel={Math.min(3, mixes.length)} />
       ) : null}
-      <p>
-        <Link href={href(lang, "/ho-so-rui-ro")}>{x.quiz}</Link>
-      </p>
+      <ul className="flex flex-wrap gap-x-6 gap-y-2">
+        <li>
+          <Link href={href(lang, "/bang-can-doi")}>{x.sheet}</Link>
+        </li>
+        <li>
+          <Link href={href(lang, "/ho-so-rui-ro")}>{x.quiz}</Link>
+        </li>
+      </ul>
     </article>
   );
 }

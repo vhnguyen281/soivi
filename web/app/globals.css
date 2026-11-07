@@ -931,3 +931,24 @@ a.sv-btn--secondary:hover {
     background: Highlight;
   }
 }
+
+/* Printing a report (balance sheet): page content only. */
+@media print {
+  body > header,
+  body > footer,
+  .no-print {
+    display: none !important;
+  }
+  .sv-panel {
+    box-shadow: none;
+    break-inside: avoid;
+  }
+  .mp-bar > span {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .mp-swatch {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}

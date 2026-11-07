@@ -1191,3 +1191,65 @@ words).
    liquidity amount and term to our own API, the same call the savings calculator makes.
 5. `web/tsconfig.json` now allows `.ts` import paths, so `lib/` modules can import each other under the Node test
    runner.
+
+---
+
+## 2026-11-07 — Economic balance sheet and goal plan (CFA private wealth, step 7)
+
+The owner asked for a page where a visitor enters their real assets, debts, income and spending to see their
+economic balance sheet, and then a plan for their medium and long-term goals. The data must never be published and
+is for reference only. Page: `/bang-can-doi`, logic in `web/lib/balanceSheet.ts`.
+
+**Where the data lives.** Only in the visitor's browser:
+- Nothing is sent to the API.
+- The visitor can opt in to keeping a copy in `localStorage` (key `soivi.balance.v1`).
+- They can download it as a JSON file and open it again later.
+- "Xoá dữ liệu" removes the stored copy.
+- An opened file is read through a strict parser: known fields only, with lengths and list sizes capped.
+
+This keeps the legal position of 2026-11-07 intact, since SoiVí stores no user profiles. Server-side storage or
+accounts still need a fresh legal review first.
+
+**Balance sheet.** Every figure is in today's money, discounted at the real government bond return from VNCMA:
+r = (1 + gov) / (1 + pi) − 1.
+
+| Side | Line |
+|---|---|
+| Assets | Financial assets and property |
+| Assets | Human capital: PV of household income to retirement, discounted at r plus a job premium |
+| Assets | PV of the state pension |
+| Obligations | Debts |
+| Obligations | PV of spending to retirement |
+| Obligations | PV of spending in retirement |
+| Obligations | PV of goals |
+
+- **Job premium.** Stable +1 pp, average +2.5 pp, volatile +4 pp, following the CFA treatment of income risk.
+  Survival probabilities are left out, which overstates both sides; the page says so.
+- **Net worth below zero.** The page shows two ways to close the gap:
+  - the monthly saving to retirement that closes it, discounted at r;
+  - the extra working years that close it, searched up to 15.
+- **Surplus held mostly in property.** If more than half of a positive net worth sits in the home, investment
+  property or a business stake, a note says it can only be used by selling.
+- **Human capital note.** The page reports human capital's share of total assets, then adds advice:
+  - Stable, bond-like income: the financial portfolio can lean towards shares, within the chosen risk level.
+  - Volatile, equity-like income: keep the financial portfolio more cautious and hold a larger reserve.
+
+**Health ratios** (rules of thumb, shown with their thresholds):
+- emergency fund of at least 6 months of spending, deposits only;
+- debt to financial assets below 50%;
+- debt payments to income below 40%;
+- savings rate of at least 20%.
+
+**Goal plan.** It reuses Phase D's `allocate()`:
+- Only liquid assets fund the plan: deposits, bonds, shares, gold and foreign currency.
+- Retirement is added automatically as an essential goal. Its size is the value at retirement of spending above the
+  pension, over the retirement years, discounted at r.
+- Any goal not covered by current assets gets a monthly saving that reaches it with the goal's confidence (90% / 60%).
+  The saving rises with inflation and comes from the same simulations.
+- The page then compares the total with the monthly surplus (income − spending − debt payments).
+
+**Report.** "In hoặc lưu PDF" prints the result only (print CSS hides the header, footer and form). It carries the
+date, the assumptions with the VNCMA version, and the disclaimer.
+
+**Chart.** Assets and obligations are drawn as two stacked bars on one scale. They use the seven categorical slots in
+fixed order (assets 1–3, obligations 4–7), with a table beside them that carries the same values and swatches.
