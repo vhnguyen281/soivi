@@ -323,7 +323,7 @@ function Fan({ paths, label }: { paths: number[][]; label: string }) {
           key={i}
           d={p.map((v, j) => `${j ? "L" : "M"}${x(j).toFixed(1)},${y(v).toFixed(1)}`).join("")}
           fill="none"
-          stroke="var(--map-teal)"
+          stroke="var(--series-1)"
           strokeOpacity={0.4}
           strokeWidth={1.5}
         />

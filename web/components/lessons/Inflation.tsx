@@ -51,7 +51,7 @@ const TEXT = {
   },
 };
 
-const COLOURS = ["var(--series-3)", "var(--series-2)", "var(--series-1)"];
+const COLOURS = ["var(--series-2)", "var(--series-3)", "var(--series-1)"];
 const DASH = ["2 4", "6 4", undefined];
 
 export function InflationLesson({ lang, inflation, demand, deposit }: { lang: Lang; inflation: number; demand: Rate; deposit: Rate }) {

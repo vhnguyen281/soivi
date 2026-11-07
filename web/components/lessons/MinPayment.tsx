@@ -137,7 +137,7 @@ export function MinPaymentLesson({ lang, cards }: { lang: Lang; cards: CardApr[]
             <span className="mp-swatch" style={{ background: "var(--series-1)" }} aria-hidden="true" /> {x.principal}
           </li>
           <li>
-            <span className="mp-swatch" style={{ background: "var(--series-4)" }} aria-hidden="true" /> {x.int}
+            <span className="mp-swatch" style={{ background: "var(--series-2)" }} aria-hidden="true" /> {x.int}
           </li>
         </ul>
         <div className="space-y-3">
@@ -153,7 +153,7 @@ export function MinPaymentLesson({ lang, cards }: { lang: Lang; cards: CardApr[]
                   aria-label={`${label}: ${x.principal} ${vnd(b, lang)}, ${x.int} ${vnd(Math.round(r.interest), lang)}`}
                 >
                   <span style={{ width: `${(100 * b) / most}%`, background: "var(--series-1)" }} />
-                  <span style={{ width: `${(100 * r.interest) / most}%`, background: "var(--series-4)" }} />
+                  <span style={{ width: `${(100 * r.interest) / most}%`, background: "var(--series-2)" }} />
                 </div>
               </div>
             ),

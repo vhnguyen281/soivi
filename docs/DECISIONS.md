@@ -1421,3 +1421,28 @@ structure, storyline and interactions stay; only the look changes.
 
 **Hero rate.** The homepage hero now uses each bank's equivalent 12-month rate (end-of-term basis), so it agrees with
 the ranked table below it.
+
+---
+
+## 2026-11-07 — Charts keep an elegant colour palette
+
+The owner asked that charts may keep colour while the interface stays black, white and grey. Charts now use a muted
+categorical set. Each mode has its own steps, all validated with the dataviz checker: lightness band, chroma floor,
+adjacent-pair colour-blind separation and the normal-vision floor.
+
+| Slot | Colour | Light | Dark |
+|---|---|---|---|
+| 1 | navy | `#2f5d9e` | `#4f7fcc` |
+| 2 | terracotta | `#c8643b` | `#d2703f` |
+| 3 | teal | `#16937a` | `#1fa283` |
+| 4 | ochre | `#c99a1e` | `#b88b1f` |
+| 5 | plum | `#8c4f8f` | `#a56ca8` |
+| 6 | olive | `#5f7f2f` | `#77983b` |
+| 7 | cornflower | `#4f6fd6` | `#6c84de` |
+
+- Ochre is under 3:1 against white. That is allowed only because every chart using it has a legend and a table.
+- The correlation heatmap is a diverging scale, navy (+) and terracotta (−), around the grey surface. The hatch from
+  the monochrome version is removed.
+- Single-series charts use slot 1: goal bars, fans, rate history, the monitoring trend and the frontier curve.
+- Highlights use slot 2.
+- Interface elements (buttons, cards, text, links) stay monochrome.

@@ -359,13 +359,13 @@ function Trend({ lang, history, title }: { lang: Lang; history: Snapshot[]; titl
         <text x={W - pad.r} y={H - 8} textAnchor="end" fontSize="12" fill="var(--ink-muted)">
           {showDate(history[history.length - 1].date)}
         </text>
-        <path d={path} fill="none" stroke="var(--jade)" strokeWidth="2" strokeLinejoin="round" />
+        <path d={path} fill="none" stroke="var(--series-1)" strokeWidth="2" strokeLinejoin="round" />
         {history.map((h) => (
           <g key={h.date}>
             <circle cx={px(h.date)} cy={py(h.financialNet)} r="12" fill="transparent">
               <title>{`${showDate(h.date)}: ${vnd(Math.round(h.financialNet), lang)}`}</title>
             </circle>
-            <circle cx={px(h.date)} cy={py(h.financialNet)} r="4" fill="var(--jade)" stroke="var(--surface)" strokeWidth="2" pointerEvents="none" />
+            <circle cx={px(h.date)} cy={py(h.financialNet)} r="4" fill="var(--series-1)" stroke="var(--surface)" strokeWidth="2" pointerEvents="none" />
           </g>
         ))}
       </svg>

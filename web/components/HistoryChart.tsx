@@ -84,7 +84,7 @@ export function HistoryChart({
             <text x={box.width} y={box.height + 18} textAnchor="end" fontSize="11" fill="var(--ink-muted)">
               {date(iso(tMax), lang)}
             </text>
-            <polyline points={line} fill="none" stroke="var(--jade)" strokeWidth={2.5} />
+            <polyline points={line} fill="none" stroke="var(--series-1)" strokeWidth={2.5} />
           </g>
         </svg>
         <figcaption id={`${id}-cap`} className="t-caption text-muted">

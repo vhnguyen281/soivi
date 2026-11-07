@@ -130,7 +130,7 @@ function Ranges({ classes, selected, onPick, lang }: { classes: ClassStat[]; sel
               <span className="absolute top-0 h-full w-px bg-[var(--map-ink)] opacity-50" style={{ left: x(0) }} />
               <span
                 className="absolute top-1/2 h-2.5 -translate-y-1/2 rounded"
-                style={{ left: x(a), width: `calc(${x(b)} - ${x(a)})`, background: on ? "var(--map-terra-bright)" : "var(--map-teal)", opacity: on ? 1 : 0.55 }}
+                style={{ left: x(a), width: `calc(${x(b)} - ${x(a)})`, background: on ? "var(--series-2)" : "var(--series-1)", opacity: on ? 1 : 0.5 }}
               />
               <span
                 className="absolute top-1/2 h-3.5 w-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[var(--map-card)] bg-[var(--map-ink)]"
@@ -158,8 +158,8 @@ function Band({ lo, hi, wide, mid, lang }: { lo: number; hi: number; wide: [numb
   const x = (v: number) => `${((v - min) / (max - min)) * 100}%`;
   return (
     <div className="relative h-14" aria-hidden="true">
-      <span className="absolute top-2 h-3 rounded opacity-30" style={{ left: x(wide[0]), width: `calc(${x(wide[1])} - ${x(wide[0])})`, background: "var(--map-teal)" }} />
-      <span className="absolute top-2 h-3 rounded transition-all" style={{ left: x(lo), width: `calc(${x(hi)} - ${x(lo)})`, background: "var(--map-terra-bright)" }} />
+      <span className="absolute top-2 h-3 rounded opacity-30" style={{ left: x(wide[0]), width: `calc(${x(wide[1])} - ${x(wide[0])})`, background: "var(--series-1)" }} />
+      <span className="absolute top-2 h-3 rounded transition-all" style={{ left: x(lo), width: `calc(${x(hi)} - ${x(lo)})`, background: "var(--series-2)" }} />
       <span className="absolute top-0 h-7 w-0.5 bg-[var(--map-ink)]" style={{ left: x(mid) }} />
       <span className="absolute top-8 text-xs" style={{ left: x(0) }}>
         0%
@@ -181,7 +181,7 @@ function Paths({ paths, label }: { paths: number[][]; label: string }) {
     <svg viewBox={`0 0 ${W} ${H}`} className="h-52 w-full" role="img" aria-label={label}>
       <line x1={10} x2={W - 10} y1={py(100)} y2={py(100)} stroke="var(--map-ink)" strokeDasharray="4 4" strokeOpacity={0.6} />
       {paths.map((p, i) => (
-        <path key={i} d={p.map((v, j) => `${j ? "L" : "M"}${px(j).toFixed(1)},${py(v).toFixed(1)}`).join("")} fill="none" stroke="var(--map-teal)" strokeOpacity={0.4} strokeWidth={1.5} />
+        <path key={i} d={p.map((v, j) => `${j ? "L" : "M"}${px(j).toFixed(1)},${py(v).toFixed(1)}`).join("")} fill="none" stroke="var(--series-1)" strokeOpacity={0.4} strokeWidth={1.5} />
       ))}
     </svg>
   );

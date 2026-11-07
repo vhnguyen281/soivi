@@ -172,7 +172,7 @@ function Frontier({ a, b, rho, w, labels }: { a: ClassStat; b: ClassStat; rho: n
         {labels[1]}
       </text>
       <line x1={x(b.vol)} y1={y(b.ret)} x2={x(a.vol)} y2={y(a.ret)} stroke="var(--map-ink)" strokeDasharray="5 5" strokeOpacity={0.6} />
-      <path d={pts.map((p, i) => `${i ? "L" : "M"}${x(p.vol).toFixed(1)},${y(p.ret).toFixed(1)}`).join("")} fill="none" stroke="var(--map-teal)" strokeWidth={2.5} />
+      <path d={pts.map((p, i) => `${i ? "L" : "M"}${x(p.vol).toFixed(1)},${y(p.ret).toFixed(1)}`).join("")} fill="none" stroke="var(--series-1)" strokeWidth={2.5} />
       {[a, b].map((c) => (
         <g key={c.id}>
           <circle cx={x(c.vol)} cy={y(c.ret)} r={5} fill="var(--map-ink)" />
@@ -181,7 +181,7 @@ function Frontier({ a, b, rho, w, labels }: { a: ClassStat; b: ClassStat; rho: n
           </text>
         </g>
       ))}
-      <circle cx={x(cur.vol)} cy={y(cur.ret)} r={8} fill="var(--map-terra-bright)" stroke="var(--map-card)" strokeWidth={2} />
+      <circle cx={x(cur.vol)} cy={y(cur.ret)} r={8} fill="var(--series-2)" stroke="var(--map-card)" strokeWidth={2} />
     </svg>
   );
 }
