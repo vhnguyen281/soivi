@@ -53,3 +53,16 @@ def test_a_second_monthly_run_with_the_same_inputs_adds_nothing(db: Session) -> 
     assert db.scalar(select(func.count()).select_from(CmaRun)) == 1
     forced = create_run(db, parse_config(DOC), "job")  # `market compute` always stores
     assert forced.id != first.id
+
+
+def test_message_reports_the_fund_stats_draft() -> None:
+    report = MonthlyReport(
+        fund_run_id=3, fund_run_is_new=True, fund_as_of="2026-11-30", fund_flagged=["VCBF", "PBIF"]
+    )
+    text = message(report, "http://review")
+    assert "Fund stats run 3 (new draft), data to 2026-11-30" in text
+    assert "VCBF, PBIF" in text and "http://review/funds/runs/3" in text
+    same = message(MonthlyReport(fund_run_id=3, fund_as_of="2026-11-30"), "http://review")
+    assert "no change since" in same and "/funds/runs/" not in same
+    failed = MonthlyReport(fund_error="no month end")
+    assert not failed.ok and "Fund stats failed: no month end" in message(failed, "x")

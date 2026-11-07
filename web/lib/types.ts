@@ -233,6 +233,9 @@ export type FundRow = {
   ticker: string;
   group: "equity_fund" | "bond_fund" | "balanced_fund" | "etf";
   manager: string;
+  name?: string;
+  management_fee?: number | null;
+  inception?: string | null;
   first: string;
   returns: Record<string, number | null>;
   volatility: number | null;

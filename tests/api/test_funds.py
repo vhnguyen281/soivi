@@ -1,6 +1,7 @@
 """GET /funds/stats: approved group statistics only; per-fund rows never leave the review app."""
 
 import datetime as dt
+from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
@@ -80,3 +81,28 @@ def test_runs_and_releases_are_append_only(db: Session) -> None:
     db.flush()
     with pytest.raises(DBAPIError):
         db.execute(text("UPDATE fund_stats_release SET approved_by = 'x'"))
+
+
+def test_reuse_same_returns_the_latest_run_when_nothing_changed(
+    db: Session, monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    import pandas as pd
+
+    import core.funds.release as rel
+
+    idx = pd.date_range("2020-10-31", "2026-10-31", freq="ME")
+    levels = {"fund_nav_aaa": pd.Series(range(100, 100 + len(idx)), index=idx, dtype=float)}
+    monkeypatch.setattr(
+        rel,
+        "load_universe",
+        lambda: [{"ticker": "AAA", "code": "fund_nav_aaa", "group": "equity_fund", "manager": "X"}],
+    )
+    monkeypatch.setattr(rel, "load_observations", lambda session, codes: levels)
+    monkeypatch.setattr(rel, "benchmarks", lambda session: {})
+    monkeypatch.setattr(
+        rel, "input_manifest", lambda session, codes: {"fund_nav_aaa": {"sha256": "x"}}
+    )
+    first = rel.create_run(db, "QA", reuse_same=True)
+    again = rel.create_run(db, "QA", reuse_same=True)
+    assert again.id == first.id
+    assert rel.create_run(db, "QA").id != first.id

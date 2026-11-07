@@ -43,11 +43,16 @@ class MonthlyReport:
     headline: dict[str, float] = field(default_factory=dict)
     failed_checks: list[str] = field(default_factory=list)
     compute_error: str | None = None
+    fund_run_id: int | None = None
+    fund_run_is_new: bool = False
+    fund_as_of: str | None = None
+    fund_flagged: list[str] = field(default_factory=list)
+    fund_error: str | None = None
     deadlines: list[str] = field(default_factory=list)
 
     @property
     def ok(self) -> bool:
-        return not self.failed and self.compute_error is None
+        return not self.failed and self.compute_error is None and self.fund_error is None
 
 
 def due_deadlines(
@@ -80,5 +85,14 @@ def message(report: MonthlyReport, review_url: str) -> str:
         lines += [f"  ⚠ {e(c)}" for c in report.failed_checks]
         if report.run_is_new:
             lines.append(f"Review and approve: {e(review_url)}/vncma/runs/{report.run_id}")
+    if report.fund_error:
+        lines.append(f"Fund stats failed: {e(report.fund_error)}")
+    elif report.fund_run_id is not None:
+        state = "new draft" if report.fund_run_is_new else "no change since"
+        lines.append(f"Fund stats run {report.fund_run_id} ({state}), data to {report.fund_as_of}")
+        if report.fund_flagged:
+            lines.append(f"  ⚠ data flagged: {e(', '.join(report.fund_flagged))}")
+        if report.fund_run_is_new:
+            lines.append(f"Review and approve: {e(review_url)}/funds/runs/{report.fund_run_id}")
     lines += [f"⏰ {e(d)}" for d in report.deadlines]
     return "\n".join(lines)

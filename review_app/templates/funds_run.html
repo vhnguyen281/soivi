@@ -32,10 +32,10 @@
 
 <h2>Từng quỹ (công bố cùng bản duyệt; nguồn vnstock, chưa đối chiếu với công ty quản lý quỹ)</h2>
 <table class="grid">
-  <thead><tr><th>Mã</th><th>Nhóm</th><th>Công ty quản lý</th><th>Từ</th><th class="num">1 năm</th><th class="num">3 năm</th><th class="num">5 năm</th><th class="num">Biến động</th><th class="num">Sụt giảm tối đa</th><th>Kiểm tra dữ liệu</th></tr></thead>
+  <thead><tr><th>Mã</th><th>Tên quỹ</th><th>Nhóm</th><th>Công ty quản lý</th><th class="num">Phí QL</th><th>Từ</th><th class="num">1 năm</th><th class="num">3 năm</th><th class="num">5 năm</th><th class="num">Biến động</th><th class="num">Sụt giảm tối đa</th><th>Kiểm tra dữ liệu</th></tr></thead>
   <tbody>
   {% for f in doc.funds %}
-  <tr><td>{{ f.ticker }}</td><td>{{ view.groups_vi[f.group] }}</td><td>{{ f.manager }}</td><td>{{ f.first }}</td>
+  <tr><td>{{ f.ticker }}</td><td>{{ f.name or "–" }}</td><td>{{ view.groups_vi[f.group] }}</td><td>{{ f.manager }}</td><td class="num">{{ pct(f.management_fee) }}</td><td>{{ f.first }}</td>
     <td class="num">{{ pct(f.returns["1"]) }}</td><td class="num">{{ pct(f.returns["3"]) }}</td><td class="num">{{ pct(f.returns["5"]) }}</td>
     <td class="num">{{ pct(f.volatility) }}</td><td class="num">{{ pct(f.max_drawdown) }}</td>
     <td>{% if f.flag %}<span class="status">Bất thường</span> tháng {{ f.flag.month }}: {{ "%+.1f"|format(f.flag.move) }}% (ngưỡng {{ f.flag.limit }}%){% else %}<span class="muted">ổn</span>{% endif %}</td></tr>

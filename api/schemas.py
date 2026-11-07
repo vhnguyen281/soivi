@@ -368,6 +368,9 @@ class FundRow(Model):
     ticker: str
     group: str
     manager: str
+    name: str = ""
+    management_fee: float | None = None  # percent a year, as listed by the source
+    inception: str | None = None
     first: str
     returns: dict[str, float | None]
     volatility: float | None

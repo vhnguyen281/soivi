@@ -439,11 +439,33 @@ def _monthly(args: argparse.Namespace, client_factory: Callable[[], MarketClient
             report.failed_checks = [c for c in run.output["checks"] if c.startswith("FAIL")]
     except (ConfigError, ValueError) as exc:  # BlockError is a ValueError
         report.compute_error = str(exc)[:500]
+    _monthly_funds(report, args.by)
     text = message(report, args.review_url)
     print(text)
     with SessionLocal() as session, session.begin():
         notify(session, make_notifier(get_settings()), "vncma_monthly", text)
     return 0 if report.ok else 1
+
+
+def _monthly_funds(report: Any, by: str) -> None:
+    """Fund statistics draft for the monthly job (the fund series were ingested above)."""
+    from sqlalchemy import select
+
+    from core.db import SessionLocal
+    from core.funds.release import FundStatsError, create_run
+    from core.models import FundStatsRun
+
+    try:
+        with SessionLocal() as session, session.begin():
+            before = session.scalar(
+                select(FundStatsRun.id).order_by(FundStatsRun.id.desc()).limit(1)
+            )
+            run = create_run(session, by, reuse_same=True)
+            report.fund_run_id, report.fund_as_of = run.id, str(run.as_of)
+            report.fund_run_is_new = run.id != before
+            report.fund_flagged = [f["ticker"] for f in run.payload["funds"] if f.get("flag")]
+    except (FundStatsError, ValueError) as exc:
+        report.fund_error = str(exc)[:500]
 
 
 def _latest_run_id_query() -> Any:

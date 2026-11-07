@@ -57,7 +57,9 @@ def public(payload: dict[str, Any]) -> dict[str, Any]:
     return payload
 
 
-def create_run(session: Session, created_by: str) -> FundStatsRun:
+def create_run(session: Session, created_by: str, *, reuse_same: bool = False) -> FundStatsRun:
+    """Store a draft run. With reuse_same, the latest run is returned instead when its inputs
+    (NAV observations and the universe file) and code version are unchanged."""
     if not created_by.strip():
         raise FundStatsError("a name is required (--by)")
     universe = load_universe()
@@ -74,12 +76,17 @@ def create_run(session: Session, created_by: str) -> FundStatsRun:
     payload = to_json(compute(universe, levels, bench, as_of))
     manifest = input_manifest(session, sorted(levels))
     inputs_sha = hashlib.sha256(
-        json.dumps(manifest, sort_keys=True, default=str).encode()
+        json.dumps({"series": manifest, "universe": universe}, sort_keys=True, default=str).encode()
     ).hexdigest()
+    version = code_version()
+    if reuse_same:
+        latest = session.scalar(select(FundStatsRun).order_by(FundStatsRun.id.desc()).limit(1))
+        if latest and latest.inputs_sha256 == inputs_sha and latest.code_version == version:
+            return latest
     run = FundStatsRun(
         created_by=created_by.strip(),
         as_of=as_of.date(),
-        code_version=code_version(),
+        code_version=version,
         inputs_sha256=inputs_sha,
         inputs=to_json(manifest),
         payload=payload,

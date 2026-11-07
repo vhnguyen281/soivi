@@ -90,6 +90,35 @@ def _records(frame: Any) -> list[dict[str, Any]]:
     return [dict(r) for r in frame.to_dict("records")]
 
 
+def _details(client: MarketClient, kind: str, pause: float) -> dict[str, dict[str, Any]]:
+    """Name, management fee and inception date by ticker from vnstock's DigiInvest source
+    (CafeF leaves them empty). Missing details are fine: the fund keeps its ticker only."""
+    try:
+        rows = _records(
+            client.call(
+                [
+                    ("Reference", (), {}),
+                    ("fund", None, {}),
+                    ("list", (kind,), {"source": "digiinvest"}),
+                ]
+            )
+        )
+    except MarketDataError:
+        return {}
+    finally:
+        time.sleep(pause)
+    out: dict[str, dict[str, Any]] = {}
+    for r in rows:
+        fee = r.get("management_fee")
+        start = r.get("inception_date")
+        out[str(r["ticker"]).strip().upper()] = {
+            "name": str(r.get("organ_name") or "").strip(),
+            "management_fee": None if fee is None or fee != fee else float(fee),
+            "inception": None if start is None or start != start else str(start)[:10],
+        }
+    return out
+
+
 def build(
     client: MarketClient, existing: Sequence[str], pause: float = 3.0
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
@@ -103,6 +132,8 @@ def build(
         )
         if not rows:
             raise MarketDataError(f"vnstock returned no {kind}")
+        time.sleep(pause)
+        details = _details(client, kind, pause)
         for r in rows:
             ticker = str(r["ticker"]).strip().upper()
             code = series_code(ticker)
@@ -112,6 +143,7 @@ def build(
                     "code": code,
                     "group": kind,
                     "manager": manager_short(str(r.get("organ_short_name") or "")),
+                    **details.get(ticker, {}),
                 }
             )
             if code not in known:

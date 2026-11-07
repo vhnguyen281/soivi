@@ -1632,3 +1632,27 @@ manager, first month, 1/3/5-year returns, volatility, drawdown, flag). `GET /fun
   - The dataviz checker showed no four colours from the palette that can all be told apart pairwise in both modes,
     so groups are faceted rather than coloured.
 - A sortable table with a "beat or lagged the benchmark" badge.
+
+---
+
+## 2026-11-07 — Fund names, fees and the monthly fund statistics draft
+
+**Names and fees.**
+- CafeF (vnstock's default fund source) leaves fund names and management fees empty.
+- `fund-series` now merges vnstock's DigiInvest list by ticker: full name, management fee and inception date.
+- DigiInvest covers a different subset (33 funds; 18 overlap with CafeF's 43). Funds without a match keep their code
+  and manager only.
+- The fee is shown as listed by the source and labelled the same way as the NAVs (aggregated, not checked with the
+  manager).
+- The table can be sorted by fee, and search also matches the fund name.
+
+**Monthly job.**
+- `python -m pipeline market monthly` (the Mac's launchd job, day 3 at 09:00) already ingests the fund series,
+  because they are active market series.
+- It now also calls `create_run(..., reuse_same=True)` for the fund statistics. A new draft is stored only when the
+  NAV observations, the universe file or the code version changed.
+- The Telegram/log message reports the run, whether it is new, the flagged funds, and the review link
+  `/funds/runs/<id>`.
+- A failure there makes the job report not-OK.
+
+**Still manual.** New funds appear only after re-running `fund-series`, then `make seed`, then ingest.

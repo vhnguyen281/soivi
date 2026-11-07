@@ -19,7 +19,7 @@ const TEXT = {
     title: "So sánh từng quỹ",
     groups: { equity_fund: "Quỹ cổ phiếu", etf: "ETF & quỹ niêm yết", balanced_fund: "Quỹ cân bằng", bond_fund: "Quỹ trái phiếu" } as Record<Group, string>,
     all: "Tất cả",
-    search: "Tìm mã quỹ hoặc công ty",
+    search: "Tìm mã, tên quỹ hoặc công ty",
     scatter: "Rủi ro và lợi nhuận 3 năm",
     scatterNote: "Mỗi chấm là một quỹ. Càng lên cao lợi nhuận càng lớn; càng sang phải dao động càng mạnh.",
     axisX: "Biến động mỗi năm (36 tháng) →",
@@ -28,7 +28,7 @@ const TEXT = {
     noPoint: (n: number) => `${n} quỹ chưa đủ 3 năm dữ liệu nên không có trên biểu đồ.`,
     legendMine: "Quỹ trong nhóm",
     legendOthers: "Quỹ nhóm khác",
-    cols: { ticker: "Quỹ", group: "Nhóm", r1: "1 năm", r3: "3 năm", r5: "5 năm", vol: "Biến động", mdd: "Sụt giảm lớn nhất", beat: "So với mốc (3 năm)" },
+    cols: { ticker: "Quỹ", group: "Nhóm", fee: "Phí quản lý", r1: "1 năm", r3: "3 năm", r5: "5 năm", vol: "Biến động", mdd: "Sụt giảm lớn nhất", beat: "So với mốc (3 năm)" },
     beat: "Thắng mốc",
     lag: "Thua mốc",
     since: (d: string) => `từ ${d}`,
@@ -41,7 +41,7 @@ const TEXT = {
     title: "Fund by fund",
     groups: { equity_fund: "Equity funds", etf: "ETFs & listed funds", balanced_fund: "Balanced funds", bond_fund: "Bond funds" } as Record<Group, string>,
     all: "All",
-    search: "Search a fund code or manager",
+    search: "Search a code, fund name or manager",
     scatter: "Risk and 3-year return",
     scatterNote: "Each dot is a fund. Higher means more return; further right means bigger swings.",
     axisX: "Volatility a year (36 months) →",
@@ -50,7 +50,7 @@ const TEXT = {
     noPoint: (n: number) => `${n} funds have less than 3 years of data and are not plotted.`,
     legendMine: "Funds in the group",
     legendOthers: "Other funds",
-    cols: { ticker: "Fund", group: "Group", r1: "1 yr", r3: "3 yr", r5: "5 yr", vol: "Volatility", mdd: "Worst drawdown", beat: "Vs benchmark (3 yr)" },
+    cols: { ticker: "Fund", group: "Group", fee: "Management fee", r1: "1 yr", r3: "3 yr", r5: "5 yr", vol: "Volatility", mdd: "Worst drawdown", beat: "Vs benchmark (3 yr)" },
     beat: "Beat",
     lag: "Lagged",
     since: (d: string) => `since ${d}`,
@@ -61,7 +61,7 @@ const TEXT = {
   },
 };
 
-type SortKey = "ticker" | "r1" | "r3" | "r5" | "vol" | "mdd";
+type SortKey = "ticker" | "fee" | "r1" | "r3" | "r5" | "vol" | "mdd";
 
 export function FundCompare({ lang, stats }: { lang: Lang; stats: FundStats }) {
   const x = TEXT[lang];
@@ -75,9 +75,17 @@ export function FundCompare({ lang, stats }: { lang: Lang; stats: FundStats }) {
   const rows = useMemo(() => {
     const q = query.trim().toLowerCase();
     const value = (f: FundRow): number | string | null =>
-      sort.key === "ticker" ? f.ticker : sort.key === "vol" ? f.volatility : sort.key === "mdd" ? f.max_drawdown : f.returns[sort.key.slice(1)];
+      sort.key === "ticker"
+        ? f.ticker
+        : sort.key === "fee"
+          ? (f.management_fee ?? null)
+          : sort.key === "vol"
+            ? f.volatility
+            : sort.key === "mdd"
+              ? f.max_drawdown
+              : f.returns[sort.key.slice(1)];
     return stats.funds
-      .filter((f) => (group === "all" || f.group === group) && (!q || f.ticker.toLowerCase().includes(q) || f.manager.toLowerCase().includes(q)))
+      .filter((f) => (group === "all" || f.group === group) && (!q || [f.ticker, f.manager, f.name ?? ""].some((t) => t.toLowerCase().includes(q))))
       .sort((a, b) => {
         const va = value(a);
         const vb = value(b);
@@ -133,6 +141,7 @@ export function FundCompare({ lang, stats }: { lang: Lang; stats: FundStats }) {
               <tr>
                 {header("ticker", x.cols.ticker, false)}
                 <th scope="col">{x.cols.group}</th>
+                {header("fee", x.cols.fee)}
                 {header("r1", x.cols.r1)}
                 {header("r3", x.cols.r3)}
                 {header("r5", x.cols.r5)}
@@ -150,11 +159,13 @@ export function FundCompare({ lang, stats }: { lang: Lang; stats: FundStats }) {
                   <tr key={f.ticker}>
                     <th scope="row">
                       {f.ticker}
+                      {f.name ? <span className="sv-sub font-normal">{f.name}</span> : null}
                       <span className="sv-sub">
-                        {f.manager || "—"} · {x.since(f.first)}
+                        {f.manager || "—"} · {x.since(f.inception ? f.inception.slice(0, 7) : f.first)}
                       </span>
                     </th>
                     <td className="t-small">{x.groups[f.group]}</td>
+                    <td className="sv-num">{one(f.management_fee ?? null)}</td>
                     {f.flag ? (
                       <td colSpan={6} className="t-small text-muted">
                         ⚠ {x.flagged(f.flag.month, `${f.flag.move > 0 ? "+" : ""}${one(f.flag.move)}`)}
@@ -316,7 +327,8 @@ function Panel({
             }}
           >
             <p className="font-bold">{hover.ticker}</p>
-            {hover.manager ? <p className="opacity-80">{hover.manager}</p> : null}
+            {hover.name ? <p className="opacity-90">{hover.name}</p> : null}
+            {hover.manager ? <p className="opacity-70">{hover.manager}</p> : null}
             <p className="tabular-nums">
               {x.cols.r3}: {one(hover.returns["3"])} · {x.cols.vol}: {one(hover.volatility)}
             </p>
