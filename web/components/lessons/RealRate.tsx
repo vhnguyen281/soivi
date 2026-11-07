@@ -5,6 +5,7 @@ import { useState } from "react";
 import { pct, vnd, type Lang } from "@/lib/format";
 import { earlyWithdrawal } from "@/lib/lessons";
 
+import { Term } from "../Term";
 import { Quiz, Step } from "./Parts";
 
 export type Offer = { bank: string; product: string; channel: string; payment: string; rate: number; equivalent: number; source: string | null };
@@ -106,7 +107,9 @@ export function RealRateLesson({
       </label>
 
       <Step n={1} title={x.s1}>
-        <p>{x.p1}</p>
+        <p>
+          {x.p1} <Term id="lai-quy-doi" lang={lang} />
+        </p>
         <div className="sv-table-wrap" role="region" aria-label={x.s1} tabIndex={0}>
           <table className="sv-table min-w-[40rem]">
             <thead>
@@ -136,7 +139,9 @@ export function RealRateLesson({
       </Step>
 
       <Step n={2} title={x.s2}>
-        <p>{x.p2}</p>
+        <p>
+          {x.p2} <Term id="khong-ky-han" lang={lang} />
+        </p>
         <label className="map-hand block text-[20px]">
           {x.amount}
           <input className="map-input" inputMode="numeric" value={nf(amount)} onChange={(e) => setAmount(Number(e.target.value.replace(/\D/g, "").slice(0, 13)) || 0)} />

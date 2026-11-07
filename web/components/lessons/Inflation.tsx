@@ -5,6 +5,7 @@ import { useState } from "react";
 import { pct, vndShort, type Lang } from "@/lib/format";
 import { doublingYears, realValue } from "@/lib/lessons";
 
+import { Term } from "../Term";
 import { Quiz, Step } from "./Parts";
 
 type Rate = { bank: string; rate: number };
@@ -100,6 +101,9 @@ export function InflationLesson({ lang, inflation, demand, deposit }: { lang: La
 
       <Step n={3} title={x.s3}>
         <Quiz lang={lang} question={x.q} options={x.opts} answer={1} why={x.why} />
+        <p className="text-sm">
+          <Term id="lai-thuc" lang={lang} /> · <Term id="lam-phat" lang={lang} />
+        </p>
       </Step>
       <p className="text-xs text-[var(--map-muted)]">{x.source}</p>
     </div>

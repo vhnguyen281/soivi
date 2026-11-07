@@ -3,11 +3,15 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { JsonLd } from "@/components/Chrome";
+import { DiversifyLesson } from "@/components/lessons/Diversify";
+import { HoldOrSellLesson } from "@/components/lessons/HoldOrSell";
 import { InflationLesson } from "@/components/lessons/Inflation";
 import { MinPaymentLesson, type CardApr } from "@/components/lessons/MinPayment";
 import { LessonEnd } from "@/components/lessons/Parts";
 import { RealRateLesson, type Demand, type Offer } from "@/components/lessons/RealRate";
+import { VolatilityLesson } from "@/components/lessons/Volatility";
 import { getCard, getCards, getRank, getRates, getVncma } from "@/lib/api";
+import { CLASS_NAMES, type ClassStat } from "@/lib/classes";
 import { mapFonts } from "@/lib/fonts";
 import type { Lang } from "@/lib/format";
 import { href, t } from "@/lib/i18n";
@@ -15,8 +19,22 @@ import { LESSONS, lessonBySlug } from "@/lib/learn";
 import { breadcrumbs, pageMetadata } from "@/lib/seo";
 
 const TOOL = {
-  vi: { "lam-phat": "So sánh lãi suất tiết kiệm", "lai-thuc-nhan": "So sánh lãi suất theo số tiền và kỳ hạn của bạn", "tra-toi-thieu": "Tìm thẻ phù hợp cách bạn chi tiêu" },
-  en: { "lam-phat": "Compare savings rates", "lai-thuc-nhan": "Compare rates for your amount and term", "tra-toi-thieu": "Find a card that fits how you spend" },
+  vi: {
+    "lam-phat": "So sánh lãi suất tiết kiệm",
+    "lai-thuc-nhan": "So sánh lãi suất theo số tiền và kỳ hạn của bạn",
+    "tra-toi-thieu": "Tìm thẻ phù hợp cách bạn chi tiêu",
+    "bien-dong": "Xem khả năng đạt mục tiêu của bạn với từng danh mục",
+    "giu-hay-ban": "Làm bảng hỏi hồ sơ rủi ro",
+    "da-dang-hoa": "Xem 5 danh mục mẫu đã đa dạng hoá",
+  },
+  en: {
+    "lam-phat": "Compare savings rates",
+    "lai-thuc-nhan": "Compare rates for your amount and term",
+    "tra-toi-thieu": "Find a card that fits how you spend",
+    "bien-dong": "Check your chance of reaching a goal with each portfolio",
+    "giu-hay-ban": "Take the risk questionnaire",
+    "da-dang-hoa": "See the five diversified model portfolios",
+  },
 } as Record<Lang, Record<string, string>>;
 
 export function generateStaticParams() {
@@ -91,6 +109,18 @@ async function lessonBody(slug: string, lang: Lang) {
     }
     cards.sort((a, b) => a.apr - b.apr || a.label.localeCompare(b.label));
     return <MinPaymentLesson lang={lang} cards={cards} />;
+  }
+  if (slug === "bien-dong" || slug === "giu-hay-ban" || slug === "da-dang-hoa") {
+    const [vncma, year] = await Promise.all([getVncma(), getRank(AMOUNT, 12)]);
+    if (!vncma) return <p>{lang === "vi" ? "Chưa có giả định thị trường được duyệt." : "No approved market assumptions yet."}</p>;
+    const classes: ClassStat[] = vncma.classes
+      .filter((c) => CLASS_NAMES[c.id] && c.volatility != null)
+      .map((c) => ({ id: c.id, name: CLASS_NAMES[c.id][lang], ret: Number(c.expected_return), vol: Number(c.volatility) }));
+    if (slug === "bien-dong") return <VolatilityLesson lang={lang} classes={classes} />;
+    if (slug === "da-dang-hoa") return <DiversifyLesson lang={lang} classes={classes} correlation={vncma.correlation} />;
+    const eq = classes.find((c) => c.id === "eq_large") ?? classes[0];
+    const top = year.results[0];
+    return <HoldOrSellLesson lang={lang} asset={eq} deposit={top ? Number(top.rate.rate_pct) : 5} />;
   }
   return null;
 }

@@ -5,7 +5,10 @@ import { LessonScraps } from "@/components/LessonScraps";
 import { mapFonts } from "@/lib/fonts";
 import type { Lang } from "@/lib/format";
 import { t } from "@/lib/i18n";
+import { GLOSSARY } from "@/lib/glossary";
 import { LESSONS } from "@/lib/learn";
+import Link from "next/link";
+import { href } from "@/lib/i18n";
 import { breadcrumbs, pageMetadata } from "@/lib/seo";
 
 const PATH = "/hoc";
@@ -50,6 +53,27 @@ export default async function LearnPage({ params }: PageProps<"/[lang]/hoc">) {
           <p>{x.intro}</p>
         </header>
         <LessonScraps lang={lang} lessons={lessons} showCount />
+        <section id="tu-dien" aria-labelledby="tu-dien-h" className="space-y-4">
+          <h2 id="tu-dien-h" className="map-title text-[clamp(30px,3.5vw,44px)]">
+            {lang === "vi" ? "Từ điển" : "Glossary"}
+          </h2>
+          <dl className="grid gap-4 md:grid-cols-2">
+            {GLOSSARY.map((g) => (
+              <div key={g.id} id={g.id} className="map-card space-y-1">
+                <dt className="map-title text-[22px]">{g[lang].term}</dt>
+                <dd>
+                  {g[lang].def}
+                  {g.lesson ? (
+                    <>
+                      {" "}
+                      <Link href={href(lang, `/hoc/${g.lesson}`)}>{lang === "vi" ? "Học thêm" : "Learn more"} →</Link>
+                    </>
+                  ) : null}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </section>
       </article>
     </div>
   );

@@ -84,3 +84,42 @@ export function monthlyFor(goal: number, years: number, rate: number): number {
   const n = Math.max(1, Math.round(years * 12));
   return i === 0 ? goal / n : (goal * i) / (Math.pow(1 + i, n) - 1);
 }
+
+/** 80% range of the average yearly return over `years` (normal approximation, as in VNCMA's band_80). */
+export function band80(expectedReturn: number, volatility: number, years: number): [number, number] {
+  const half = (1.2816 * volatility) / Math.sqrt(Math.max(1, years));
+  return [expectedReturn - half, expectedReturn + half];
+}
+
+/**
+ * Yearly returns (percent) for the hold-or-sell game: seeded draws from the class's return and volatility, with a
+ * fall of `crash` percent forced in year `crashYear` (0-based). A simulation, not history.
+ */
+export function gameReturns(expectedReturn: number, volatility: number, years: number, seed: number, crashYear: number, crash: number): number[] {
+  const random = rng(seed);
+  const mu = Math.log(1 + expectedReturn / 100);
+  const sd = volatility / 100;
+  return Array.from({ length: years }, (_, y) => {
+    let u = 0;
+    while (u === 0) u = random();
+    const z = Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * random());
+    return y === crashYear ? -Math.abs(crash) : 100 * (Math.exp(mu + sd * z) - 1);
+  });
+}
+
+/**
+ * Value of 100 through the game. `invested[y]` says whether the money is in the market during year y; out of the
+ * market it earns `cashRate`.
+ */
+export function playGame(returns: number[], invested: boolean[], cashRate: number): number[] {
+  const path = [100];
+  returns.forEach((r, y) => path.push(path[y] * (1 + (invested[y] ?? true ? r : cashRate) / 100)));
+  return path;
+}
+
+/** Expected return and volatility of a two-asset mix (`w` in the first), percent a year. */
+export function mix2(w: number, a: { ret: number; vol: number }, b: { ret: number; vol: number }, rho: number) {
+  const ret = w * a.ret + (1 - w) * b.ret;
+  const vol = Math.sqrt((w * a.vol) ** 2 + ((1 - w) * b.vol) ** 2 + 2 * w * (1 - w) * rho * a.vol * b.vol);
+  return { ret, vol, saved: w * a.vol + (1 - w) * b.vol - vol };
+}

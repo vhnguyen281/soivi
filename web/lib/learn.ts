@@ -39,15 +39,15 @@ export const LESSONS: Lesson[] = [
     vi: { title: "Biến động là gì?", summary: "Một trăm tương lai có thể xảy ra, và vì sao chúng toả rộng." },
     en: { title: "What is volatility?", summary: "A hundred possible futures, and why they fan out." },
     minutes: 5,
-    status: "soon",
+    status: "ready",
     tool: "/muc-tieu",
   },
   {
     slug: "giu-hay-ban",
-    vi: { title: "Trò chơi: giữ hay bán?", summary: "Thị trường giảm 20%. Bạn làm gì?" },
-    en: { title: "Game: hold or sell?", summary: "The market falls 20%. What do you do?" },
+    vi: { title: "Trò chơi: giữ hay bán?", summary: "Thị trường giảm 25%. Bạn làm gì?" },
+    en: { title: "Game: hold or sell?", summary: "The market falls 25%. What do you do?" },
     minutes: 5,
-    status: "soon",
+    status: "ready",
     tool: "/ho-so-rui-ro",
   },
   {
@@ -55,7 +55,7 @@ export const LESSONS: Lesson[] = [
     vi: { title: "Đa dạng hoá có miễn phí?", summary: "Trộn các lớp tài sản để giảm rủi ro mà không giảm nhiều lợi nhuận." },
     en: { title: "Is diversification free?", summary: "Mixing asset classes to cut risk without giving up much return." },
     minutes: 4,
-    status: "soon",
+    status: "ready",
     tool: "/danh-muc-mau",
   },
 ];

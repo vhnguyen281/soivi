@@ -1350,3 +1350,39 @@ quiz questions are clearly hypothetical. General rules (early withdrawal at the 
 purchase date) are phrased as "many banks / usually" and point the visitor to their contract.
 
 The pure maths is in `web/lib/lessons.ts`, with tests in `web/tests/lessons.test.ts`.
+
+---
+
+## 2026-11-07 — Risk lessons and glossary (Đợt 2)
+
+The last three lessons in `/hoc` are now written. Their inputs come from VNCMA's expected return, volatility and
+correlation for each asset class. Short class names are in `web/lib/classes.ts`.
+
+4. **Biến động là gì?**
+   - A range bar for each class shows the 80% band of a one-year return: E ± 1.2816σ.
+   - Ten-year paths are drawn for the chosen class.
+   - A horizon slider shows the band of the *average* yearly return narrowing with √years, the same maths as VNCMA's
+     `band_80`.
+5. **Trò chơi: giữ hay bán?**
+   - Ten rounds on VN30. Each year the player chooses to stay in the market or move to the best checked 12-month
+     deposit rate.
+   - Returns are seeded draws from VNCMA eq_large, with one −25% year forced into years 2–5.
+   - The page states it is a simulation, not history.
+   - At the end it compares the player's path with "always hold" and "always deposit", and gives a behavioural note
+     (selling after a fall, holding, or playing safe).
+   - "Chơi lại" changes the seed and the crash year.
+6. **Đa dạng hoá có miễn phí?**
+   - Two classes with the real VNCMA correlation.
+   - The weight slider moves a point along the return/volatility curve. The dashed straight line shows "no
+     diversification", and the gap is reported as "risk saved".
+   - A second slider lets the visitor imagine other correlations.
+   - Portfolio return is approximated by the weighted average, and the page says so.
+
+**Glossary.**
+- `web/lib/glossary.ts` holds 10 plain-language terms.
+- `<Term>` is a tappable, dotted-underlined word that opens a short definition and links to its lesson. It closes on
+  Escape or on a click outside.
+- `/hoc#tu-dien` lists every term, which also helps search.
+- Terms are used in the lessons so far; other pages can adopt them gradually.
+
+The new maths (`band80`, `gameReturns`, `playGame`, `mix2`) is in `web/lib/lessons.ts`, with tests.
