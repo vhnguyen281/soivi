@@ -17,23 +17,16 @@ fly launch --no-deploy --copy-config --name <your-app-name> --region sin
 
 Answer **No** to the offers of Postgres, Redis or Tigris: the API uses Neon and S3.
 
-Create the token that only the site will know (keep it somewhere safe, e.g. a password manager):
+Set the secrets from `.env` and create the token that only the site will know:
 
 ```sh
-openssl rand -hex 32
-```
-
-Set the secrets. They are read from `.env` so nothing is typed or pasted twice:
-
-```sh
-set -a; source .env; set +a
-fly secrets set \
-  DATABASE_URL="$DATABASE_URL" \
-  S3_ENDPOINT="$S3_ENDPOINT" S3_ACCESS_KEY="$S3_ACCESS_KEY" S3_SECRET_KEY="$S3_SECRET_KEY" \
-  S3_BUCKET="$S3_BUCKET" \
-  API_TOKEN="<the token from openssl>"
+scripts/fly-secrets.sh        # prints the new API_TOKEN once: save it, Vercel needs it
 fly deploy
 ```
+
+The script reads `.env` as text and pipes the values to `fly secrets import`. Do not `source .env`: `DATABASE_URL`
+contains `&`, which the shell would treat as "run in the background". To keep an existing token, run
+`API_TOKEN=<token> scripts/fly-secrets.sh`.
 
 The API only reads from S3 (approved card pictures). A separate IAM key limited to `s3:GetObject` on the bucket is
 safer than reusing the pipeline's key.
