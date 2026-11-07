@@ -793,6 +793,41 @@ class CmaPortfolioSet(Base):
     payload_sha256: Mapped[str] = mapped_column(String(64))
 
 
+# ------------------------------------------------------------------ fund statistics (phase A)
+
+
+class FundStatsRun(Base):
+    """One computation of the fund-group statistics (core/funds/stats.py). Append-only.
+
+    `inputs` lists the series used with their SHA-256; `payload` is the full output,
+    including the per-fund rows that stay internal until phase B confirms each NAV."""
+
+    __tablename__ = "fund_stats_run"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    created_at: Mapped[dt.datetime] = mapped_column(TZDateTime, server_default=func.now())
+    created_by: Mapped[str] = mapped_column(String(128))
+    as_of: Mapped[dt.date] = mapped_column(Date)
+    code_version: Mapped[str] = mapped_column(String(64))
+    inputs_sha256: Mapped[str] = mapped_column(String(64))
+    inputs: Mapped[dict[str, Any]] = mapped_column(JSONB)
+    payload: Mapped[dict[str, Any]] = mapped_column(JSONB)
+
+
+class FundStatsRelease(Base):
+    """A named reviewer approved one run's group statistics for publication. Append-only."""
+
+    __tablename__ = "fund_stats_release"
+    __table_args__ = (CheckConstraint("length(trim(approved_by)) > 0", name="reviewer_required"),)
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    run_id: Mapped[int] = mapped_column(ForeignKey("fund_stats_run.id"), unique=True)
+    approved_by: Mapped[str] = mapped_column(String(128))
+    approved_at: Mapped[dt.datetime] = mapped_column(TZDateTime, server_default=func.now())
+    payload: Mapped[dict[str, Any]] = mapped_column(JSONB)  # the public JSON (groups only)
+    payload_sha256: Mapped[str] = mapped_column(String(64))
+
+
 VERSIONED_MODELS: tuple[type[Versioned], ...] = (
     SavingsRate,
     CardTerms,
@@ -810,6 +845,8 @@ APPEND_ONLY_TABLES = (
     "cma_release",
     "cma_release_value",
     "cma_portfolio_set",
+    "fund_stats_run",
+    "fund_stats_release",
 )
 
 __all__ = [
@@ -830,6 +867,8 @@ __all__ = [
     "CmaReleaseValue",
     "CmaRun",
     "CommunityReport",
+    "FundStatsRelease",
+    "FundStatsRun",
     "Institution",
     "MarketObservation",
     "MarketSeries",

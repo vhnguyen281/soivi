@@ -1527,3 +1527,68 @@ and the 1-in-20 bad year.
 
 The pure functions are `sensitivity`, `histogram`, `baseStockBond` and `weightsFromAssets` in `web/lib/cmaLab.ts`,
 with tests.
+
+---
+
+## 2026-11-07 — Investment funds, phase A: statistics by fund group
+
+The owner wants fund returns (open-end funds, ETFs, closed-end funds) on the site. They report that vnstock agreed
+to this use for the personal project. The work comes in two phases:
+- **A:** derived group statistics. This note.
+- **B:** fund-by-fund comparison with NAV from each manager's own reports, vnstock only cross-checking. The owner
+  chose this design to keep principle 1.
+
+**Scope of the exception.** The VNCMA exception to principle 1 (2026-11-05) is extended to fund-group statistics.
+Fund NAVs come from vnstock (CafeF) through `pipeline/market/`. Only derived figures are published. No raw NAV series,
+and no fund is named, until phase B confirms that fund's NAV with its manager.
+
+**Universe.** `python -m pipeline market fund-series` lists the funds through vnstock and writes two files:
+- `data/funds/universe.yaml`: 67 funds — 24 equity, 15 bond and 4 balanced open-end funds, and 24 listed funds (ETFs
+  plus the listed closed-end and REIT funds).
+- `data/seeds/fund_series.yaml`: 55 new monthly series. The 12 bond-fund NAVs that VNCMA already uses stay in
+  market_series.yaml.
+
+The seed loader reads the extra file, and the series are ingested like every other market series (one value per
+month end, with snapshot, revisions append-only).
+
+**Statistics** (`core/funds/stats.py`)
+- For each fund: annualised return over 1, 3 and 5 years from exact month-end values (nothing filled), volatility
+  over 36 months (at least 30 needed), and maximum drawdown over 60 months.
+- For each group: count, min, quartiles, max, and the share of funds beating the benchmark over the same window.
+- Benchmarks are the VNCMA monthly return series:
+
+  | Group | Benchmark |
+  |---|---|
+  | Equity funds, ETFs | VN30 + D/P (eq_large) |
+  | Bond funds | 12-month deposits (cash_vnd) |
+  | Balanced funds | 50/50 of the two, rebalanced monthly |
+
+- ETF figures are price returns.
+- `as_of` is the latest month end that the benchmarks and at least 80% of the funds have.
+
+**Approval** (principle 4)
+- `python -m pipeline market fund-stats --by NAME` stores a draft in `fund_stats_run`.
+- The reviewer sees group and per-fund tables at review app `/funds`, and approves with their name into
+  `fund_stats_release`. Both tables are append-only.
+- The release holds the group statistics only. Per-fund rows stay in the run.
+- `GET /funds/stats` serves the latest release.
+
+**Site.** `/quy-dau-tu` (menu "So sánh" → "Quỹ đầu tư"):
+- three headline figures for 3 years;
+- per-group box plots for 1, 3 or 5 years: whisker min–max, box 25–75%, median tick, benchmark diamond in series
+  slot 2;
+- a table with medians, benchmarks, share beating, median volatility and drawdown;
+- method, source and disclaimer.
+
+**First draft (run 1, data to 2026-10-31).**
+
+| Group (3 years) | Median | Benchmark | Share beating it |
+|---|---|---|---|
+| Equity funds | 12.5% a year | VN30 with dividends 24.1% | 0% |
+| Bond funds | 6.4% | deposits 5.8% | 75% |
+| ETFs | 19.1% | — | — |
+
+Sanity check: VN30 went from 1,039 to 1,855 over the 3 years, and the VN30 ETFs returned 22.3–24.4% a year. This
+was a large-cap rally, so active funds lagging the index is consistent.
+
+Not yet approved; it waits for the owner's named approval.

@@ -19,7 +19,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from api.common import HEADER, ResponseCache, send
 from api.reports import Captcha, RateLimiter, make_captcha
-from api.routes import cards, changes, institutions, reports, savings, vncma
+from api.routes import cards, changes, funds, institutions, reports, savings, vncma
 from api.schemas import Error, MethodologyOut
 from core.config import Settings, get_settings
 from core.scoring import METHODOLOGY_VERSION
@@ -120,6 +120,6 @@ def create_app(
             ),
         )
 
-    for module in (institutions, savings, cards, changes, reports, vncma):
+    for module in (institutions, savings, cards, changes, reports, vncma, funds):
         app.include_router(module.router)
     return app

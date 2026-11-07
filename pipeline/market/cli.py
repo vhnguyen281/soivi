@@ -40,6 +40,13 @@ def add_parser(sub: "argparse._SubParsersAction[argparse.ArgumentParser]") -> No
     report = msub.add_parser("report", help="write the draft (xlsx, json, md) of a run (Prompt 8)")
     report.add_argument("--run", type=int, help="cma_run id (default: the latest)")
     report.add_argument("--out", type=Path, default=Path("reports/vncma"))
+    msub.add_parser(
+        "fund-series", help="list open-end funds and ETFs (live); write fund_series.yaml + universe"
+    )
+    fstats = msub.add_parser(
+        "fund-stats", help="fund-group statistics from the stored NAVs: store a draft run"
+    )
+    fstats.add_argument("--by", required=True, help="your name (stored with the run)")
     manual = msub.add_parser("manual", help="enter one value by hand (with its source)")
     manual.add_argument("--series", required=True)
     manual.add_argument("--period", required=True, help="YYYY-MM (daily: YYYY-MM-DD, yearly: YYYY)")
@@ -59,6 +66,10 @@ def run(args: argparse.Namespace, client_factory: Callable[[], MarketClient] | N
         return _ingest(args, client_factory or VnstockClient)
     if args.market_command == "manual":
         return _manual(args)
+    if args.market_command == "fund-stats":
+        return _fund_stats(args)
+    if args.market_command == "fund-series":
+        return _fund_series(client_factory or VnstockClient)
     if args.market_command == "returns":
         return _returns(args)
     if args.market_command == "stats":
@@ -191,6 +202,57 @@ def _ingest(args: argparse.Namespace, client_factory: Callable[[], MarketClient]
     revised = sum(r.revised for r in results)
     print(f"{len(results)} groups: {new} new values, {revised} revised, {len(failed)} failed")
     return 1 if failed else 0
+
+
+def _fund_series(client_factory: Callable[[], MarketClient]) -> int:
+    import yaml
+
+    from core.funds.universe import UNIVERSE
+    from pipeline.market.funds import SEEDS, build, write
+
+    main = yaml.safe_load((SEEDS / "market_series.yaml").read_text("utf-8")) or {}
+    existing = [str(s["code"]) for s in main.get("series") or []]
+    try:
+        series, universe = build(client_factory(), existing)
+    except MarketDataError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
+    write(series, universe)
+    groups = {
+        g: sum(1 for u in universe if u["group"] == g)
+        for g in sorted({u["group"] for u in universe})
+    }
+    print(
+        f"{len(universe)} funds {groups}; {len(series)} new series -> "
+        f"{SEEDS / 'fund_series.yaml'}, {UNIVERSE}"
+    )
+    print("next: make seed && python -m pipeline market ingest")
+    return 0
+
+
+def _fund_stats(args: argparse.Namespace) -> int:
+    from core.db import session_scope
+    from core.funds.release import FundStatsError, create_run
+
+    try:
+        with session_scope() as session:
+            run = create_run(session, args.by)
+            groups = run.payload["groups"]
+            print(f"fund stats run {run.id}: as of {run.as_of}")
+            for name, g in groups.items():
+                h3 = g["horizons"]["3"]
+                med = h3["stats"]["p50"] if h3["stats"] else None
+                beat = h3["beat"]
+                print(
+                    f"  {name:14} n={g['count']:2}  3y median "
+                    f"{'-' if med is None else f'{med:.2f}%'}  "
+                    f"beat benchmark {'-' if beat is None else f'{100 * beat:.0f}%'}"
+                )
+    except FundStatsError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
+    print("review and approve it at http://127.0.0.1:8001/funds")
+    return 0
 
 
 def _manual(args: argparse.Namespace) -> int:

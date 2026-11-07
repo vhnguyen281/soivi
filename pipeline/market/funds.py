@@ -1,0 +1,153 @@
+"""Fund universe for the fund statistics (open-end funds and ETFs), via the vnstock wrapper.
+
+`python -m pipeline market fund-series` asks vnstock which funds exist and writes:
+- data/seeds/fund_series.yaml: one market series per fund NAV / ETF close, ingested like
+  every other series (`make seed` then `python -m pipeline market ingest`);
+- data/funds/universe.yaml: ticker, series code, type and manager of each fund, used to
+  group the statistics.
+
+Series already declared in market_series.yaml (the bond-fund NAVs VNCMA uses) are kept
+there and only listed in the universe.
+"""
+
+import re
+import time
+from collections.abc import Sequence
+from pathlib import Path
+from typing import Any
+
+import yaml
+
+from core.funds.universe import GROUPS, UNIVERSE
+from pipeline.market.client import MarketClient, MarketDataError
+
+FUND_TYPES = ("equity_fund", "bond_fund", "balanced_fund")
+SEEDS = Path("data/seeds")
+
+
+def series_code(ticker: str, etf: bool = False) -> str:
+    slug = re.sub(r"[^a-z0-9]+", "_", ticker.lower()).strip("_")
+    return f"etf_close_{slug}" if etf else f"fund_nav_{slug}"
+
+
+def manager_short(name: str) -> str:
+    """'Công ty ... (DRAGON CAPITAL VIETNAM)' -> 'DRAGON CAPITAL VIETNAM' (else the name)."""
+    found = re.findall(r"\(([^()]+)\)", name or "")
+    return (found[-1] if found else (name or "")).strip()
+
+
+def _fund_series(ticker: str, kind: str) -> dict[str, Any]:
+    return {
+        "code": series_code(ticker),
+        "provider": "vnstock",
+        "asset_class": f"fund_{kind.removesuffix('_fund')}",
+        "request": {
+            "call": [["Market", [], {}], ["fund", [ticker], {}], ["history", [], {}]],
+            "date_field": "time",
+        },
+        "value_field": "nav",
+        "unit": "nav_vnd",
+        "native_frequency": "daily",
+        "period": "monthly",
+        "month_end_rule": "last_on_or_before",
+        "max_gap_days": 16,
+        "grade": "B",
+        "active": True,
+        "note": f"{ticker}: open-end fund NAV per unit (CafeF via vnstock); some report weekly.",
+    }
+
+
+def _etf_series(symbol: str) -> dict[str, Any]:
+    return {
+        "code": series_code(symbol, etf=True),
+        "provider": "vnstock",
+        "asset_class": "etf",
+        "request": {
+            "call": [
+                ["Market", [], {}],
+                ["equity", [symbol], {}],
+                [
+                    "ohlcv",
+                    [],
+                    {"start": "2010-01-01", "interval": "1D", "limit": 10000, "source": "vci"},
+                ],
+            ],
+            "date_field": "time",
+        },
+        "value_field": "close",
+        "unit": "thousand_vnd",
+        "native_frequency": "daily",
+        "period": "monthly",
+        "month_end_rule": "last_on_or_before",
+        "max_gap_days": 10,
+        "grade": "B",
+        "active": True,
+        "note": f"{symbol}: listed fund closing price (price only, no distributions).",
+    }
+
+
+def _records(frame: Any) -> list[dict[str, Any]]:
+    return [dict(r) for r in frame.to_dict("records")]
+
+
+def build(
+    client: MarketClient, existing: Sequence[str], pause: float = 3.0
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """(new series, universe) from vnstock's fund and ETF lists. Raises if a list is empty."""
+    series: list[dict[str, Any]] = []
+    universe: list[dict[str, Any]] = []
+    known = set(existing)
+    for kind in FUND_TYPES:
+        rows = _records(
+            client.call([("Reference", (), {}), ("fund", None, {}), ("list", (kind,), {})])
+        )
+        if not rows:
+            raise MarketDataError(f"vnstock returned no {kind}")
+        for r in rows:
+            ticker = str(r["ticker"]).strip().upper()
+            code = series_code(ticker)
+            universe.append(
+                {
+                    "ticker": ticker,
+                    "code": code,
+                    "group": kind,
+                    "manager": manager_short(str(r.get("organ_short_name") or "")),
+                }
+            )
+            if code not in known:
+                series.append(_fund_series(ticker, kind))
+                known.add(code)
+        time.sleep(pause)
+    etfs = client.call([("Reference", (), {}), ("etf", None, {}), ("list", (), {})])
+    symbols = [
+        str(s).strip().upper() for s in (etfs["symbol"] if "symbol" in etfs else etfs.iloc[:, 0])
+    ]
+    if not symbols:
+        raise MarketDataError("vnstock returned no ETF")
+    for sym in symbols:
+        code = series_code(sym, etf=True)
+        universe.append({"ticker": sym, "code": code, "group": "etf", "manager": ""})
+        if code not in known:
+            series.append(_etf_series(sym))
+            known.add(code)
+    universe.sort(key=lambda u: (GROUPS.index(u["group"]), u["ticker"]))
+    return series, universe
+
+
+def write(
+    series: list[dict[str, Any]],
+    universe: list[dict[str, Any]],
+    seeds: Path = SEEDS,
+    universe_path: Path = UNIVERSE,
+) -> None:
+    header = (
+        "# Generated by `python -m pipeline market fund-series` (vnstock fund and ETF lists).\n"
+        "# Do not edit by hand.\n"
+    )
+    (seeds / "fund_series.yaml").write_text(
+        header + yaml.safe_dump({"series": series}, allow_unicode=True, sort_keys=False), "utf-8"
+    )
+    universe_path.parent.mkdir(parents=True, exist_ok=True)
+    universe_path.write_text(
+        header + yaml.safe_dump({"funds": universe}, allow_unicode=True, sort_keys=False), "utf-8"
+    )

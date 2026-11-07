@@ -12,6 +12,7 @@ import type {
   Persona,
   SavingsRank,
   SavingsRate,
+  FundStats,
   ModelPortfolios,
   Vncma,
 } from "./types";
@@ -149,4 +150,15 @@ export async function getModelPortfolios(): Promise<ModelPortfolios | null> {
   if (res.status === 404) return null;
   if (!res.ok) throw new Error(`Soivi API portfolios answered HTTP ${res.status}`);
   return (await res.json()) as ModelPortfolios;
+}
+
+/** The latest approved fund statistics by group, or null before the first approval. */
+export async function getFundStats(): Promise<FundStats | null> {
+  "use cache";
+  cacheLife("soivi");
+  cacheTag(TAG);
+  const res = await fetch(`${API_URL}/funds/stats`, { headers: { "Cache-Control": "no-cache" } });
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error(`Soivi API funds answered HTTP ${res.status}`);
+  return (await res.json()) as FundStats;
 }

@@ -218,3 +218,25 @@ export type ModelPortfolios = {
   portfolios: ModelPortfolio[];
   disclaimer: { vi: string; en: string };
 };
+
+// GET /funds/stats: approved fund statistics by group (percent per year; null = not enough data).
+export type FundSummary = { n: number; min: number; p25: number; p50: number; p75: number; max: number };
+export type FundHorizon = { stats: FundSummary | null; benchmark: number | null; beat: number | null };
+export type FundGroup = {
+  count: number;
+  benchmark: "eq_large" | "cash_vnd" | "balanced";
+  horizons: Record<string, FundHorizon>;
+  volatility: FundSummary | null;
+  max_drawdown: FundSummary | null;
+};
+export type FundStats = {
+  as_of: string;
+  horizons: number[];
+  groups: Record<"equity_fund" | "bond_fund" | "balanced_fund" | "etf", FundGroup>;
+  benchmarks: Record<string, Record<string, number | null>>;
+  approved_by: string;
+  approved_at: string;
+  payload_sha256: string;
+  method: string;
+  disclaimer: { vi: string; en: string };
+};

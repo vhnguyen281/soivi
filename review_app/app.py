@@ -27,7 +27,7 @@ from sqlalchemy.orm import Session
 from core.config import Settings, get_settings
 from core.models import Institution, Snapshot, Source
 from pipeline.fetch.storage import MinioStore, SnapshotStore
-from review_app import service, vncma_view
+from review_app import funds_view, service, vncma_view
 from review_app.service import ReviewError
 from review_app.webhook import notify_site
 
@@ -260,6 +260,36 @@ def create_app(
             raise HTTPException(409, str(exc)) from exc
         background.add_task(notify_site, settings)
         return Response(status_code=204, headers={"HX-Redirect": f"/vncma/portfolios/{version}"})
+
+    # ------------------------------------------------------------------ fund statistics
+
+    @app.get("/funds", response_class=HTMLResponse)
+    def funds(request: Request, user: Reviewer, session: DB) -> HTMLResponse:
+        return render(request, "funds.html", rows=funds_view.runs(session), user=user)
+
+    @app.get("/funds/runs/{run_id}", response_class=HTMLResponse)
+    def funds_run(request: Request, run_id: int, user: Reviewer, session: DB) -> HTMLResponse:
+        view = funds_view.run_view(session, run_id)
+        if view is None:
+            raise HTTPException(404, "no such run")
+        return render(request, "funds_run.html", view=view, user=user)
+
+    @app.post("/funds/runs/{run_id}/approve", dependencies=[Write])
+    def funds_approve(
+        run_id: int,
+        user: Reviewer,
+        session: DB,
+        background: BackgroundTasks,
+        reviewer_name: Annotated[str, Form()] = "",
+    ) -> Response:
+        from core.funds.release import FundStatsError, approve
+
+        try:
+            approve(session, run_id, reviewer_name)
+        except FundStatsError as exc:
+            raise HTTPException(409, str(exc)) from exc
+        background.add_task(notify_site, settings)
+        return Response(status_code=204, headers={"HX-Redirect": f"/funds/runs/{run_id}"})
 
     # ------------------------------------------------------------------ health
 

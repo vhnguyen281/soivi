@@ -17,6 +17,7 @@ export function Header({ lang }: { lang: Lang }) {
         { label: d.nav.savings, href: href(lang, "/lai-suat-tiet-kiem") },
         { label: d.nav.cards, href: href(lang, "/the-tin-dung") },
         { label: d.nav.moves, href: href(lang, "/bien-dong-lai-suat") },
+        { label: d.nav.funds, href: href(lang, "/quy-dau-tu") },
       ],
     },
     { label: d.nav.plan, href: href(lang, "/lap-ke-hoach") },

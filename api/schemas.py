@@ -360,3 +360,19 @@ class ModelPortfoliosOut(Model):
     payload_sha256: str
     portfolios: list[ModelPortfolio]
     disclaimer: dict[str, str]
+
+
+class FundStatsOut(Model):
+    """Fund statistics by group (open-end equity, bond, balanced funds; ETFs), approved by a
+    named reviewer. Derived figures only; no fund is named until its NAV is confirmed with
+    the manager (DECISIONS 2026-11-07)."""
+
+    as_of: dt.date
+    horizons: list[int]
+    groups: dict[str, Any]
+    benchmarks: dict[str, dict[str, float | None]]
+    approved_by: str
+    approved_at: dt.datetime
+    payload_sha256: str
+    method: str
+    disclaimer: dict[str, str]
