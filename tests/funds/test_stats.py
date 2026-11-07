@@ -78,3 +78,20 @@ def test_groups_and_share_beating_the_benchmark() -> None:
     assert out["groups"]["etf"]["horizons"]["1"]["stats"] is None
     assert out["benchmarks"]["balanced"]["1"] is not None
     assert {f["ticker"] for f in out["funds"]} == {"AAA", "BBB", "CCC"}
+    assert all(f["flag"] is None for f in out["funds"])
+
+
+def test_a_jump_in_the_source_withholds_the_fund() -> None:
+    universe = [
+        {"ticker": "BAD", "code": "fund_nav_bad", "group": "bond_fund", "manager": "X"},
+        {"ticker": "OK", "code": "fund_nav_ok", "group": "bond_fund", "manager": "X"},
+    ]
+    bad = monthly("2020-10-31", 0.005, 73)
+    bad.loc[pd.Timestamp("2025-08-31") :] *= 8  # another fund's NAV mixed in
+    levels = {"fund_nav_bad": bad, "fund_nav_ok": monthly("2020-10-31", 0.005, 73)}
+    out = compute(universe, levels, {}, AS_OF)
+    row = next(f for f in out["funds"] if f["ticker"] == "BAD")
+    assert row["flag"]["month"] == "2025-08" and row["flag"]["move"] > 600
+    assert row["returns"]["1"] is None and row["volatility"] is None
+    assert out["groups"]["bond_fund"]["flagged"] == 1
+    assert out["groups"]["bond_fund"]["horizons"]["1"]["stats"]["n"] == 1

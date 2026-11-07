@@ -25,6 +25,11 @@ VOL_MONTHS = 36
 VOL_MIN = 30
 MDD_MONTHS = 60
 GROUPS = ("equity_fund", "bond_fund", "balanced_fund", "etf")
+# Largest believable one-month move per group (percent). A bigger move in the 5-year window is
+# treated as a data error in the source (e.g. another fund's NAV mixed in), and the fund's
+# figures are withheld until a reviewer looks at it. March 2020, the worst month for equity
+# funds, was about -25%.
+MAX_MONTHLY_MOVE = {"bond_fund": 10.0, "balanced_fund": 20.0, "equity_fund": 35.0, "etf": 35.0}
 BENCHMARK = {
     "equity_fund": "eq_large",
     "etf": "eq_large",
@@ -70,6 +75,24 @@ def max_drawdown(levels: pd.Series, as_of: pd.Timestamp) -> float | None:
         return None
     peak = window.cummax()
     return 100 * float((window / peak - 1).min())
+
+
+def jump(levels: pd.Series, as_of: pd.Timestamp, limit: float) -> dict[str, Any] | None:
+    """The largest month-on-month move above `limit` percent in the last 5 years, if any."""
+    window = levels[
+        (levels.index <= as_of) & (levels.index > as_of - pd.DateOffset(months=MDD_MONTHS))
+    ]
+    moves = (100 * (window / window.shift(1) - 1)).dropna()
+    big = moves[moves.abs() > limit]
+    if big.empty:
+        return None
+    when = big.abs().idxmax()
+    return {
+        "kind": "jump",
+        "month": when.strftime("%Y-%m"),
+        "move": float(big[when]),
+        "limit": limit,
+    }
 
 
 def class_annualised(log_returns: pd.Series, as_of: pd.Timestamp, years: int) -> float | None:
@@ -121,7 +144,8 @@ def compute(
         if s is None or s.empty:
             continue
         s = s[s.index <= as_of]
-        returns = {str(h): annualised(s, as_of, h) for h in HORIZONS}
+        flag = jump(s, as_of, MAX_MONTHLY_MOVE[f["group"]])
+        returns = {str(h): None if flag else annualised(s, as_of, h) for h in HORIZONS}
         funds.append(
             {
                 "ticker": f["ticker"],
@@ -129,8 +153,9 @@ def compute(
                 "manager": f.get("manager", ""),
                 "first": s.index.min().strftime("%Y-%m"),
                 "returns": returns,
-                "volatility": volatility(s, as_of),
-                "max_drawdown": max_drawdown(s, as_of),
+                "volatility": None if flag else volatility(s, as_of),
+                "max_drawdown": None if flag else max_drawdown(s, as_of),
+                "flag": flag,
             }
         )
 
@@ -151,6 +176,7 @@ def compute(
             }
         groups[g] = {
             "count": len(rows),
+            "flagged": sum(1 for f in rows if f["flag"]),
             "benchmark": BENCHMARK[g],
             "horizons": horizons,
             "volatility": summary([f["volatility"] for f in rows if f["volatility"] is not None]),

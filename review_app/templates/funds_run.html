@@ -10,7 +10,7 @@
   · tạo bởi {{ view.run.created_by }} · code {{ view.run.code_version }} · inputs {{ view.run.inputs_sha256[:12] }}
 </p>
 
-<h2>Theo nhóm (sẽ công bố)</h2>
+<h2>Theo nhóm</h2>
 <table class="grid">
   <thead><tr><th>Nhóm</th><th class="num">Số quỹ</th><th>Kỳ</th><th class="num">n</th><th class="num">Thấp nhất</th><th class="num">25%</th><th class="num">Trung vị</th><th class="num">75%</th><th class="num">Cao nhất</th><th>Mốc</th><th class="num">Mốc</th><th class="num">Thắng mốc</th></tr></thead>
   <tbody>
@@ -30,21 +30,22 @@
 </table>
 <p class="muted">Lợi nhuận năm hoá theo NAV cuối tháng (ETF: giá). Mốc từ chuỗi lợi nhuận VNCMA cùng kỳ.</p>
 
-<h2>Từng quỹ (chỉ để duyệt, chưa công bố)</h2>
+<h2>Từng quỹ (công bố cùng bản duyệt; nguồn vnstock, chưa đối chiếu với công ty quản lý quỹ)</h2>
 <table class="grid">
-  <thead><tr><th>Mã</th><th>Nhóm</th><th>Công ty quản lý</th><th>Từ</th><th class="num">1 năm</th><th class="num">3 năm</th><th class="num">5 năm</th><th class="num">Biến động</th><th class="num">Sụt giảm tối đa</th></tr></thead>
+  <thead><tr><th>Mã</th><th>Nhóm</th><th>Công ty quản lý</th><th>Từ</th><th class="num">1 năm</th><th class="num">3 năm</th><th class="num">5 năm</th><th class="num">Biến động</th><th class="num">Sụt giảm tối đa</th><th>Kiểm tra dữ liệu</th></tr></thead>
   <tbody>
   {% for f in doc.funds %}
   <tr><td>{{ f.ticker }}</td><td>{{ view.groups_vi[f.group] }}</td><td>{{ f.manager }}</td><td>{{ f.first }}</td>
     <td class="num">{{ pct(f.returns["1"]) }}</td><td class="num">{{ pct(f.returns["3"]) }}</td><td class="num">{{ pct(f.returns["5"]) }}</td>
-    <td class="num">{{ pct(f.volatility) }}</td><td class="num">{{ pct(f.max_drawdown) }}</td></tr>
+    <td class="num">{{ pct(f.volatility) }}</td><td class="num">{{ pct(f.max_drawdown) }}</td>
+    <td>{% if f.flag %}<span class="status">Bất thường</span> tháng {{ f.flag.month }}: {{ "%+.1f"|format(f.flag.move) }}% (ngưỡng {{ f.flag.limit }}%){% else %}<span class="muted">ổn</span>{% endif %}</td></tr>
   {% endfor %}
   </tbody>
 </table>
 
 {% if not view.release %}
 <h2 style="margin-top:1rem">Duyệt để công bố</h2>
-<p class="muted">Chỉ phần "theo nhóm" được công bố. Bất biến sau khi duyệt; trang công khai tự cập nhật.</p>
+<p class="muted">Công bố cả số liệu theo nhóm và số liệu tính ra của từng quỹ (không công bố chuỗi NAV). Bất biến sau khi duyệt; trang công khai tự cập nhật.</p>
 <form class="actions" hx-post="/funds/runs/{{ view.run.id }}/approve"
       hx-confirm="Duyệt thống kê quỹ #{{ view.run.id }}? Không thể hoàn tác.">
   <label>Họ tên người duyệt <input name="reviewer_name" required style="width:14rem"></label>

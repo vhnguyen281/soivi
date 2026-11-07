@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { JsonLd, PageHead } from "@/components/Chrome";
+import { FundCompare } from "@/components/FundCompare";
 import { FundGroups } from "@/components/FundGroups";
 import { Icon } from "@/components/ui";
 import { getFundStats } from "@/lib/api";
@@ -15,7 +16,7 @@ const TEXT = {
   vi: {
     title: "Quỹ đầu tư ở Việt Nam đã sinh lời ra sao?",
     intro:
-      "Lợi nhuận thực tế của các quỹ mở cổ phiếu, trái phiếu, cân bằng và ETF, so với mốc đơn giản nhất: mua cả rổ VN30 hoặc gửi tiết kiệm.",
+      "Lợi nhuận thực tế của 67 quỹ mở và ETF ở Việt Nam, theo nhóm và từng quỹ, so với mốc đơn giản nhất: mua cả rổ VN30 hoặc gửi tiết kiệm.",
     none: "Chưa có thống kê quỹ được duyệt.",
     meta: (asOf: string, by: string, at: string) => `Dữ liệu đến ${asOf} · duyệt bởi ${by} ngày ${at}`,
     eqHead: "số quỹ cổ phiếu thắng VN30 trong 3 năm qua",
@@ -28,9 +29,10 @@ const TEXT = {
     whatBody: [
       "Mỗi quỹ được tính lợi nhuận bình quân mỗi năm từ giá trị tài sản ròng (NAV) cuối tháng; ETF tính theo giá giao dịch.",
       "Mốc so sánh lấy từ chuỗi lợi nhuận của VNCMA cùng kỳ: VN30 gồm cổ tức cho quỹ cổ phiếu và ETF, tiền gửi 12 tháng cho quỹ trái phiếu.",
-      "Đây là số liệu theo nhóm. Trang so sánh từng quỹ sẽ có khi NAV của mỗi quỹ được đối chiếu với báo cáo của chính công ty quản lý quỹ.",
+      "NAV lấy từ dữ liệu tổng hợp (CafeF qua vnstock), chưa đối chiếu với báo cáo của từng công ty quản lý quỹ. SoiVí chỉ công bố số liệu tính ra, không đăng lại chuỗi NAV.",
     ],
-    source: "Nguồn NAV: CafeF qua vnstock (giá trị tổng hợp, không đăng lại chuỗi gốc). Mốc: VNCMA.",
+    source: "Nguồn NAV: CafeF qua vnstock, chưa đối chiếu với từng công ty quản lý quỹ. Mốc: VNCMA.",
+    compare: "So sánh từng quỹ",
     links: ["Giả định thị trường (VNCMA)", "Thử nghiệm giả định", "Bài học: Đa dạng hoá"],
   },
   en: {
@@ -49,9 +51,10 @@ const TEXT = {
     whatBody: [
       "Each fund's average yearly return comes from its month-end net asset value (NAV) per unit; ETFs use the trading price.",
       "Benchmarks come from the VNCMA return series for the same window: VN30 with dividends for equity funds and ETFs, 12-month deposits for bond funds.",
-      "These are group figures. A fund-by-fund comparison follows once each fund's NAV is checked against its manager's own reports.",
+      "NAVs come from aggregated data (CafeF via vnstock) and are not checked against each fund manager's reports. SoiVí publishes derived figures only, never the NAV series.",
     ],
-    source: "NAV source: CafeF via vnstock (derived figures only, raw series not republished). Benchmarks: VNCMA.",
+    source: "NAV source: CafeF via vnstock, not checked with each fund manager. Benchmarks: VNCMA.",
+    compare: "Fund by fund",
     links: ["Market assumptions (VNCMA)", "Assumption lab", "Lesson: diversification"],
   },
 };
@@ -111,6 +114,12 @@ export default async function FundsPage({ params }: PageProps<"/[lang]/quy-dau-t
           </div>
           <section className="sv-panel">
             <FundGroups lang={lang} stats={stats} />
+          </section>
+          <section className="space-y-4" aria-labelledby="fund-compare">
+            <h2 id="fund-compare" className="t-h2">
+              {x.compare}
+            </h2>
+            <FundCompare lang={lang} stats={stats} />
           </section>
           <section className="space-y-3" aria-labelledby="fund-how">
             <h2 id="fund-how" className="t-h2">

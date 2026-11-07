@@ -19,6 +19,10 @@ METHOD = (
     "Benchmarks are the VNCMA return series for the same window: VN30 with dividend yield "
     "(equity funds, ETFs), 12-month deposits (bond funds), 50/50 (balanced funds)."
 )
+SOURCE = (
+    "NAV per unit from CafeF via vnstock (aggregated; not checked with each fund manager). "
+    "Only derived figures are published."
+)
 DISCLAIMER = {
     "vi": "Lợi nhuận quá khứ không bảo đảm kết quả tương lai. Số liệu tổng hợp theo nhóm, "
     "để tham khảo, không phải lời khuyên đầu tư.",
@@ -41,6 +45,7 @@ def fund_stats(request: Request, session: DB, cache: Cache) -> Response:
                 "approved_at": release.approved_at,
                 "payload_sha256": release.payload_sha256,
                 "method": METHOD,
+                "source": SOURCE,
                 "disclaimer": DISCLAIMER,
             }
         )

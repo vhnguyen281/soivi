@@ -799,8 +799,8 @@ class CmaPortfolioSet(Base):
 class FundStatsRun(Base):
     """One computation of the fund-group statistics (core/funds/stats.py). Append-only.
 
-    `inputs` lists the series used with their SHA-256; `payload` is the full output,
-    including the per-fund rows that stay internal until phase B confirms each NAV."""
+    `inputs` lists the series used with their SHA-256; `payload` is the full output
+    (group statistics and derived per-fund figures)."""
 
     __tablename__ = "fund_stats_run"
 
@@ -824,7 +824,7 @@ class FundStatsRelease(Base):
     run_id: Mapped[int] = mapped_column(ForeignKey("fund_stats_run.id"), unique=True)
     approved_by: Mapped[str] = mapped_column(String(128))
     approved_at: Mapped[dt.datetime] = mapped_column(TZDateTime, server_default=func.now())
-    payload: Mapped[dict[str, Any]] = mapped_column(JSONB)  # the public JSON (groups only)
+    payload: Mapped[dict[str, Any]] = mapped_column(JSONB)  # the public JSON
     payload_sha256: Mapped[str] = mapped_column(String(64))
 
 

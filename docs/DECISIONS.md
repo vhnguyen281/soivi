@@ -1592,3 +1592,43 @@ Sanity check: VN30 went from 1,039 to 1,855 over the 3 years, and the VN30 ETFs 
 was a large-cap rally, so active funds lagging the index is consistent.
 
 Not yet approved; it waits for the owner's named approval.
+
+---
+
+## 2026-11-07 — Investment funds, phase B: fund by fund, from vnstock (manager adapters dropped)
+
+**The decision.** The owner decided (2026-11-07) that per-fund figures may also come from vnstock (CafeF). Building
+an adapter for each fund manager is too much work for this personal project.
+
+This supersedes the plan in the phase A entry:
+- The VNCMA exception to principle 1 now covers per-fund *derived* figures, from NAVs aggregated by CafeF via vnstock.
+- Each NAV is **not checked with its fund manager**, and the page and API say so.
+- Principle 4 still applies: nothing is published until a named reviewer approves the run.
+- The vnstock licence still applies: no raw NAV series (no NAV charts, no NAV values). Only returns, volatility and
+  drawdown.
+
+The survey of managers stays on record for later: VCBF has the latest NAV as JSON on its fund pages; VinaCapital's
+fund pages answer 403 to our crawler; Dragon Capital's site needs a browser; the others publish monthly factsheet
+PDFs.
+
+**Data quality.**
+- CafeF series can contain errors. The first run showed:
+  - VCBF jumping from about 14,000 to 110,037 and back (another fund's NAV mixed in);
+  - PBIF and PVBF with implausible monthly moves;
+  - thinly traded listed closed-end and REIT funds with jumpy prices.
+- `core/funds/stats.py` flags a fund when any one-month move in the last 5 years exceeds a per-group limit: bond 10%,
+  balanced 20%, equity and listed 35% (March 2020, the worst equity month, was about −25%).
+- A flagged fund's figures are withheld and it is left out of the group statistics. The reviewer sees the month and
+  the move; the site shows "dữ liệu nguồn bất thường".
+- Run 2 flags VCBF, PVBF, PBIF, FUCTVGF4, FUCTVGF5 and FUCVREIT.
+
+**Release and API.** A release now publishes the group statistics and the derived per-fund rows (ticker, group,
+manager, first month, 1/3/5-year returns, volatility, drawdown, flag). `GET /funds/stats` adds `funds` and `source`.
+
+**Site** (`/quy-dau-tu`, section "So sánh từng quỹ")
+- Group filter chips and a search by code or manager.
+- Risk and return chart: 3-year return against 36-month volatility, as small multiples, one panel per group on shared
+  axes. The group's funds are in slot 1 over the other funds in faint grey, with dashed benchmark lines.
+  - The dataviz checker showed no four colours from the palette that can all be told apart pairwise in both modes,
+    so groups are faceted rather than coloured.
+- A sortable table with a "beat or lagged the benchmark" badge.

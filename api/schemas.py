@@ -362,15 +362,31 @@ class ModelPortfoliosOut(Model):
     disclaimer: dict[str, str]
 
 
+class FundRow(Model):
+    """Derived figures for one fund (percent per year; null = not enough history)."""
+
+    ticker: str
+    group: str
+    manager: str
+    first: str
+    returns: dict[str, float | None]
+    volatility: float | None
+    max_drawdown: float | None
+    # Set when the source series has an implausible one-month move; figures are withheld.
+    flag: dict[str, Any] | None = None
+
+
 class FundStatsOut(Model):
-    """Fund statistics by group (open-end equity, bond, balanced funds; ETFs), approved by a
-    named reviewer. Derived figures only; no fund is named until its NAV is confirmed with
-    the manager (DECISIONS 2026-11-07)."""
+    """Fund statistics by group and per fund (open-end equity, bond, balanced funds; ETFs),
+    approved by a named reviewer. Derived figures only; NAVs come from CafeF via vnstock and
+    are not checked with each fund manager (DECISIONS 2026-11-07)."""
 
     as_of: dt.date
     horizons: list[int]
     groups: dict[str, Any]
     benchmarks: dict[str, dict[str, float | None]]
+    funds: list[FundRow]
+    source: str
     approved_by: str
     approved_at: dt.datetime
     payload_sha256: str

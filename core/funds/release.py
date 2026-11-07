@@ -51,8 +51,10 @@ def pick_as_of(levels: dict[str, pd.Series], bench: dict[str, pd.Series]) -> pd.
 
 
 def public(payload: dict[str, Any]) -> dict[str, Any]:
-    """Groups and benchmarks only. Per-fund rows wait for phase B (NAV confirmed by the manager)."""
-    return {k: v for k, v in payload.items() if k != "funds"}
+    """What a release publishes: groups, benchmarks and the derived per-fund figures
+    (returns, volatility, drawdown). Raw NAV series are never published (vnstock licence);
+    per-fund NAVs come from vnstock and are not checked with each manager (DECISIONS 2026-11-07)."""
+    return payload
 
 
 def create_run(session: Session, created_by: str) -> FundStatsRun:

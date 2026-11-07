@@ -229,8 +229,20 @@ export type FundGroup = {
   volatility: FundSummary | null;
   max_drawdown: FundSummary | null;
 };
+export type FundRow = {
+  ticker: string;
+  group: "equity_fund" | "bond_fund" | "balanced_fund" | "etf";
+  manager: string;
+  first: string;
+  returns: Record<string, number | null>;
+  volatility: number | null;
+  max_drawdown: number | null;
+  flag?: { kind: string; month: string; move: number; limit: number } | null;
+};
 export type FundStats = {
   as_of: string;
+  funds: FundRow[];
+  source: string;
   horizons: number[];
   groups: Record<"equity_fund" | "bond_fund" | "balanced_fund" | "etf", FundGroup>;
   benchmarks: Record<string, Record<string, number | null>>;

@@ -26,7 +26,17 @@ PAYLOAD = {
         }
     },
     "benchmarks": {"eq_large": {"1": 0.7, "3": 24.1, "5": 6.3}},
-    "funds": [{"ticker": "AAA", "group": "equity_fund", "returns": {"3": 12.5}}],
+    "funds": [
+        {
+            "ticker": "AAA",
+            "group": "equity_fund",
+            "manager": "X",
+            "first": "2016-01",
+            "returns": {"1": 1.0, "3": 12.5, "5": None},
+            "volatility": 15.0,
+            "max_drawdown": -20.0,
+        }
+    ],
 }
 
 
@@ -44,7 +54,9 @@ def run(db: Session) -> FundStatsRun:
     return r
 
 
-def test_drafts_never_show_and_releases_hide_fund_rows(client: TestClient, db: Session) -> None:
+def test_drafts_never_show_and_releases_carry_derived_fund_rows(
+    client: TestClient, db: Session
+) -> None:
     draft = run(db)
     assert client.get("/funds/stats").status_code == 404
     with pytest.raises(FundStatsError):
@@ -54,7 +66,9 @@ def test_drafts_never_show_and_releases_hide_fund_rows(client: TestClient, db: S
     body = client.get("/funds/stats").json()
     assert body["approved_by"] == "Nguyễn Văn A"
     assert body["payload_sha256"] == release.payload_sha256
-    assert "funds" not in body and body["groups"]["equity_fund"]["count"] == 2
+    assert body["groups"]["equity_fund"]["count"] == 2
+    assert body["funds"][0]["ticker"] == "AAA" and "nav" not in body["funds"][0]
+    assert "vnstock" in body["source"]
     assert body["disclaimer"]["vi"] and body["method"]
     with pytest.raises(FundStatsError):
         approve(db, draft.id, "Nguyễn Văn A")
