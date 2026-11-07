@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Ảnh thẻ{% endblock %}
+{% block content %}
+<h1>Ảnh thẻ tín dụng</h1>
+<p class="muted">Ứng viên lấy từ trang sản phẩm của chính ngân hàng (<code>python -m pipeline card-images</code>, chạy trong Docker). Chọn đúng ảnh mặt trước của thẻ; ảnh chỉ hiện trên site sau khi được chọn. Mỗi quyết định được lưu lại (không sửa, không xoá).</p>
+<p><label>Họ tên người duyệt <input id="reviewer" name="reviewer_name" required style="width:14rem"></label></p>
+{% for r in rows %}
+<section class="card-images" style="margin:1.2rem 0;padding-top:.8rem;border-top:1px solid #ddd">
+  <h2 style="margin:0 0 .4rem">{{ r.bank }} · {{ r.card.name }}
+    {% if r.shown %}<span class="status s-approved">Đã chọn ảnh</span>{% elif r.candidates %}<span class="status">Chờ chọn</span>{% else %}<span class="status">Chưa có ứng viên</span>{% endif %}
+  </h2>
+  <div style="display:flex;flex-wrap:wrap;gap:1rem">
+  {% for c in r.candidates %}{% set i = c.image %}
+    <figure style="margin:0;width:15rem;{% if r.shown and r.shown.id == i.id %}outline:3px solid #0a7d3b;{% endif %}padding:.4rem">
+      <img src="/cards/images/{{ i.id }}/file" alt="" style="max-width:100%;max-height:10rem;display:block;background:#f4f4f4">
+      <figcaption class="muted" style="font-size:.8rem;word-break:break-all">
+        điểm {{ i.score }} · {{ i.width or "?" }}×{{ i.height or "?" }} · {{ (i.size_bytes / 1024)|round|int }} KB<br>
+        <a href="{{ i.page_url }}" target="_blank" rel="noopener">trang thẻ</a> · <a href="{{ i.image_url }}" target="_blank" rel="noopener">ảnh gốc</a>
+        {% if c.decision %}<br><b>{{ "đã chọn" if c.decision == "approved" else "đã loại" }}</b>{% endif %}
+      </figcaption>
+      <form class="actions" hx-post="/cards/images/{{ i.id }}/decide" hx-include="#reviewer" style="margin-top:.3rem">
+        <button class="ok" name="decision" value="approved">Chọn ảnh này</button>
+        <button name="decision" value="rejected">Không đúng</button>
+      </form>
+    </figure>
+  {% endfor %}
+  </div>
+</section>
+{% endfor %}
+{% endblock %}

@@ -1656,3 +1656,42 @@ manager, first month, 1/3/5-year returns, volatility, drawdown, flag). `GET /fun
 - A failure there makes the job report not-OK.
 
 **Still manual.** New funds appear only after re-running `fund-series`, then `make seed`, then ingest.
+
+---
+
+## 2026-11-07 — Credit card pictures
+
+The owner asked for card pictures on the card pages.
+
+**Source and finding.**
+- Pictures come only from each card's own page at the bank, the same page its approved values were read from (the
+  longest non-PDF snapshot URL among the card's approved terms, perks, rewards and interest).
+- `python -m pipeline card-images` runs in Docker, because VPBank's pages load their pictures with JavaScript and
+  need Chromium.
+- It scores every raster image URL on the latest stored snapshot by its file name:
+  - card-name words +3 each; "0deg", "masthead", "card", "credit" +2;
+  - banner, icon, logo, popup, background, thumbnail −4;
+  - SVGs skipped.
+- If a page has no candidate, the page is rendered in Chromium and scored again.
+- The best three pictures are downloaded through the polite fetcher (robots.txt, 1 request per 5 s per host, our
+  User-Agent), with at most 3 MB and `image/*` only.
+
+**Storage and approval.**
+- Pictures are stored by SHA-256 under `card-images/` in object storage.
+- `card_image` holds the candidates (page URL, image URL, hash, size, dimensions, score) and `card_image_decision` the
+  reviewer's choices. Both tables are append-only; the latest decision on a picture counts.
+- Nothing shows until a reviewer picks a picture at review app `/cards/images`.
+- First run: 87 candidates for the 35 cards with a product page, no failures. Seven cards have only tariff-PDF data and
+  no page (BIDV TPV, Vietravel, Precious, Premier; VPBank YoJo).
+
+**Serving.**
+- `GET /cards/{id}/image` serves the approved bytes, with an ETag and a one-day cache.
+- Card summaries (list, detail and ranking) carry `image {url, source_url, sha256, width, height}`.
+- The API container now gets read access to object storage (local MinIO, cloud S3) for this.
+- The site proxies the picture at `/api/cards/{id}/image` (the API is not public).
+- `CardArt` shows the picture uncropped (`object-fit: contain`) in the ranking cards, and larger on the card page with
+  "Ảnh: trang thẻ của <bank>" linking to the source page.
+- Cards without a picture keep the initials placeholder.
+
+**Rights.** Card art is the banks' branding. It is used here to identify the product, with the source named. Ask the
+banks before a wide public launch.

@@ -105,6 +105,8 @@ export type CardSummary = {
   unverified: boolean;
   terms: Valued | null;
   rewards_count: number;
+  // Approved picture from the bank's card page (null until a reviewer picks one).
+  image?: { url: string; source_url: string; sha256: string; width: number | null; height: number | null } | null;
 };
 
 export type CardDetail = CardSummary & {

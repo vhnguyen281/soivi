@@ -23,4 +23,4 @@ services:
       <<: [*cloud-db, *cloud-s3]
   api:
     environment:
-      <<: *cloud-db
+      <<: [*cloud-db, *cloud-s3]

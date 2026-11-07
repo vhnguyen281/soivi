@@ -198,7 +198,14 @@ async function Card({ params }: { params: Props["params"] }) {
       <JsonLd data={jsonLd} />
       <header className="sv-pcard">
         <div className="sv-pcard__head">
-          <CardArt issuer={card.institution.short_name} />
+          <div className="space-y-1">
+            <CardArt issuer={card.institution.short_name} card={card} large />
+            {card.image ? (
+              <a href={card.image.source_url} target="_blank" rel="noopener noreferrer" className="t-caption text-muted">
+                {lang === "vi" ? `Ảnh: trang thẻ của ${card.institution.short_name}` : `Picture: ${card.institution.short_name}'s card page`}
+              </a>
+            ) : null}
+          </div>
           <div className="sv-pcard__title">
             <span className="sv-pcard__bestfor">{d.nav.cards}</span>
             <h1 className="t-display">

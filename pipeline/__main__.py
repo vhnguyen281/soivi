@@ -84,6 +84,10 @@ def build_parser() -> argparse.ArgumentParser:
     save.add_argument(
         "--post", action="store_true", help="send an (empty) form POST instead of GET"
     )
+    images = sub.add_parser(
+        "card-images", help="find card pictures on the banks' card pages (for review)"
+    )
+    images.add_argument("--card", type=int, action="append", help="only this card id (repeatable)")
     market_cli.add_parser(sub)
     return parser
 
@@ -99,6 +103,8 @@ def main(
     args = build_parser().parse_args(argv)
     if args.command == "market":
         return market_cli.run(args, market_client_factory)
+    if args.command == "card-images":
+        return _card_images(args, fetchers_factory)
     load_adapters()
 
     if args.command == "adapters":
@@ -350,6 +356,33 @@ def _select(session: Session, args: argparse.Namespace) -> list[int]:
     if args.institution:
         return [s.id for s in institution_sources(session, args.institution)]
     return [s.id for s in due_sources(session, dt.datetime.now(dt.UTC))]
+
+
+def _card_images(
+    args: argparse.Namespace, fetchers_factory: "Callable[[], Fetchers] | None"
+) -> int:
+    from core.db import session_scope
+    from pipeline.cards.images import discover
+    from pipeline.fetch.storage import MinioStore
+
+    fetchers = (fetchers_factory or (lambda: Fetchers(PoliteHttp())))()
+    try:
+        with session_scope() as session:
+            found = discover(session, fetchers, MinioStore(), set(args.card) if args.card else None)
+    finally:
+        fetchers.close()
+    for line in found.added:
+        print(f"[new] {line}")
+    for line in found.none:
+        print(f"[none] {line}")
+    for line in found.failed:
+        print(f"[failed] {line}")
+    print(
+        f"{len(found.added)} new pictures, {len(found.skipped)} already stored, "
+        f"{len(found.none)} cards without a candidate, {len(found.failed)} failures"
+    )
+    print("review them at http://127.0.0.1:8001/cards/images")
+    return 0
 
 
 if __name__ == "__main__":

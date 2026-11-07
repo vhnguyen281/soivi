@@ -13,6 +13,7 @@ from api.common import provenance, ref, send, snapshots, verification
 from api.deps import DB, Cache
 from api.schemas import (
     CardDetail,
+    CardImageRef,
     CardNotRanked,
     CardOut,
     CardRankItem,
@@ -23,6 +24,7 @@ from api.schemas import (
     PersonasOut,
     Valued,
 )
+from core.card_images import approved_images
 from core.enums import RewardCategory
 from core.models import (
     CardInterest,
@@ -128,6 +130,7 @@ class _Cards:
         ).all()
         self.products = {p.id: (p, i) for p, i in rows}
         self.states = verification(session)
+        self.images = approved_images(session)
 
     def valued(self, version: Versioned | None) -> Valued | None:
         if version is None:
@@ -139,6 +142,18 @@ class _Cards:
             version_id=version.id,
             values=values,
             provenance=provenance(version, self.snaps.get(version.snapshot_id)),
+        )
+
+    def _image(self, product_id: int) -> CardImageRef | None:
+        img = self.images.get(product_id)
+        if img is None:
+            return None
+        return CardImageRef(
+            url=f"/cards/{product_id}/image",
+            source_url=img.page_url,
+            sha256=img.sha256,
+            width=img.width,
+            height=img.height,
         )
 
     def summary(self, product_id: int) -> CardSummary:
@@ -153,6 +168,7 @@ class _Cards:
             unverified=self.states.get(inst.id) == "unverified",
             terms=self.valued(self.terms.get(product.id)),
             rewards_count=len(self.rewards.get(product.id, [])),
+            image=self._image(product.id),
         )
 
     def used(self, product_id: int) -> list[Versioned]:
@@ -192,6 +208,23 @@ def personas(request: Request, cache: Cache) -> Response:
         )
 
     return send(request, cache, build)
+
+
+@router.get("/{card_id}/image", summary="The card's approved picture (from the bank's card page)")
+def card_image(card_id: int, request: Request, session: DB) -> Response:
+    from pipeline.fetch.storage import MinioStore
+
+    image = approved_images(session).get(card_id)
+    if image is None:
+        raise HTTPException(404, f"no approved picture for card {card_id}")
+    etag = f'"{image.sha256[:32]}"'
+    headers = {"ETag": etag, "Cache-Control": "public, max-age=86400"}
+    if request.headers.get("if-none-match") == etag:
+        return Response(status_code=304, headers=headers)
+    store = getattr(request.app.state, "image_store", None)
+    if store is None:
+        store = request.app.state.image_store = MinioStore()
+    return Response(store.get(image.storage_key), media_type=image.content_type, headers=headers)
 
 
 @router.get("/{card_id}", response_model=CardOut, summary="One card: terms, rewards, perks")

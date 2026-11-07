@@ -205,7 +205,7 @@ function CardResult({ lang, item, who }: { lang: Lang; item: CardRankItem; who: 
   return (
     <article className="sv-pcard">
       <div className="sv-pcard__head">
-        <CardArt issuer={item.card.institution.short_name} />
+        <CardArt issuer={item.card.institution.short_name} card={item.card} />
         <div className="sv-pcard__title">
           <span className="sv-pcard__bestfor">{d.cards.rankFor(item.rank, who)}</span>
           <h3>

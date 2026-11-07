@@ -27,7 +27,7 @@ from sqlalchemy.orm import Session
 from core.config import Settings, get_settings
 from core.models import Institution, Snapshot, Source
 from pipeline.fetch.storage import MinioStore, SnapshotStore
-from review_app import funds_view, service, vncma_view
+from review_app import card_images_view, funds_view, service, vncma_view
 from review_app.service import ReviewError
 from review_app.webhook import notify_site
 
@@ -260,6 +260,39 @@ def create_app(
             raise HTTPException(409, str(exc)) from exc
         background.add_task(notify_site, settings)
         return Response(status_code=204, headers={"HX-Redirect": f"/vncma/portfolios/{version}"})
+
+    # ------------------------------------------------------------------ card pictures
+
+    @app.get("/cards/images", response_class=HTMLResponse)
+    def card_images(request: Request, user: Reviewer, session: DB) -> HTMLResponse:
+        return render(request, "card_images.html", rows=card_images_view.cards(session), user=user)
+
+    @app.get("/cards/images/{image_id}/file")
+    def card_image_file(image_id: int, user: Reviewer, session: DB) -> Response:
+        from core.models import CardImage
+
+        image = session.get(CardImage, image_id)
+        if image is None:
+            raise HTTPException(404, "no such image")
+        return Response(get_store().get(image.storage_key), media_type=image.content_type)
+
+    @app.post("/cards/images/{image_id}/decide", dependencies=[Write])
+    def card_image_decide(
+        image_id: int,
+        user: Reviewer,
+        session: DB,
+        background: BackgroundTasks,
+        decision: Annotated[str, Form()] = "",
+        reviewer_name: Annotated[str, Form()] = "",
+    ) -> Response:
+        from core.card_images import CardImageError, decide
+
+        try:
+            decide(session, image_id, decision, reviewer_name)
+        except CardImageError as exc:
+            raise HTTPException(409, str(exc)) from exc
+        background.add_task(notify_site, settings)
+        return Response(status_code=204, headers={"HX-Refresh": "true"})
 
     # ------------------------------------------------------------------ fund statistics
 

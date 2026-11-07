@@ -793,6 +793,52 @@ class CmaPortfolioSet(Base):
     payload_sha256: Mapped[str] = mapped_column(String(64))
 
 
+# ------------------------------------------------------------------ card images
+
+
+class CardImage(Base):
+    """A candidate picture of a card, found on the card's own page at the bank. Append-only.
+
+    The bytes live in object storage (`storage_key`, SHA-256). A candidate is shown on the
+    site only after a reviewer approves it (`card_image_decision`)."""
+
+    __tablename__ = "card_image"
+    __table_args__ = (
+        UniqueConstraint("card_product_id", "sha256", name="uq_card_image_card_sha256"),
+        CheckConstraint("sha256 ~ '^[0-9a-f]{64}$'", name="sha256_hex"),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    card_product_id: Mapped[int] = mapped_column(ForeignKey("card_product.id"), index=True)
+    page_url: Mapped[str] = mapped_column(Text)  # the bank page the picture was found on
+    image_url: Mapped[str] = mapped_column(Text)
+    sha256: Mapped[str] = mapped_column(String(64))
+    storage_key: Mapped[str] = mapped_column(Text)
+    content_type: Mapped[str] = mapped_column(String(64))
+    size_bytes: Mapped[int] = mapped_column(Integer)
+    width: Mapped[int | None] = mapped_column(Integer)
+    height: Mapped[int | None] = mapped_column(Integer)
+    score: Mapped[int] = mapped_column(Integer)  # how card-like the file name is (higher first)
+    fetched_at: Mapped[dt.datetime] = mapped_column(TZDateTime)
+
+
+class CardImageDecision(Base):
+    """A reviewer approved or rejected one candidate picture. Append-only; the latest
+    decision on a picture counts."""
+
+    __tablename__ = "card_image_decision"
+    __table_args__ = (
+        CheckConstraint("decision IN ('approved', 'rejected')", name="decision_known"),
+        CheckConstraint("length(trim(reviewer)) > 0", name="reviewer_required"),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    card_image_id: Mapped[int] = mapped_column(ForeignKey("card_image.id"), index=True)
+    decision: Mapped[str] = mapped_column(String(16))
+    reviewer: Mapped[str] = mapped_column(String(128))
+    decided_at: Mapped[dt.datetime] = mapped_column(TZDateTime, server_default=func.now())
+
+
 # ------------------------------------------------------------------ fund statistics (phase A)
 
 
@@ -847,6 +893,8 @@ APPEND_ONLY_TABLES = (
     "cma_portfolio_set",
     "fund_stats_run",
     "fund_stats_release",
+    "card_image",
+    "card_image_decision",
 )
 
 __all__ = [

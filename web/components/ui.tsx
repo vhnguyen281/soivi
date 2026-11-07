@@ -213,7 +213,34 @@ export function CategoryTile({
 }
 
 // ---- Card art: a flat placeholder with the issuer's initials (no card images) ----
-export function CardArt({ issuer }: { issuer: string }) {
+/**
+ * The card's picture when a reviewer approved one (from the bank's own card page, served by the
+ * site's /api/cards/{id}/image), else the issuer's initials on a plain card shape.
+ */
+export function CardArt({
+  issuer,
+  card,
+  large,
+}: {
+  issuer: string;
+  card?: { id: number; name: string; image?: { sha256: string; width: number | null; height: number | null } | null };
+  large?: boolean;
+}) {
+  if (card?.image) {
+    return (
+      <div className={`sv-pcard__photo${large ? " sv-pcard__photo--large" : ""}`}>
+        {/* eslint-disable-next-line @next/next/no-img-element -- bytes come from our own API proxy */}
+        <img
+          src={`/api/cards/${card.id}/image?v=${card.image.sha256.slice(0, 12)}`}
+          alt={card.name}
+          width={card.image.width ?? undefined}
+          height={card.image.height ?? undefined}
+          loading={large ? "eager" : "lazy"}
+          decoding="async"
+        />
+      </div>
+    );
+  }
   const name = issuer
     .replace(/\(.*?\)/g, "")
     .replace(/^\s*(Ngân hàng|Công ty Tài chính|Công ty)\s+/i, "")

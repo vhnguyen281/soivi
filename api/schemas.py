@@ -145,6 +145,16 @@ class Valued(Model):
     provenance: Provenance
 
 
+class CardImageRef(Model):
+    """The card's picture, from its page at the bank, approved by a reviewer."""
+
+    url: str  # this API's path for the bytes
+    source_url: str  # the bank page it was found on
+    sha256: str
+    width: int | None
+    height: int | None
+
+
 class CardSummary(Model):
     id: int
     institution: InstitutionRef
@@ -155,6 +165,7 @@ class CardSummary(Model):
     unverified: bool
     terms: Valued | None
     rewards_count: int
+    image: CardImageRef | None = None
 
 
 class CardsOut(Envelope):
