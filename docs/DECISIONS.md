@@ -1717,3 +1717,25 @@ The owner wants the site on Vercel. The API then has to be reachable from the in
 `SOIVI_BUILD_CPUS`, `SOIVI_BUILD_CONCURRENCY` and `SOIVI_BUILD_RETRIES` (defaults 2, 4, 2).
 
 **Where the API runs is still open.** The choice is between Fly.io (Docker) and a Python function on Vercel.
+
+---
+
+## 2026-11-07 — API on Fly.io
+
+The owner chose Fly.io for the API (no free plan for new accounts; a 512 MB shared machine that stops when idle costs
+a few USD a month).
+
+The alternative was running the API as Vercel Python functions. It was rejected for three reasons:
+- the API's dependencies come to about 225 MB, close to Vercel's 250 MB limit;
+- importing pandas and scipy makes every cold start slow;
+- the in-memory cache and report rate limiter would be per instance.
+
+Google Cloud Run was the free alternative.
+
+**Setup**
+- `fly.toml`: region `sin` (next to Neon and S3), process `python -m api`, `/health` check, auto stop and start,
+  shared-cpu-1x with 512 MB (measured use is about 110–150 MB).
+- `Dockerfile` takes `SLIM=1` (set in `fly.toml`), which skips Tesseract and Chromium. The image drops from 3.1 GB to
+  1.6 GB.
+- Secrets live in Fly: `DATABASE_URL`, `S3_*` (a read-only key recommended) and `API_TOKEN`.
+- `docs/deploy.md` has the steps for Fly, Vercel and the revalidation hook.

@@ -153,6 +153,12 @@ make review                  # http://127.0.0.1:8001
 
 On a VPS the app listens on 127.0.0.1 only: `ssh -L 8001:localhost:8001 you@server`.
 
+## Hosting (Vercel + Fly.io)
+
+The public site runs on Vercel and the public API on Fly.io (`fly.toml`, slim image); the pipeline, scheduler and
+review app stay on the Mac. Step by step: [docs/deploy.md](docs/deploy.md). On the internet the API requires
+`API_TOKEN` (header `X-Soivi-Token`, sent by the site from `SOIVI_API_TOKEN`).
+
 ## Fresh Ubuntu VPS (22.04 / 24.04)
 
 Run as a sudo user, not root. Plan for at least 2 GB RAM and 20 GB disk.
