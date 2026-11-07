@@ -1,4 +1,4 @@
-import { API_URL } from "@/lib/api";
+import { API_URL, apiHeaders } from "@/lib/api";
 
 const FORMATS = new Set(["xlsx", "json", "md"]);
 
@@ -8,7 +8,7 @@ export async function GET(_request: Request, ctx: RouteContext<"/api/vncma/[vers
   if (!/^\d{4}\.\d{1,3}$/.test(version) || !FORMATS.has(fmt)) {
     return Response.json({ error: "not found" }, { status: 404 });
   }
-  const res = await fetch(`${API_URL}/vncma/${version}/download/${fmt}`);
+  const res = await fetch(`${API_URL}/vncma/${version}/download/${fmt}`, { headers: apiHeaders() });
   const headers = new Headers();
   for (const h of ["content-type", "content-disposition", "cache-control"]) {
     const v = res.headers.get(h);

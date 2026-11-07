@@ -1695,3 +1695,25 @@ The owner asked for card pictures on the card pages.
 
 **Rights.** Card art is the banks' branding. It is used here to identify the product, with the source named. Ask the
 banks before a wide public launch.
+
+---
+
+## 2026-11-07 — Preparing for hosting: API token, tunable build
+
+The owner wants the site on Vercel. The API then has to be reachable from the internet, so:
+
+**API token.**
+- New setting `API_TOKEN`. When it is set, every request except `GET /health` must send the same value in
+  `X-Soivi-Token`; anything else gets 401.
+- The comparison uses `hmac.compare_digest`. `/docs` is behind the token too.
+- With the token in place, `TRUST_PROXY_HEADERS=true` is safe on the internet: only the site, which knows the token,
+  can set `X-Forwarded-For` for the report rate limit.
+- `GET /health` (no token, no database) is the host's liveness check.
+- The site sends the token from `SOIVI_API_TOKEN` through `apiHeaders()` in `web/lib/api.ts` (a `server-only`
+  module) and in every proxy route, so it never reaches the browser.
+- Without `API_TOKEN` (local Docker, tests) the API behaves as before.
+
+**Build tuning.** The prerender limits in `web/next.config.ts` can be set without a code change through
+`SOIVI_BUILD_CPUS`, `SOIVI_BUILD_CONCURRENCY` and `SOIVI_BUILD_RETRIES` (defaults 2, 4, 2).
+
+**Where the API runs is still open.** The choice is between Fly.io (Docker) and a Python function on Vercel.

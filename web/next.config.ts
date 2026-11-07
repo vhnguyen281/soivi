@@ -1,5 +1,11 @@
 import type { NextConfig } from "next";
 
+/** A positive whole number from the environment, else the default. */
+function envInt(name: string, fallback: number): number {
+  const value = Number(process.env[name]);
+  return Number.isInteger(value) && value > 0 ? value : fallback;
+}
+
 const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
@@ -10,10 +16,12 @@ const nextConfig: NextConfig = {
   // Prerendering calls the API for every page. Unbounded parallel builds queued
   // past the API's database pool (15 connections to Neon) and timed out, so
   // keep at most 2 workers x 4 pages in flight and retry a page that fails.
+  // On a hosted build (e.g. Vercel, API across the internet) tune with
+  // SOIVI_BUILD_CPUS / SOIVI_BUILD_CONCURRENCY / SOIVI_BUILD_RETRIES.
   experimental: {
-    cpus: 2,
-    staticGenerationMaxConcurrency: 4,
-    staticGenerationRetryCount: 2,
+    cpus: envInt("SOIVI_BUILD_CPUS", 2),
+    staticGenerationMaxConcurrency: envInt("SOIVI_BUILD_CONCURRENCY", 4),
+    staticGenerationRetryCount: envInt("SOIVI_BUILD_RETRIES", 2),
   },
   cacheLife: {
     // All data comes from the Soivi API. Pages are rebuilt as soon as the review

@@ -26,11 +26,20 @@ import type {
  * rebuild right after an approval sees the new values.
  */
 export const API_URL = process.env.SOIVI_API_URL ?? "http://127.0.0.1:8002";
+
+/**
+ * Headers for every call to the Soivi API. When the API is on the internet it requires
+ * SOIVI_API_TOKEN in X-Soivi-Token (server-side only: this module is "server-only").
+ */
+export function apiHeaders(extra: Record<string, string> = {}): Record<string, string> {
+  const token = process.env.SOIVI_API_TOKEN;
+  return token ? { ...extra, "X-Soivi-Token": token } : extra;
+}
 export const TAG = "soivi";
 
 async function get<T>(path: string): Promise<T> {
   const res = await fetch(`${API_URL}${path}`, {
-    headers: { "Cache-Control": "no-cache", Accept: "application/json" },
+    headers: apiHeaders({ "Cache-Control": "no-cache", Accept: "application/json" }),
   });
   if (!res.ok) throw new Error(`Soivi API ${path} answered HTTP ${res.status}`);
   return (await res.json()) as T;
@@ -39,7 +48,7 @@ async function get<T>(path: string): Promise<T> {
 async function post<T>(path: string, body: unknown): Promise<T> {
   const res = await fetch(`${API_URL}${path}`, {
     method: "POST",
-    headers: { "Content-Type": "application/json", "Cache-Control": "no-cache" },
+    headers: apiHeaders({ "Content-Type": "application/json", "Cache-Control": "no-cache" }),
     body: JSON.stringify(body),
   });
   if (!res.ok) throw new Error(`Soivi API ${path} answered HTTP ${res.status}`);
@@ -74,7 +83,7 @@ export async function getHistory(institution: string): Promise<(History & { fetc
   cacheTag(TAG);
   const res = await fetch(
     `${API_URL}/savings/history?institution=${encodeURIComponent(institution)}`,
-    { headers: { "Cache-Control": "no-cache" } },
+    { headers: apiHeaders({ "Cache-Control": "no-cache" }) },
   );
   if (res.status === 404) return null;
   if (!res.ok) throw new Error(`Soivi API history answered HTTP ${res.status}`);
@@ -92,7 +101,7 @@ export async function getCard(id: number): Promise<CardDetail | null> {
   "use cache";
   cacheLife("soivi");
   cacheTag(TAG);
-  const res = await fetch(`${API_URL}/cards/${id}`, { headers: { "Cache-Control": "no-cache" } });
+  const res = await fetch(`${API_URL}/cards/${id}`, { headers: apiHeaders({ "Cache-Control": "no-cache" }) });
   if (res.status === 404) return null;
   if (!res.ok) throw new Error(`Soivi API card answered HTTP ${res.status}`);
   return ((await res.json()) as { card: CardDetail }).card;
@@ -133,7 +142,7 @@ export async function getVncma(): Promise<Vncma | null> {
   "use cache";
   cacheLife("soivi");
   cacheTag(TAG);
-  const res = await fetch(`${API_URL}/vncma/latest`, { headers: { "Cache-Control": "no-cache" } });
+  const res = await fetch(`${API_URL}/vncma/latest`, { headers: apiHeaders({ "Cache-Control": "no-cache" }) });
   if (res.status === 404) return null;
   if (!res.ok) throw new Error(`Soivi API vncma answered HTTP ${res.status}`);
   return (await res.json()) as Vncma;
@@ -145,7 +154,7 @@ export async function getModelPortfolios(): Promise<ModelPortfolios | null> {
   cacheLife("soivi");
   cacheTag(TAG);
   const res = await fetch(`${API_URL}/vncma/latest/portfolios`, {
-    headers: { "Cache-Control": "no-cache" },
+    headers: apiHeaders({ "Cache-Control": "no-cache" }),
   });
   if (res.status === 404) return null;
   if (!res.ok) throw new Error(`Soivi API portfolios answered HTTP ${res.status}`);
@@ -157,7 +166,7 @@ export async function getFundStats(): Promise<FundStats | null> {
   "use cache";
   cacheLife("soivi");
   cacheTag(TAG);
-  const res = await fetch(`${API_URL}/funds/stats`, { headers: { "Cache-Control": "no-cache" } });
+  const res = await fetch(`${API_URL}/funds/stats`, { headers: apiHeaders({ "Cache-Control": "no-cache" }) });
   if (res.status === 404) return null;
   if (!res.ok) throw new Error(`Soivi API funds answered HTTP ${res.status}`);
   return (await res.json()) as FundStats;

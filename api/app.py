@@ -8,6 +8,7 @@ as the X-Methodology-Version header. Amounts are integer VND; rates are decimal
 strings. Read responses are cached (api/common.py).
 """
 
+import hmac
 import time
 from collections.abc import Callable
 
@@ -43,6 +44,9 @@ rates and credit cards.
 def error(status: int, detail: object, headers: dict[str, str] | None = None) -> JSONResponse:
     body = Error(error=detail).model_dump(mode="json", exclude_none=True)
     return JSONResponse(body, status, {HEADER: METHODOLOGY_VERSION, **(headers or {})})
+
+
+TOKEN_HEADER = "X-Soivi-Token"
 
 
 def create_app(
@@ -99,6 +103,24 @@ def create_app(
     @app.exception_handler(ScoringError)
     async def scoring_error(request: Request, exc: ScoringError) -> JSONResponse:
         return error(422, str(exc))
+
+    @app.middleware("http")
+    async def require_token(request: Request, call_next: Callable[..., object]) -> Response:
+        """With API_TOKEN set, only callers that know it get past /health (the site)."""
+        if settings.api_token and request.url.path != "/health":
+            given = request.headers.get(TOKEN_HEADER, "")
+            if not hmac.compare_digest(given.encode(), settings.api_token.encode()):
+                return JSONResponse(
+                    Error(error="unauthorised", details=[]).model_dump(mode="json"),
+                    401,
+                    {HEADER: METHODOLOGY_VERSION},
+                )
+        return await call_next(request)  # type: ignore[misc,no-any-return]
+
+    @app.get("/health", include_in_schema=False)
+    def health() -> dict[str, str]:
+        """Liveness for the host's health check (no token, no database)."""
+        return {"status": "ok"}
 
     @app.middleware("http")
     async def version_header(request: Request, call_next: Callable[..., object]) -> Response:

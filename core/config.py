@@ -48,6 +48,10 @@ class Settings(BaseSettings):
     captcha_secret: str = ""
     # Behind a reverse proxy, read the client IP from X-Forwarded-For (else the socket).
     trust_proxy_headers: bool = False
+    # When set, every request except /health must carry it in X-Soivi-Token (the public
+    # site on Vercel sends it). Required whenever the API is reachable from the internet:
+    # X-Forwarded-For is then trusted only from callers that know the token.
+    api_token: str = ""
 
     # Public site (web/): the review app calls this after approvals so pages rebuild.
     site_revalidate_url: str = ""  # e.g. http://web:3000/api/revalidate
