@@ -1494,3 +1494,36 @@ published.
 
 **Next (Đợt 2).** Tornado sensitivity of the chance to each driver, the distribution of yearly returns, and using the
 visitor's own portfolio from the balance sheet.
+
+---
+
+## 2026-11-07 — Assumption lab, Đợt 2: sensitivity, yearly returns, own portfolio
+
+Additions to `/gia-dinh-thi-truong/thu-nghiem`:
+
+**Tornado: which assumption matters most?**
+- For the current scenario and plan, the chance of the goal is recomputed with each driver one step down and one
+  step up:
+  - inflation ±1 pp, growth ±1 pp, real rate ±0.5 pp;
+  - end P/E ±15%;
+  - equity volatility ×0.8 and ×1.25;
+  - stock–bond correlation ±0.3;
+  - early crash on.
+- Rows are sorted by the larger swing. Bars run from the current chance, terracotta for lower and navy for higher.
+  The values sit in their own columns, so labels never collide.
+- That is 13 runs of 500 paths. They start 0.5 s after the last change, and the chart dims while it is stale.
+
+**Yearly returns.** The simulation now also records the portfolio's own nominal return in each simulated year,
+before contributions. Two histograms (scenario, base) on the same bins and scale, with the chance of a losing year
+and the 1-in-20 bad year.
+
+**Own portfolio**
+- "Danh mục của tôi (từ bảng cân đối)" appears when the visitor has kept a balance sheet in this browser. Nothing is
+  read from anywhere else.
+- Liquid holdings become weights: deposits → cash, bonds → government bonds, shares → VN30, gold, foreign currency.
+- The starting amount becomes the liquid total, and the monthly saving becomes income + bonus/12 − spending − debt
+  payments.
+- "Tự nhập tỷ trọng" lets the visitor type weights; they are rescaled to 100%.
+
+The pure functions are `sensitivity`, `histogram`, `baseStockBond` and `weightsFromAssets` in `web/lib/cmaLab.ts`,
+with tests.

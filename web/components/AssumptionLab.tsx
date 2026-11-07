@@ -1,11 +1,16 @@
 "use client";
 
-import { useDeferredValue, useMemo, useRef, useState } from "react";
+import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 
 import { CLASS_NAMES } from "@/lib/classes";
 import {
   bands,
+  baseStockBond,
   chance,
+  histogram,
+  percentile,
+  sensitivity,
+  weightsFromAssets,
   hundred,
   LAB_CLASSES,
   NO_SHOCK,
@@ -14,6 +19,7 @@ import {
   scenarioVols,
   simulate,
   type LabBase,
+  type Sensitivity,
   type Shocks,
 } from "@/lib/cmaLab";
 import { pct, vnd, vndShort, type Lang } from "@/lib/format";
@@ -74,6 +80,28 @@ const TEXT = {
     scenCol: "Kịch bản",
     volCol: "Biến động",
     reset: "Về gốc",
+    mine: "Danh mục của tôi (từ bảng cân đối)",
+    custom: "Tự nhập tỷ trọng",
+    mineNote: "Lấy từ tài sản dễ bán trong bảng cân đối đã lưu trên trình duyệt này. Trái phiếu tính là TPCP, cổ phiếu tính là VN30.",
+    customSum: (n: number) => `Tổng ${n}%. Tỷ trọng được chia lại cho đủ 100%.`,
+    tornado: "Giả định nào quan trọng nhất với kế hoạch này?",
+    tornadoNote: (now: number) => `Mỗi thanh: khả năng đạt mục tiêu khi giả định dịch một bậc xuống (trái) hoặc lên (phải) từ kịch bản hiện tại (${now}%).`,
+    computing: "Đang tính…",
+    worse: "Thấp hơn",
+    better: "Cao hơn",
+    drivers2: {
+      inflation: ["Lạm phát", "−1", "+1"],
+      growth: ["Tăng trưởng GDP", "−1", "+1"],
+      real: ["Lãi suất thực", "−0,5", "+0,5"],
+      pe: ["P/E cuối kỳ", "−15%", "+15%"],
+      vol: ["Biến động cổ phiếu", "×0,8", "×1,25"],
+      stockBond: ["Tương quan CP–TP", "−0,3", "+0,3"],
+      crash: ["Sụp đổ năm đầu", "", "có"],
+    } as Record<string, [string, string, string]>,
+    dist: "Lợi nhuận từng năm của danh mục",
+    distNote: "Mỗi cột là tỷ lệ các năm mô phỏng có lợi nhuận trong khoảng đó (danh nghĩa).",
+    lossYear: (s: number, b: number) => `Xác suất một năm bị lỗ: ${s}% (gốc ${b}%)`,
+    badYear: (s: string, b: string) => `Năm xấu (1 trên 20): ${s} (gốc ${b})`,
     note: (v: string) =>
       `Gốc là bản VNCMA ${v} đã được duyệt. Kịch bản của bạn chỉ tính trên trình duyệt này, không được lưu hay công bố. Đây là thử nghiệm giả định, không phải dự báo hay lời khuyên đầu tư.`,
     method: `${PATHS.toLocaleString("vi-VN")} kịch bản theo tháng, lợi nhuận từng lớp tài sản có tương quan, tái cân bằng hằng tháng; gốc và kịch bản dùng chung một chuỗi số ngẫu nhiên nên khác biệt chỉ đến từ giả định.`,
@@ -116,6 +144,28 @@ const TEXT = {
     scenCol: "Scenario",
     volCol: "Volatility",
     reset: "Back to base",
+    mine: "My portfolio (from the balance sheet)",
+    custom: "Enter my own weights",
+    mineNote: "Taken from the liquid assets in the balance sheet saved in this browser. Bonds count as government bonds, shares as VN30.",
+    customSum: (n: number) => `Total ${n}%. Weights are rescaled to 100%.`,
+    tornado: "Which assumption matters most for this plan?",
+    tornadoNote: (now: number) => `Each bar: the chance of the goal when the assumption moves one step down (left) or up (right) from the current scenario (${now}%).`,
+    computing: "Working…",
+    worse: "Lower",
+    better: "Higher",
+    drivers2: {
+      inflation: ["Inflation", "−1", "+1"],
+      growth: ["GDP growth", "−1", "+1"],
+      real: ["Real rate", "−0.5", "+0.5"],
+      pe: ["End P/E", "−15%", "+15%"],
+      vol: ["Equity volatility", "×0.8", "×1.25"],
+      stockBond: ["Stock–bond corr.", "−0.3", "+0.3"],
+      crash: ["Early crash", "", "on"],
+    } as Record<string, [string, string, string]>,
+    dist: "The portfolio's yearly returns",
+    distNote: "Each bar is the share of simulated years with a return in that range (nominal).",
+    lossYear: (s: number, b: number) => `Chance of a losing year: ${s}% (base ${b}%)`,
+    badYear: (s: string, b: string) => `Bad year (1 in 20): ${s} (base ${b})`,
     note: (v: string) =>
       `The base is the approved VNCMA ${v}. Your scenario is worked out in this browser only, never stored or published. This is an assumption test, not a forecast or investment advice.`,
     method: `${PATHS.toLocaleString("en-US")} monthly paths, correlated returns per asset class, rebalanced monthly; base and scenario share the same random draws, so differences come only from the assumptions.`,
@@ -135,8 +185,41 @@ export function AssumptionLab({ lang, base, portfolios, release }: { lang: Lang;
   const [shocks, setShocks] = useState<Shocks>(NO_SHOCK);
   const set = (patch: Partial<Shocks>) => setShocks({ ...shocks, ...patch });
 
+  const [mine, setMine] = useState<{ weights: Record<string, number>; initial: number; monthly: number } | null>(null);
+  const [custom, setCustom] = useState<Record<string, number>>(() => ({ ...(portfolios[Math.min(2, portfolios.length - 1)]?.weights ?? {}) }));
+
+  // The balance sheet, if the visitor chose to keep it in this browser (nothing is sent anywhere).
+  useEffect(() => {
+    try {
+      const raw = JSON.parse(window.localStorage.getItem("soivi.balance.v1") ?? "null");
+      if (!raw || !Array.isArray(raw.assets)) return;
+      const assets = raw.assets.map((a: { kind?: unknown; value?: unknown }) => ({ kind: String(a.kind), value: Number(a.value) || 0 }));
+      const w = weightsFromAssets(assets);
+      if (!w) return;
+      const liquid = assets.filter((a: { kind: string }) => ["deposit", "bond", "stock", "gold", "usd"].includes(a.kind)).reduce((t: number, a: { value: number }) => t + a.value, 0);
+      const num = (k: string) => Number(raw[k]) || 0;
+      const surplus = num("monthlyIncome") + num("annualBonus") / 12 - num("monthlySpending") - num("monthlyDebtPayment");
+      setMine({ weights: w, initial: liquid, monthly: Math.max(0, Math.round(surplus)) }); // eslint-disable-line react-hooks/set-state-in-effect
+    } catch {
+      // nothing saved, or storage blocked
+    }
+  }, []);
+
   const portfolio = portfolios.find((p) => p.id === pid) ?? portfolios[0];
-  const weights = useMemo(() => LAB_CLASSES.map((c) => (portfolio?.weights[c] ?? 0) / 100), [portfolio]);
+  const customTotal = LAB_CLASSES.reduce((t, c) => t + (custom[c] ?? 0), 0);
+  const weights = useMemo(() => {
+    const chosen = pid === "mine" && mine ? mine.weights : pid === "custom" ? custom : (portfolio?.weights ?? {});
+    const raw = LAB_CLASSES.map((c) => Math.max(0, chosen[c] ?? 0));
+    const total = raw.reduce((a, b) => a + b, 0) || 1;
+    return raw.map((v) => v / total);
+  }, [pid, mine, custom, portfolio]);
+  const pick = (id: string) => {
+    setPid(id);
+    if (id === "mine" && mine) {
+      setInitial(mine.initial);
+      if (mine.monthly > 0) setMonthly(mine.monthly);
+    }
+  };
   const planNow = useMemo(() => ({ weights, initial, monthly, years, paths: PATHS, seed: SEED }), [weights, initial, monthly, years]);
   const plan = useDeferredValue(planNow);
   const deferred = useDeferredValue(shocks);
@@ -156,6 +239,38 @@ export function AssumptionLab({ lang, base, portfolios, release }: { lang: Lang;
   const pB = chance(baseSim.finals, goal);
   const dotsS = useMemo(() => hundred(sim.finals), [sim]);
   const baseRets = scenarioReturns(base, NO_SHOCK);
+
+  // Sensitivity needs 13 runs, so it waits until the sliders rest, on fewer paths.
+  const [sens, setSens] = useState<{ now: number; rows: Sensitivity[]; key: string } | null>(null);
+  const sensKey = JSON.stringify([shocks, planNow, goal]);
+  useEffect(() => {
+    const id = window.setTimeout(() => {
+      const r = sensitivity(base, shocks, { ...planNow, paths: 500 }, goal);
+      setSens({ ...r, key: sensKey });
+    }, 500);
+    return () => window.clearTimeout(id);
+  }, [base, shocks, planNow, goal, sensKey]);
+  const stale = !sens || sens.key !== sensKey;
+
+  const dist = useMemo(() => {
+    const lo = -40;
+    const hi = 50;
+    const bins = 18;
+    const norm = (h: number[], n: number) => h.map((c) => c / Math.max(1, n));
+    const sorted = (a: Float64Array) => Array.from(a).sort((p, q) => p - q);
+    const sS = sorted(sim.yearReturns);
+    const sB = sorted(baseSim.yearReturns);
+    return {
+      lo,
+      hi,
+      scen: norm(histogram(sim.yearReturns, bins, lo, hi), sim.yearReturns.length),
+      base: norm(histogram(baseSim.yearReturns, bins, lo, hi), baseSim.yearReturns.length),
+      lossS: sS.filter((v) => v < 0).length / Math.max(1, sS.length),
+      lossB: sB.filter((v) => v < 0).length / Math.max(1, sB.length),
+      p5S: percentile(sS, 0.05),
+      p5B: percentile(sB, 0.05),
+    };
+  }, [sim, baseSim]);
   const active = PRESETS.find((p) => JSON.stringify({ ...NO_SHOCK, ...p.shocks }) === JSON.stringify(shocks))?.id;
   const signed = (v: number, unit: string) => `${v > 0 ? "+" : ""}${nf(Math.round(v * 100) / 100)}${unit}`;
   const pp = lang === "vi" ? " điểm %" : " pp";
@@ -169,14 +284,34 @@ export function AssumptionLab({ lang, base, portfolios, release }: { lang: Lang;
           </h2>
           <label className="sv-field">
             {x.portfolio}
-            <select value={portfolio?.id} onChange={(e) => setPid(e.target.value)}>
+            <select value={pid} onChange={(e) => pick(e.target.value)}>
               {portfolios.map((p) => (
                 <option key={p.id} value={p.id}>
                   {p.name}
                 </option>
               ))}
+              {mine ? <option value="mine">{x.mine}</option> : null}
+              <option value="custom">{x.custom}</option>
             </select>
           </label>
+          {pid === "mine" ? <p className="t-caption text-muted">{x.mineNote}</p> : null}
+          {pid === "custom" ? (
+            <div className="space-y-2">
+              <div className="grid grid-cols-2 gap-2">
+                {LAB_CLASSES.map((c) => (
+                  <label key={c} className="sv-field !text-[13px]">
+                    {CLASS_NAMES[c][lang]}
+                    <input
+                      inputMode="numeric"
+                      value={String(custom[c] ?? 0)}
+                      onChange={(e) => setCustom({ ...custom, [c]: Math.min(100, Number(e.target.value.replace(/\D/g, "")) || 0) })}
+                    />
+                  </label>
+                ))}
+              </div>
+              {customTotal !== 100 ? <p className="t-caption text-muted">{x.customSum(customTotal)}</p> : null}
+            </div>
+          ) : null}
           <label className="sv-field">
             {x.initial}
             <input inputMode="numeric" value={nf(initial)} onChange={(e) => setInitial(digits(e.target.value))} />
@@ -227,7 +362,7 @@ export function AssumptionLab({ lang, base, portfolios, release }: { lang: Lang;
           <Slider label={x.vol} value={shocks.volScale} min={0.6} max={1.8} step={0.1} show={`×${nf(shocks.volScale)}`} onChange={(v) => set({ volScale: v })} />
           <Slider
             label={x.sb}
-            value={shocks.stockBond ?? 0.1}
+            value={Math.round((shocks.stockBond ?? baseStockBond(base)) * 10) / 10}
             min={-0.5}
             max={0.8}
             step={0.1}
@@ -263,6 +398,32 @@ export function AssumptionLab({ lang, base, portfolios, release }: { lang: Lang;
           </h2>
           <p className="t-small">{x.dotsNote(Math.round(pS * 100), Math.round(pB * 100))}</p>
           <Dots dots={dotsS} goal={goal} lang={lang} x={x} />
+        </section>
+
+        <section className="sv-panel space-y-3" aria-labelledby="lab-tornado">
+          <h2 id="lab-tornado" className="t-h3">
+            {x.tornado}
+          </h2>
+          {sens ? (
+            <>
+              <p className="t-small">{x.tornadoNote(Math.round(sens.now * 100))}</p>
+              <Tornado sens={sens} labels={x.drivers2} x={x} stale={stale} />
+            </>
+          ) : (
+            <p className="t-small text-muted">{x.computing}</p>
+          )}
+        </section>
+
+        <section className="sv-panel space-y-3" aria-labelledby="lab-dist">
+          <h2 id="lab-dist" className="t-h3">
+            {x.dist}
+          </h2>
+          <p className="t-small">{x.distNote}</p>
+          <Histo lo={dist.lo} hi={dist.hi} rows={[[x.scenCol, dist.scen, "var(--series-1)"], [x.baseCol, dist.base, "var(--line-strong)"]]} lang={lang} />
+          <ul className="space-y-1 t-small">
+            <li>{x.lossYear(Math.round(dist.lossS * 100), Math.round(dist.lossB * 100))}</li>
+            <li>{x.badYear(pct(Math.round(dist.p5S * 10) / 10, lang), pct(Math.round(dist.p5B * 10) / 10, lang))}</li>
+          </ul>
         </section>
 
         <section className="space-y-2" aria-labelledby="lab-table">
@@ -304,6 +465,98 @@ export function AssumptionLab({ lang, base, portfolios, release }: { lang: Lang;
           <p>{x.note(release)}</p>
           <p>{x.method}</p>
         </div>
+      </div>
+    </div>
+  );
+}
+
+/** Tornado: one row per driver, bars from the current chance to the chance one step down (left) and up (right). */
+function Tornado({ sens, labels, x, stale }: { sens: { now: number; rows: Sensitivity[] }; labels: Record<string, [string, string, string]>; x: (typeof TEXT)["vi"]; stale: boolean }) {
+  const all = sens.rows.flatMap((r) => [r.low ?? sens.now, r.high, sens.now]);
+  const lo = Math.max(0, Math.min(...all) - 0.05);
+  const hi = Math.min(1, Math.max(...all) + 0.05);
+  const pos = (v: number) => ((v - lo) / (hi - lo || 1)) * 100;
+  const bar = (v: number | null) => {
+    if (v === null) return null;
+    const a = Math.min(v, sens.now);
+    const b = Math.max(v, sens.now);
+    return (
+      <span
+        className="absolute top-1/2 h-4 -translate-y-1/2 rounded"
+        style={{ left: `${pos(a)}%`, width: `${Math.max(0.5, pos(b) - pos(a))}%`, background: v < sens.now ? "var(--series-2)" : "var(--series-1)" }}
+      />
+    );
+  };
+  return (
+    <div className={`space-y-2 transition-opacity ${stale ? "opacity-50" : ""}`} aria-busy={stale}>
+      <ul className="space-y-2">
+        {sens.rows.map((r) => {
+          const [name, down, up] = labels[r.id] ?? [r.id, "", ""];
+          return (
+            <li key={r.id} className="grid grid-cols-[1fr_auto] items-center gap-x-3 gap-y-1 sm:grid-cols-[10rem_6.5rem_1fr_6.5rem]">
+              <span className="t-small font-semibold sm:col-auto">{name}</span>
+              <span className="t-caption tabular-nums text-right text-muted sm:order-none">
+                {down ? `${down}: ${Math.round((r.low ?? sens.now) * 100)}%` : ""}
+              </span>
+              <span
+                className="relative col-span-2 block h-7 sm:col-span-1"
+                aria-label={`${name}: ${down ? `${down} → ${Math.round((r.low ?? sens.now) * 100)}%, ` : ""}${up} → ${Math.round(r.high * 100)}%`}
+                role="img"
+              >
+                <span className="absolute inset-y-0 w-px bg-ink" style={{ left: `${pos(sens.now)}%` }} />
+                {bar(r.low)}
+                {bar(r.high)}
+              </span>
+              <span className="hidden t-caption tabular-nums text-muted sm:block">
+                {up}: {Math.round(r.high * 100)}%
+              </span>
+              <span className="col-span-2 -mt-1 t-caption tabular-nums text-muted sm:hidden">
+                {up}: {Math.round(r.high * 100)}%
+              </span>
+            </li>
+          );
+        })}
+      </ul>
+      <ul className="flex flex-wrap gap-x-5 t-small">
+        <li>
+          <span className="inline-block h-3 w-5 rounded-sm align-middle" style={{ background: "var(--series-2)" }} aria-hidden="true" /> {x.worse}
+        </li>
+        <li>
+          <span className="inline-block h-3 w-5 rounded-sm align-middle" style={{ background: "var(--series-1)" }} aria-hidden="true" /> {x.better}
+        </li>
+      </ul>
+    </div>
+  );
+}
+
+/** Small multiples: one histogram row per series on the same bins and scale. */
+function Histo({ lo, hi, rows, lang }: { lo: number; hi: number; rows: [string, number[], string][]; lang: Lang }) {
+  const bins = rows[0][1].length;
+  const max = Math.max(...rows.flatMap(([, h]) => h));
+  const w = (hi - lo) / bins;
+  return (
+    <div className="space-y-3">
+      {rows.map(([label, h, colour]) => (
+        <div key={label}>
+          <p className="t-small font-semibold">{label}</p>
+          <div className="flex h-24 items-end gap-[2px]" role="img" aria-label={label}>
+            {h.map((v, i) => (
+              <span
+                key={i}
+                className="flex-1 rounded-t"
+                style={{ height: `${(v / max) * 100}%`, background: colour, opacity: lo + i * w < 0 ? 0.65 : 1 }}
+                title={`${pct(lo + i * w, lang)} … ${pct(lo + (i + 1) * w, lang)}: ${Math.round(v * 1000) / 10}%`}
+              />
+            ))}
+          </div>
+        </div>
+      ))}
+      <div className="relative h-4 t-caption text-muted">
+        <span className="absolute left-0">≤ {lo}%</span>
+        <span className="absolute -translate-x-1/2" style={{ left: `${(-lo / (hi - lo)) * 100}%` }}>
+          0%
+        </span>
+        <span className="absolute right-0">≥ {hi}%</span>
       </div>
     </div>
   );

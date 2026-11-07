@@ -130,6 +130,8 @@ export type SimResult = {
   /** Value in today's money (deflated by the scenario inflation) at the end of each year: [path][year 0..years]. */
   values: Float64Array[];
   finals: number[]; // sorted
+  /** The portfolio's own nominal return in each simulated year (percent), all paths and years together. */
+  yearReturns: Float64Array;
 };
 
 /**
@@ -151,11 +153,13 @@ export function simulate(input: SimInput, rets: number[], vols: number[], chol: 
   };
   const z = new Float64Array(n);
   const values: Float64Array[] = [];
+  const yearReturns = new Float64Array(input.paths * input.years);
   for (let p = 0; p < input.paths; p++) {
     let v = input.initial;
     let deflator = 1;
     const yearly = new Float64Array(input.years + 1);
     yearly[0] = v;
+    let yearGrowth = 1;
     for (let m = 1; m <= months; m++) {
       for (let i = 0; i < n; i++) z[i] = gauss();
       let growth = 0;
@@ -167,13 +171,18 @@ export function simulate(input: SimInput, rets: number[], vols: number[], chol: 
         growth += input.weights[i] * factor;
       }
       deflator *= piM;
+      yearGrowth *= growth;
       v = v * growth + input.monthly * deflator;
-      if (m % 12 === 0) yearly[m / 12] = v / deflator;
+      if (m % 12 === 0) {
+        yearly[m / 12] = v / deflator;
+        yearReturns[p * input.years + m / 12 - 1] = 100 * (yearGrowth - 1);
+        yearGrowth = 1;
+      }
     }
     values.push(yearly);
   }
   const finals = values.map((y) => y[input.years]).sort((a, b) => a - b);
-  return { values, finals };
+  return { values, finals, yearReturns };
 }
 
 export function percentile(sorted: ArrayLike<number>, q: number): number {
@@ -198,3 +207,64 @@ export function hundred(finals: number[]): number[] {
 }
 
 export const chance = (finals: number[], goal: number) => finals.filter((v) => v >= goal).length / Math.max(1, finals.length);
+
+/** Counts of `values` in equal bins over [lo, hi] (values outside go to the end bins). */
+export function histogram(values: ArrayLike<number>, bins: number, lo: number, hi: number): number[] {
+  const out = Array(bins).fill(0) as number[];
+  const w = (hi - lo) / bins || 1;
+  for (let i = 0; i < values.length; i++) out[Math.max(0, Math.min(bins - 1, Math.floor((values[i] - lo) / w)))]++;
+  return out;
+}
+
+/** Average of the equity-bond correlations in the release (the slider's starting point). */
+export function baseStockBond(base: LabBase): number {
+  const ids = base.classes.map((c) => c.id);
+  const vals: number[] = [];
+  ids.forEach((a, i) => ids.forEach((b, j) => EQUITY.has(a) && BONDS.has(b) && vals.push(base.corr[i][j])));
+  return vals.length ? vals.reduce((x, y) => x + y, 0) / vals.length : 0;
+}
+
+export type Sensitivity = { id: string; low: number | null; high: number; lowShock: Shocks | null; highShock: Shocks };
+
+/** Chance of the goal when each driver moves one step down and up from the current scenario. */
+export function sensitivity(base: LabBase, current: Shocks, plan: SimInput, goal: number): { now: number; rows: Sensitivity[] } {
+  const run = (s: Shocks) => {
+    const corr = scenarioCorr(base, s);
+    return chance(simulate(plan, scenarioReturns(base, s), scenarioVols(base, s), corr.chol, base.inflation + s.inflation, s.crash).finals, goal);
+  };
+  const sb = current.stockBond ?? baseStockBond(base);
+  const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
+  const steps: [string, Partial<Shocks>, Partial<Shocks>][] = [
+    ["inflation", { inflation: current.inflation - 1 }, { inflation: current.inflation + 1 }],
+    ["growth", { growth: current.growth - 1 }, { growth: current.growth + 1 }],
+    ["real", { real: current.real - 0.5 }, { real: current.real + 0.5 }],
+    ["pe", { pe: Math.max(-0.9, current.pe - 0.15) }, { pe: current.pe + 0.15 }],
+    ["vol", { volScale: current.volScale * 0.8 }, { volScale: current.volScale * 1.25 }],
+    ["stockBond", { stockBond: clamp(sb - 0.3, -0.9, 0.9) }, { stockBond: clamp(sb + 0.3, -0.9, 0.9) }],
+  ];
+  const rows: Sensitivity[] = steps.map(([id, lo, hi]) => {
+    const lowShock = { ...current, ...lo };
+    const highShock = { ...current, ...hi };
+    return { id, low: run(lowShock), high: run(highShock), lowShock, highShock };
+  });
+  if (!current.crash) {
+    const crash = { ...current, crash: true };
+    rows.push({ id: "crash", low: null, high: run(crash), lowShock: null, highShock: crash });
+  }
+  const now = run(current);
+  const swing = (r: Sensitivity) => Math.max(Math.abs((r.low ?? now) - now), Math.abs(r.high - now));
+  return { now, rows: rows.sort((a, b) => swing(b) - swing(a)) };
+}
+
+/** Liquid holdings from the balance sheet, as lab weights (percent). Bonds count as government bonds, shares as VN30. */
+export function weightsFromAssets(assets: { kind: string; value: number }[]): Record<string, number> | null {
+  const map: Record<string, string> = { deposit: "cash_vnd", bond: "gov_bond", stock: "eq_large", gold: "gold", usd: "usd" };
+  const sums: Record<string, number> = {};
+  for (const a of assets) {
+    const c = map[a.kind];
+    if (c && a.value > 0) sums[c] = (sums[c] ?? 0) + a.value;
+  }
+  const total = Object.values(sums).reduce((x, y) => x + y, 0);
+  if (total <= 0) return null;
+  return Object.fromEntries(Object.entries(sums).map(([k, v]) => [k, (100 * v) / total]));
+}

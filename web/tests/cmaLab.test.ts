@@ -4,6 +4,10 @@ import { test } from "node:test";
 
 import {
   bands,
+  baseStockBond,
+  histogram,
+  sensitivity,
+  weightsFromAssets,
   chance,
   cholesky,
   hundred,
@@ -96,4 +100,35 @@ test("same seed, worse assumptions: a lower chance; a crash costs equity-heavy p
   assert.ok(chance(c.finals, goal) < chance(a.finals, goal));
   assert.equal(hundred(a.finals).length, 100);
   assert.ok(hundred(a.finals)[0] <= hundred(a.finals)[99]);
+});
+
+test("yearly returns are the portfolio's own, without contributions", () => {
+  const flat: LabBase = { ...base, classes: base.classes.map((c) => ({ ...c, ret: 6, vol: 0 })) };
+  const s = simulate({ weights: [1, 0, 0, 0, 0, 0, 0], initial: 100, monthly: 50, years: 3, paths: 2, seed: 1 }, scenarioReturns(flat, NO_SHOCK), scenarioVols(flat, NO_SHOCK), scenarioCorr(flat, NO_SHOCK).chol, 0, false);
+  assert.equal(s.yearReturns.length, 6);
+  for (const r of s.yearReturns) assert.ok(Math.abs(r - 6) < 1e-9);
+  assert.deepEqual(histogram([1, 2, 2, 9, 50, -5], 4, 0, 8), [2, 2, 0, 2]);
+});
+
+test("sensitivity ranks drivers by how much they move the chance", () => {
+  const plan = { weights: [0.1, 0.1, 0.1, 0.4, 0.2, 0.1, 0], initial: 1e9, monthly: 1e7, years: 10, paths: 300, seed: 3 };
+  const goal = 2.5e9;
+  const { now, rows } = sensitivity(base, NO_SHOCK, plan, goal);
+  assert.ok(now > 0 && now < 1);
+  assert.equal(rows.length, 7);
+  const g = rows.find((r) => r.id === "growth");
+  assert.ok(g && (g.low ?? 0) <= now && g.high >= now);
+  const swing = (r: (typeof rows)[number]) => Math.max(Math.abs((r.low ?? now) - now), Math.abs(r.high - now));
+  for (let i = 1; i < rows.length; i++) assert.ok(swing(rows[i - 1]) >= swing(rows[i]));
+  assert.ok(Math.abs(baseStockBond(base) - 0.1) < 1e-9);
+});
+
+test("balance-sheet holdings become lab weights", () => {
+  const w = weightsFromAssets([
+    { kind: "deposit", value: 300 },
+    { kind: "stock", value: 100 },
+    { kind: "home", value: 5000 },
+  ]);
+  assert.deepEqual(w, { cash_vnd: 75, eq_large: 25 });
+  assert.equal(weightsFromAssets([{ kind: "home", value: 1 }]), null);
 });
