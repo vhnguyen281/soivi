@@ -23,6 +23,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: "/the-tin-dung", priority: 0.9 },
     { path: "/bien-dong-lai-suat", priority: 0.7 },
     { path: "/gia-dinh-thi-truong", priority: 0.6 },
+    { path: "/gia-dinh-thi-truong/thu-nghiem", priority: 0.6 },
     { path: "/danh-muc-mau", priority: 0.6 },
     { path: "/muc-tieu", priority: 0.6 },
     { path: "/ho-so-rui-ro", priority: 0.6 },

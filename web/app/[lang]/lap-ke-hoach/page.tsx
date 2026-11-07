@@ -25,6 +25,7 @@ const TEXT = {
     base: "Nền móng của hành trình",
     baseLinks: [
       ["/gia-dinh-thi-truong", "Giả định thị trường (VNCMA)"],
+      ["/gia-dinh-thi-truong/thu-nghiem", "Thử nghiệm giả định"],
       ["/danh-muc-mau", "Danh mục mẫu"],
       ["/hoc", "Học trước khi đi"],
     ],
@@ -44,6 +45,7 @@ const TEXT = {
     base: "Foundations",
     baseLinks: [
       ["/gia-dinh-thi-truong", "Market assumptions (VNCMA)"],
+      ["/gia-dinh-thi-truong/thu-nghiem", "Assumption lab"],
       ["/danh-muc-mau", "Model portfolios"],
       ["/hoc", "Learn before you go"],
     ],

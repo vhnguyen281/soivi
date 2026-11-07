@@ -1446,3 +1446,51 @@ adjacent-pair colour-blind separation and the normal-vision floor.
 - Single-series charts use slot 1: goal bars, fans, rate history, the monitoring trend and the frontier curve.
 - Highlights use slot 2.
 - Interface elements (buttons, cards, text, links) stay monochrome.
+
+---
+
+## 2026-11-07 — Assumption lab: Monte Carlo under changed VNCMA drivers (Đợt 1)
+
+Page: `/gia-dinh-thi-truong/thu-nghiem`. Logic is in `web/lib/cmaLab.ts`, the UI in `web/components/AssumptionLab.tsx`.
+It is linked from the VNCMA page and the planning hub.
+
+**Drivers and how they move returns.** The baseline is the approved release. A scenario adds the *deltas* of the
+VNCMA building blocks to the published class returns. Every block in `core/cma/blocks.py` is linear in these drivers,
+so this matches recomputing the blocks, and the baseline is exactly the release.
+
+| Driver | Effect on expected returns |
+|---|---|
+| Inflation Δπ | cash +Δπ; gov and corp −D·Δπ/h (y_eq moves, y0 fixed); equities +Δπ; gold and USD +Δπ (d = π − π_US) |
+| Real rate Δr | cash +Δr; gov and corp −D·Δr/h |
+| Real GDP growth Δg | equities +haircut·Δg |
+| End P/E vs expected x | equities +100·ln(1+x)/h |
+| Equity volatility | volatility × k |
+| Stock–bond correlation | equity–bond pairs overridden; the matrix shrinks towards the identity until Cholesky succeeds, and the page says when it had to |
+| Crash | equities −40% in month 6 |
+
+- D (duration) and the growth haircut are read from the release's own formula strings, which our code generates.
+- Real estate is left out (it is not in the model portfolios).
+
+**Presets.** Gốc VNCMA, Lạm phát cao (π +3, r −1), Tăng trưởng chậm (g −2, P/E −15%), Định giá co lại (P/E −30%),
+Biến động mạnh (vol ×1.5, ρ 0.5), Sụp đổ năm đầu, and approximations of the release's adverse and favourable equity
+scenarios (g ∓1, P/E −7% / +10%).
+
+**Simulation**
+- 1,500 monthly paths.
+- Correlated normal log returns per class: mean ln(1+E)/12, sd σ/√12, via Cholesky.
+- Rebalanced to the model portfolio every month.
+- Contributions rise with the scenario's inflation, and all values are shown in today's money.
+- Baseline and scenario share one seed (common random numbers), so differences come only from the assumptions.
+- Runs on the main thread with `useDeferredValue`, about 140 ms per change.
+
+**Visuals**
+1. **Percentile fan.** Scenario bands (10–90%, 25–75%, median) in series slot 1, over the base median (dashed) and
+   base 10/90% (dotted), with the goal line. Hovering or touching shows a crosshair and a tooltip for that year.
+2. **Quantile dot plot.** 100 dots; filled dots reach the goal: "X trên 100 tương lai đạt mục tiêu (gốc Y)".
+3. **Table.** Base and scenario return for each class, with the change and the volatility.
+
+**Labels.** "Thử nghiệm giả định, không phải dự báo". The scenario stays in the browser and is never stored or
+published.
+
+**Next (Đợt 2).** Tornado sensitivity of the chance to each driver, the distribution of yearly returns, and using the
+visitor's own portfolio from the balance sheet.

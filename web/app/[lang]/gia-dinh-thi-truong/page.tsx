@@ -161,6 +161,13 @@ export default async function VncmaPage({ params }: PageProps<"/[lang]/gia-dinh-
       />
       <PageHead eyebrow={d.nav.vncma} title={x.title} intro={x.intro}>
         {v ? <p className="t-small text-muted">{x.meta(v, lang)}</p> : null}
+        {v ? (
+          <p className="pt-2">
+            <Button variant="primary" href={href(lang, "/gia-dinh-thi-truong/thu-nghiem")} iconRight="arrow">
+              {lang === "vi" ? "Thử thay đổi giả định và xem mô phỏng" : "Change the assumptions and watch the simulation"}
+            </Button>
+          </p>
+        ) : null}
       </PageHead>
 
       {v ? (
