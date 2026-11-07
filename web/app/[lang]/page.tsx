@@ -2,11 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { Disclaimer, JsonLd } from "@/components/Chrome";
+import { Journey, type JourneyBank } from "@/components/Journey";
 import { ReportButton } from "@/components/ReportButton";
-import { Badge, Button, CategoryTile, Icon, SectionHead, SourceStamp, TipBox } from "@/components/ui";
-import { getChanges, getPersonas, getRank } from "@/lib/api";
+import { Badge, Button, Icon, SectionHead, SourceStamp, TipBox } from "@/components/ui";
+import { getChanges, getModelPortfolios, getPersonas, getRank, getVncma } from "@/lib/api";
 import { date, direction, pct, term, vnd, type Lang, localizeLabel } from "@/lib/format";
 import { absolute, href, t } from "@/lib/i18n";
+import { LESSONS } from "@/lib/learn";
+import { mapFonts } from "@/lib/fonts";
 import { HOME_TERMS } from "@/lib/rows";
 import { pageMetadata } from "@/lib/seo";
 
@@ -21,21 +24,34 @@ export async function generateMetadata({ params }: PageProps<"/[lang]">): Promis
 export default async function Home({ params }: PageProps<"/[lang]">) {
   const lang = (await params).lang as Lang;
   const d = t(lang);
-  const [ranks, changes, personas] = await Promise.all([
+  const [ranks, changes, personas, year, vncma, models] = await Promise.all([
     Promise.all(HOME_TERMS.map((m) => getRank(AMOUNT, m))),
     getChanges(2),
     getPersonas(),
+    getRank(AMOUNT, 12),
+    getVncma(),
+    getModelPortfolios(),
   ]);
+  // Each bank's best 12-month rate for the journey's hero, highest first.
+  const byBank = new Map<string, JourneyBank>();
+  for (const r of year.results) {
+    const name = r.rate.institution.short_name;
+    const rate = Number(r.rate.rate_pct);
+    if (!byBank.has(name) || (byBank.get(name) as JourneyBank).rate < rate)
+      byBank.set(name, { name, rate, product: r.rate.product_name });
+  }
+  const banks = [...byBank.values()].sort((a, b) => b.rate - a.rate || a.name.localeCompare(b.name));
+  const portfolios =
+    models?.portfolios.map((p) => ({
+      name: lang === "vi" ? p.name : p.name_en,
+      expectedReturn: Number(p.expected_return),
+      volatility: Number(p.volatility),
+    })) ?? [];
+  const lessons = LESSONS.map((l) => ({ slug: l.slug, title: l[lang].title, minutes: l.minutes, ready: l.status === "ready" }));
   const best = ranks
     .map((r, i) => ({ months: HOME_TERMS[i], top: r.results[0] }))
     .filter((b) => b.top);
   const moves = changes.changes.filter((c) => c.table === "savings_rate").slice(0, 6);
-  const tiles: [string, "savings" | "card" | "chart" | "shield", readonly string[]][] = [
-    ["/lai-suat-tiet-kiem", "savings", d.home.tiles.savings],
-    ["/the-tin-dung", "card", d.home.tiles.cards],
-    ["/bien-dong-lai-suat", "chart", d.home.tiles.moves],
-    ["/phuong-phap", "shield", d.home.tiles.method],
-  ];
 
   const jsonLd = [
     {
@@ -59,31 +75,9 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
     <>
       <JsonLd data={jsonLd} />
 
-      {/* Hero */}
-      <section className="sv-section pb-12">
-        <div className="sv-container grid gap-8">
-          <div className="max-w-3xl space-y-4">
-            <p className="t-label text-jade">{d.home.eyebrow}</p>
-            <h1 className="t-display-xl">{d.home.title}</h1>
-            <p className="t-body-lg text-muted">{d.home.lead}</p>
-            <div className="flex flex-wrap gap-3 pt-2">
-              <Button variant="primary" href={href(lang, "/lai-suat-tiet-kiem")} iconRight="arrow">
-                {d.home.ctaSavings}
-              </Button>
-              <Button variant="secondary" href={href(lang, "/the-tin-dung")}>
-                {d.home.ctaCards}
-              </Button>
-            </div>
-          </div>
-          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {tiles.map(([path, icon, [title, desc]]) => (
-              <li key={path} className="grid">
-                <CategoryTile icon={icon} title={title} description={desc} href={href(lang, path)} />
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
+      <div className={mapFonts}>
+        <Journey lang={lang} banks={banks} inflation={Number(vncma?.macro.pi?.value ?? 4)} portfolios={portfolios} lessons={lessons} />
+      </div>
 
       {/* Best rates */}
       <section aria-labelledby="best" className="sv-band sv-section">

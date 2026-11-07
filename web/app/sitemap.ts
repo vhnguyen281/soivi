@@ -3,6 +3,7 @@ import type { MetadataRoute } from "next";
 import { getCards, getRates } from "@/lib/api";
 import { bankSlug, cardSlug } from "@/lib/format";
 import { absolute } from "@/lib/i18n";
+import { LESSONS } from "@/lib/learn";
 
 /** Every page in both languages, each with its hreflang alternate. */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -27,6 +28,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: "/ho-so-rui-ro", priority: 0.6 },
     { path: "/phan-bo-theo-muc-tieu", priority: 0.6 },
     { path: "/bang-can-doi", priority: 0.6 },
+    { path: "/lap-ke-hoach", priority: 0.7 },
+    { path: "/hoc", priority: 0.7 },
+    ...LESSONS.filter((l) => l.status === "ready").map((l) => ({ path: `/hoc/${l.slug}`, priority: 0.6 })),
     { path: "/phuong-phap", priority: 0.5 },
     { path: "/doc-lap", priority: 0.3 },
     ...[...banks.entries()].map(([slug, checked]) => ({

@@ -5,16 +5,30 @@ import type { Lang } from "@/lib/format";
 import { href, t } from "@/lib/i18n";
 
 import { LangToggle } from "./LangToggle";
+import { NavMenu, type NavItem } from "./NavMenu";
 import { Badge, Icon } from "./ui";
 
 export function Header({ lang }: { lang: Lang }) {
   const d = t(lang);
-  const links: [string, string][] = [
-    ["/lai-suat-tiet-kiem", d.nav.savings],
-    ["/the-tin-dung", d.nav.cards],
-    ["/bien-dong-lai-suat", d.nav.moves],
-    ["/gia-dinh-thi-truong", d.nav.vncma],
-    ["/phuong-phap", d.nav.method],
+  const items: NavItem[] = [
+    {
+      label: d.nav.compare,
+      children: [
+        { label: d.nav.savings, href: href(lang, "/lai-suat-tiet-kiem") },
+        { label: d.nav.cards, href: href(lang, "/the-tin-dung") },
+        { label: d.nav.moves, href: href(lang, "/bien-dong-lai-suat") },
+      ],
+    },
+    { label: d.nav.plan, href: href(lang, "/lap-ke-hoach") },
+    { label: d.nav.learn, href: href(lang, "/hoc") },
+    {
+      label: d.nav.trust,
+      children: [
+        { label: d.nav.method, href: href(lang, "/phuong-phap") },
+        { label: d.nav.vncma, href: href(lang, "/gia-dinh-thi-truong") },
+        { label: d.nav.independence, href: href(lang, "/doc-lap") },
+      ],
+    },
   ];
   return (
     <header className="border-b border-line bg-surface">
@@ -29,17 +43,7 @@ export function Header({ lang }: { lang: Lang }) {
         <Link href={href(lang)} className="text-[26px] leading-8 font-extrabold tracking-tight text-ink no-underline">
           SoiVí
         </Link>
-        <nav aria-label={lang === "vi" ? "Chính" : "Main"} className="order-3 w-full sm:order-none sm:w-auto">
-          <ul className="flex gap-6 overflow-x-auto whitespace-nowrap">
-            {links.map(([path, label]) => (
-              <li key={path}>
-                <Link href={href(lang, path)} className="t-small font-semibold text-ink no-underline hover:text-jade">
-                  {label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        <NavMenu items={items} label={d.nav.menu} />
         <div className="ml-auto">
           <Suspense fallback={null}>
             <LangToggle lang={lang} label={d.langSwitch} title={d.langSwitchLabel} />

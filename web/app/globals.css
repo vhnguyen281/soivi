@@ -952,3 +952,190 @@ a.sv-btn--secondary:hover {
     -webkit-print-color-adjust: exact;
   }
 }
+
+/* ------------------------------------------------------------------ Treasure map journey
+   Homepage, planning hub and lessons. Comparison pages keep the core system above. */
+:root {
+  --map-paper: #f1e2c0;
+  --map-card: #fbf3df;
+  --map-ink: #3b2617;
+  --map-muted: #6b5340;
+  --map-terra: #a8441f; /* text-safe on paper (≥4.5:1) */
+  --map-terra-bright: #c4562f; /* large numbers and marks only */
+  --map-teal: #14535a;
+  --map-line: #3b261733;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --map-paper: #1f1812;
+    --map-card: #2a2119;
+    --map-ink: #f1e2c0;
+    --map-muted: #c9b597;
+    --map-terra: #f08a63;
+    --map-terra-bright: #f08a63;
+    --map-teal: #6cc4c9;
+    --map-line: #f1e2c033;
+  }
+}
+:root[data-theme="dark"] {
+  --map-paper: #1f1812;
+  --map-card: #2a2119;
+  --map-ink: #f1e2c0;
+  --map-muted: #c9b597;
+  --map-terra: #f08a63;
+  --map-terra-bright: #f08a63;
+  --map-teal: #6cc4c9;
+  --map-line: #f1e2c033;
+}
+.map {
+  background:
+    radial-gradient(ellipse at 20% 0%, color-mix(in srgb, var(--map-card) 70%, transparent) 0, transparent 50%),
+    repeating-linear-gradient(17deg, transparent 0 3px, color-mix(in srgb, var(--map-ink) 3%, transparent) 3px 4px),
+    var(--map-paper);
+  color: var(--map-ink);
+}
+.map a {
+  color: var(--map-teal);
+}
+.map-title {
+  font-family: var(--font-fraunces), serif;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.map-hand {
+  font-family: var(--font-hand), cursive;
+  font-weight: 400;
+}
+.map-card {
+  background: var(--map-card);
+  border: 2px solid var(--map-ink);
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 6px 6px 0 var(--map-line);
+}
+.map-card--pinned {
+  border-radius: 6px 6px 28px 6px;
+  position: relative;
+}
+.map-card--pinned::before {
+  content: "";
+  position: absolute;
+  top: -14px;
+  right: 28px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #e46a45, #8e2b12);
+  box-shadow: 0 3px 0 #5a1a08;
+}
+.map-input {
+  width: 100%;
+  font: inherit;
+  font-weight: 600;
+  font-size: 22px;
+  background: transparent;
+  color: var(--map-ink);
+  border: 0;
+  border-bottom: 2px dashed var(--map-ink);
+  padding: 6px 0;
+  min-height: 44px;
+}
+.map-input:focus-visible {
+  outline: 3px solid var(--map-teal);
+  outline-offset: 2px;
+}
+.map-input option {
+  background: var(--map-card);
+  color: var(--map-ink);
+}
+.map-num {
+  font-family: var(--font-fraunces), serif;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--map-teal);
+}
+.map-num--warn {
+  color: var(--map-terra-bright);
+}
+.map input[type="range"] {
+  width: 100%;
+  accent-color: var(--map-terra);
+  min-height: 32px;
+}
+.map-label {
+  display: inline-block;
+  font-family: var(--font-hand), cursive;
+  font-size: 22px;
+  background: var(--map-paper);
+  padding: 0 8px;
+  border: 2px solid var(--map-ink);
+  border-radius: 8px;
+  transform: rotate(-3deg);
+}
+.map-trail {
+  stroke: var(--map-ink);
+}
+.map-scrap {
+  background: var(--map-card);
+  border: 2px solid var(--map-ink);
+  padding: 18px 18px 24px;
+  position: relative;
+  clip-path: polygon(0 3%, 8% 0, 22% 4%, 40% 0, 58% 3%, 76% 0, 92% 4%, 100% 1%, 98% 30%, 100% 62%, 97% 100%, 70% 97%, 45% 100%, 20% 96%, 0 100%, 2% 60%);
+  transition: transform 0.2s;
+  color: var(--map-ink);
+  text-decoration: none;
+  display: block;
+}
+.map-scrap:nth-child(odd) {
+  transform: rotate(-1.2deg);
+}
+.map-scrap:nth-child(even) {
+  transform: rotate(1.2deg);
+}
+.map-scrap:hover,
+.map-scrap:focus-visible {
+  transform: rotate(0) scale(1.02);
+}
+.map-seal {
+  position: absolute;
+  right: 14px;
+  bottom: 12px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-weight: 700;
+  background: radial-gradient(circle at 35% 35%, #8a9a9a, #4e5c5c);
+}
+.map-seal--done {
+  background: radial-gradient(circle at 35% 35%, #e46a45, #8e2b12);
+}
+.map-chest {
+  border: 2px solid var(--map-ink);
+  border-radius: 12px;
+  padding: 10px;
+  text-align: center;
+  background: var(--map-paper);
+}
+@media (prefers-reduced-motion: reduce) {
+  .map-scrap,
+  .map-scrap:nth-child(odd),
+  .map-scrap:nth-child(even) {
+    transition: none;
+    transform: none;
+  }
+}
+@media (forced-colors: active) {
+  .map-card,
+  .map-scrap,
+  .map-chest {
+    border-color: CanvasText;
+  }
+}
+summary::-webkit-details-marker {
+  display: none;
+}

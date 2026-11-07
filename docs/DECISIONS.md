@@ -1290,3 +1290,63 @@ Added to `/bang-can-doi` below the balance sheet. Logic is in `web/lib/monitor.t
   (VN30 + mid/small), gold and foreign currency.
 - The corridor is ±5 percentage points.
 - The page suggests amounts to add or reduce, and says to use new savings to buy before selling, to save fees and tax.
+
+---
+
+## 2026-11-07 — Front end: "treasure map" storyline, four-pillar menu, interactive lessons (Đợt 1)
+
+**Direction.** The owner compared five interactive homepage prototypes (`~/.gstack/projects/Soivi/designs/homepage-20261107/`):
+flashlight, treasure map, tabloid, arcade game and melting clay. They chose **B, the treasure map**. The map style
+applies only where the story is told: the homepage, `/lap-ke-hoach`, `/hoc` and the lessons. Comparison pages keep
+the core design system so numbers stay easy to read.
+
+**Look**
+- Fraunces 600/900 for display and Patrick Hand for hand-written labels. Both cover Vietnamese and are self-hosted by
+  `next/font` (`lib/fonts.ts`).
+- Paper, ink, terracotta and teal colours as `--map-*` tokens, each with a dark-mode value.
+- Terracotta text uses `#a8441f` (at least 4.5:1 on paper). The brighter terracotta is kept for large numbers.
+
+**Menu.** Four pillars:
+- So sánh: savings rates, cards, rate moves.
+- Lập kế hoạch: `/lap-ke-hoach`.
+- Học: `/hoc`.
+- Minh bạch: methodology, VNCMA, independence.
+
+The two lists use `<details>` and close on navigation, on Escape or on a click outside. The last list aligns right so
+it fits on phones.
+
+**Homepage**
+- The hero asks for the amount and the bank.
+- The "missed per year" figure uses each bank's best 12-month rate for 100 million, any channel, with the basis
+  stated on the page.
+- No bank is preselected. Until the visitor picks one, the page shows the gap between the highest and the lowest rate.
+- Four stops on a dotted trail, followed by a coin in a conical hat on wide screens:
+  1. Inflation (VNCMA pi).
+  2. Risk: 10-year paths for the approved model portfolios.
+  3. Goal: monthly saving at the best deposit rate against the Cân bằng expected return, labelled "before risk".
+  4. Plan: three chests.
+- The existing sections stay below: best-rates table with sources, rate moves, card finder and trust.
+
+**Planning hub (`/lap-ke-hoach`).** The five planning tools in CFA order, each with its time and what to have ready.
+Stops opened from the hub are ticked in `localStorage` (`soivi.journey.v1`).
+
+**Lessons (`/hoc`, `lib/learn.ts`).** Six lessons are listed, three written; the rest show "Sắp có". Progress is kept
+in `localStorage` (`soivi.learn.v1`). Each lesson ends with "Áp dụng cho bạn" (a tool), "Đánh dấu đã học" and the
+next lesson.
+1. **Lạm phát ăn ví.** Buying power over 30 years for cash, the best checked demand rate and the best checked 12-month
+   rate. The chart has three series with direct labels and a table. It also covers the rule of 72 and a quiz.
+2. **Lãi niêm yết ≠ lãi thực nhận.**
+   - The chosen bank's checked 12-month offers by channel and payment style, with SoiVí's equivalent rate and the
+     source link.
+   - Early withdrawal is worked out with that bank's checked demand rate. If the bank has none, the page uses the
+     highest checked demand rate and says so.
+3. **Bẫy trả tối thiểu.**
+   - Each card's real interest rate and interest-free days, with the source link.
+   - The minimum payment (5% of the balance, at least 100.000 ₫) is a labelled assumption the visitor can change. It
+     is not a published value.
+
+**Principle 1 in lessons.** Bank figures shown in lessons are always approved values with sources. Numbers inside
+quiz questions are clearly hypothetical. General rules (early withdrawal at the demand rate, interest from the
+purchase date) are phrased as "many banks / usually" and point the visitor to their contract.
+
+The pure maths is in `web/lib/lessons.ts`, with tests in `web/tests/lessons.test.ts`.
