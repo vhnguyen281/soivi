@@ -16,7 +16,7 @@ const TEXT = {
   vi: {
     title: "Bảng cân đối kinh tế và kế hoạch mục tiêu",
     intro:
-      "Nhập tài sản, khoản nợ, thu nhập và chi tiêu thật của bạn để thấy bức tranh tài chính cả đời: hôm nay bạn có gì, sẽ cần gì, và cần làm gì để đạt các mục tiêu trung và dài hạn.",
+      "Nhập tài sản, khoản nợ, thu nhập và chi tiêu thật của bạn để thấy bức tranh tài chính cả đời: hôm nay bạn có gì, sẽ cần gì, và cần làm gì để đạt các mục tiêu trung và dài hạn. Lưu kết quả mỗi lần xem lại để theo dõi tiến độ và biết khi nào cần tái cân bằng.",
     none: "Chưa có giả định thị trường được duyệt, nên chưa tính được.",
     disclaimer:
       "Công cụ học tập, không phải lời khuyên đầu tư cho cá nhân bạn. Dữ liệu bạn nhập chỉ nằm trên trình duyệt của bạn.",
@@ -25,7 +25,7 @@ const TEXT = {
   en: {
     title: "Economic balance sheet and goal plan",
     intro:
-      "Enter your real assets, debts, income and spending to see your lifetime financial picture: what you have today, what you will need, and what it takes to reach your medium and long-term goals.",
+      "Enter your real assets, debts, income and spending to see your lifetime financial picture: what you have today, what you will need, and what it takes to reach your medium and long-term goals. Save each review to track progress and know when to rebalance.",
     none: "No market assumptions have been approved yet, so nothing can be calculated.",
     disclaimer: "A learning tool, not personal investment advice. What you enter stays in your browser.",
     links: ["Split your money by goal", "Chance of reaching a goal", "Market assumptions (VNCMA)"],

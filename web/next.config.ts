@@ -7,6 +7,14 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   // `next start` in Docker: a self-contained server bundle.
   output: "standalone",
+  // Prerendering calls the API for every page. Unbounded parallel builds queued
+  // past the API's database pool (15 connections to Neon) and timed out, so
+  // keep at most 2 workers x 4 pages in flight and retry a page that fails.
+  experimental: {
+    cpus: 2,
+    staticGenerationMaxConcurrency: 4,
+    staticGenerationRetryCount: 2,
+  },
   cacheLife: {
     // All data comes from the Soivi API. Pages are rebuilt as soon as the review
     // app reports an approval (POST /api/revalidate); this hourly refresh also

@@ -19,6 +19,9 @@ import {
 import type { ModelMix } from "@/lib/buckets";
 import { vnd, type Lang } from "@/lib/format";
 import { href } from "@/lib/i18n";
+import { parseHistory, type Snapshot } from "@/lib/monitor";
+
+import { Monitor } from "./Monitor";
 
 const STORE = "soivi.balance.v1";
 
@@ -335,6 +338,7 @@ type Form = {
   goals: GoalRow[];
   level: string;
   months: string;
+  history: Snapshot[]; // reviews kept for monitoring (step 8)
 };
 
 function example(lang: Lang): Form {
@@ -364,6 +368,7 @@ function example(lang: Lang): Form {
     ],
     level: "3",
     months: "6",
+    history: [],
   };
 }
 
@@ -424,10 +429,11 @@ function parseForm(raw: unknown): Form | null {
     goals: list(o.goals, (g) => ({ name: s(g.name).slice(0, 40), amount: digits(s(g.amount)), years: digits(s(g.years), 2), essential: g.essential === true }), 8),
     level: digits(s(o.level), 1) || "3",
     months: ["3", "6", "12", "18", "24"].includes(s(o.months)) ? s(o.months) : "6",
+    history: parseHistory(o.history),
   };
 }
 
-type Result = { sheet: Sheet; plan: GoalPlan | null; date: string };
+type Result = { sheet: Sheet; plan: GoalPlan | null; date: string; profile: Profile; level: number };
 
 export function BalanceSheet({
   lang,
@@ -490,6 +496,8 @@ export function BalanceSheet({
       sheet: economicBalanceSheet(profile, rates),
       plan: mixes.length ? goalPlan(profile, rates, mixes, level, Number(form.months), x.retirementGoal) : null,
       date: new Date().toLocaleDateString(lang === "vi" ? "vi-VN" : "en-GB"),
+      profile,
+      level,
     });
     save(form, remember);
   }
@@ -526,7 +534,7 @@ export function BalanceSheet({
   function clearAll() {
     save(form, false);
     setRemember(false);
-    setForm({ ...example(lang), assets: [], debts: [], goals: [], monthlyIncome: "", annualBonus: "", monthlySpending: "", retirementSpending: "", monthlyPension: "", monthlyDebtPayment: "" });
+    setForm({ ...example(lang), assets: [], debts: [], goals: [], history: [], monthlyIncome: "", annualBonus: "", monthlySpending: "", retirementSpending: "", monthlyPension: "", monthlyDebtPayment: "" });
     setResult(null);
   }
 
@@ -745,6 +753,23 @@ export function BalanceSheet({
       </form>
 
       {result ? <Report lang={lang} result={result} job={form.job} rates={rates} release={release} /> : null}
+      {result ? (
+        <Monitor
+          lang={lang}
+          release={release}
+          profile={result.profile}
+          sheet={result.sheet}
+          plan={result.plan}
+          level={result.level}
+          history={form.history}
+          kept={remember}
+          onChange={(history) => {
+            const next = { ...form, history };
+            setForm(next);
+            save(next, remember);
+          }}
+        />
+      ) : null}
     </div>
   );
 }

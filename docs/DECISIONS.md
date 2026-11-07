@@ -1253,3 +1253,40 @@ date, the assumptions with the VNCMA version, and the disclaimer.
 
 **Chart.** Assets and obligations are drawn as two stacked bars on one scale. They use the seven categorical slots in
 fixed order (assets 1–3, obligations 4–7), with a table beside them that carries the same values and swatches.
+
+---
+
+## 2026-11-07 — Monitoring and rebalancing (CFA private wealth, step 8)
+
+Added to `/bang-can-doi` below the balance sheet. Logic is in `web/lib/monitor.ts`, the UI in
+`web/components/Monitor.tsx`. As in step 7, nothing leaves the browser and no account is needed.
+
+**History**
+- Each review can be saved as a snapshot.
+- A snapshot holds: date, VNCMA version, risk level, income, economic net worth, financial assets less debts,
+  liquid assets, goals needed and funded, monthly need and monthly surplus.
+- There is one snapshot per day (a new one replaces that day's), and at most 40 are kept.
+- The history is part of the form data. It goes into the opt-in `localStorage` copy and into the downloaded JSON
+  file, and is read back through a strict parser.
+
+**Progress**
+- The page compares today's figures with the last earlier review in a table.
+- From two snapshots on, it draws one line over time: financial assets less debts. It is a single series, 2px wide,
+  with gridlines in the line colour and a native tooltip on each point.
+
+**Review triggers** (shown as reasons to review; none means "review again within 12 months")
+- First review.
+- 12 months or more since the last review.
+- A new VNCMA release.
+- Income changed by 20% or more.
+- The funded share of the goals fell by more than 10 points.
+- Drift past the corridor.
+- A goal 2 years away or less: move its money into deposits.
+- An emergency fund below 6 months of spending.
+
+**Rebalancing**
+- Liquid holdings are compared with the plan's whole mix: liquidity reserve, goals and growth together.
+- The model classes are folded into what a person actually holds: deposits, bonds (gov + corp), shares
+  (VN30 + mid/small), gold and foreign currency.
+- The corridor is ±5 percentage points.
+- The page suggests amounts to add or reduce, and says to use new savings to buy before selling, to save fees and tax.
