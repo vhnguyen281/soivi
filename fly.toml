@@ -1,47 +1,47 @@
-# Fly.io: the public API only (docs/deploy.md). The site is on Vercel; the pipeline,
-# scheduler and review app stay on the owner's Mac.
+# fly.toml app configuration file generated for soivi-api-vh on 2026-11-08T10:10:52+07:00
 #
-# `fly launch --no-deploy --copy-config` replaces `app` with the name you choose.
-app = "soivi-api"
-primary_region = "sin" # Singapore, next to Neon and S3 (ap-southeast-1)
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'soivi-api-vh'
+primary_region = 'sin'
 
 [build]
-  dockerfile = "Dockerfile"
+  dockerfile = 'Dockerfile'
+
   [build.args]
-    SLIM = "1"
+    SLIM = '1'
 
 [env]
-  API_HOST = "0.0.0.0"
-  API_PORT = "8002"
-  # Safe on the internet only together with the API_TOKEN secret (fly secrets set).
-  TRUST_PROXY_HEADERS = "true"
-  S3_SECURE = "true"
-  PYTHONUNBUFFERED = "1"
+  API_HOST = '0.0.0.0'
+  API_PORT = '8002'
+  PYTHONUNBUFFERED = '1'
+  S3_SECURE = 'true'
+  TRUST_PROXY_HEADERS = 'true'
 
 [processes]
-  app = "python -m api"
+  app = 'python -m api'
 
 [http_service]
   internal_port = 8002
   force_https = true
-  # Stops when idle (the site calls the API at build and hourly refresh), starts on demand.
-  auto_stop_machines = "stop"
+  auto_stop_machines = 'stop'
   auto_start_machines = true
   min_machines_running = 0
-  processes = ["app"]
+  processes = ['app']
 
   [http_service.concurrency]
-    type = "requests"
-    soft_limit = 25
+    type = 'requests'
     hard_limit = 50
+    soft_limit = 25
 
   [[http_service.checks]]
-    grace_period = "20s"
-    interval = "30s"
-    method = "GET"
-    path = "/health"
-    timeout = "5s"
+    interval = '30s'
+    timeout = '5s'
+    grace_period = '20s'
+    method = 'GET'
+    path = '/health'
 
 [[vm]]
-  size = "shared-cpu-1x"
-  memory = "512mb"
+  size = 'shared-cpu-1x'
+  memory = '512mb'
